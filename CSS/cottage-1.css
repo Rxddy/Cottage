@@ -206,7 +206,7 @@ header {
 /* Hero Section */
 .hero {
     height: 80vh;
-    background-image: linear-gradient(to bottom, rgba(90, 68, 52, 0.3), rgba(90, 68, 52, 0.5)), url('/Cottage/images/lake-front-view.png');
+    background-image: linear-gradient(to bottom, rgba(90, 68, 52, 0.3), rgba(90, 68, 52, 0.5)), url('images/lake-front-view.png');
     background-size: cover;
     background-position: center;
     display: flex;
