@@ -1,0 +1,1250 @@
+/* cottage-2.css - Warm Cozy Cottage Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Warm Color Palette */
+  --wood-brown: #8C6A56;
+  --cream: #F7F3E9;
+  --warm-white: #FFFAF0;
+  --moss-green: #718F75;
+  --terracotta: #C47B5A;
+  --dark-wood: #5A4434;
+  --amber: #FFBF69;
+  --cozy-gray: #9B8F87;
+  
+  /* Typography */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Montserrat', sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  
+  /* Effects */
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+  --border-radius: 8px;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--dark-wood);
+  background-color: var(--cream);
+  line-height: 1.6;
+  background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" fill="%23F7F3E9"/><circle cx="10" cy="10" r="0.5" fill="%23C47B5A" opacity="0.05"/></svg>');
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--dark-wood);
+}
+
+a {
+  text-decoration: none;
+  color: var(--wood-brown);
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--terracotta);
+}
+
+/* Header & Navigation */
+header {
+  background-color: var(--warm-white);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(140, 106, 86, 0.1);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--wood-brown) !important;
+  position: relative;
+}
+
+.logo::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--terracotta);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--dark-wood);
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--terracotta);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--terracotta);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a.btn {
+  background-color: var(--terracotta);
+  color: var(--warm-white);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  border: none;
+}
+
+.nav-links a.btn:hover {
+  background-color: var(--wood-brown);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-links a.btn::after {
+  display: none;
+}
+
+/* Mobile menu */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--wood-brown);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--warm-white);
+  z-index: 2000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+.close-mobile-menu {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--wood-brown);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.mobile-menu .nav-links {
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.mobile-menu .nav-links a {
+  font-size: 1.2rem;
+}
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    background-image: linear-gradient(to bottom, rgba(90, 68, 52, 0.3), rgba(90, 68, 52, 0.5)), url('../images/lake-front-view.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: linear-gradient(to top, var(--cream), transparent);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin-left: var(--spacing-lg);
+  background-color: rgba(255, 250, 240, 0.85);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border-left: 5px solid var(--terracotta);
+}
+
+.hero h1 {
+  font-size: 2.75rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--dark-wood);
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--wood-brown);
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--terracotta);
+  color: var(--warm-white);
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  border: none;
+  font-family: var(--font-body);
+}
+
+.btn:hover {
+  background-color: var(--wood-brown);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  color: var(--warm-white);
+}
+
+/* Sections */
+.section {
+  padding: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.section:nth-child(odd) {
+  background-color: var(--warm-white);
+}
+
+.section-title {
+  font-size: 2.25rem;
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  color: var(--dark-wood) !important;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.8rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--terracotta);
+}
+
+/* About Section */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.about-item {
+  background-color: var(--warm-white);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: var(--transition);
+  border-bottom: 3px solid transparent;
+}
+
+.about-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-bottom-color: var(--terracotta);
+}
+
+.about-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--terracotta);
+  background-color: rgba(196, 123, 90, 0.1);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto var(--spacing-md);
+}
+
+.about-item h3 {
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--dark-wood);
+}
+
+.about-item p {
+  color: var(--cozy-gray);
+}
+
+/* Gallery */
+.gallery {
+  background-color: var(--cream);
+  position: relative;
+}
+
+.gallery::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--terracotta), transparent);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.gallery-item {
+  height: 300px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: var(--transition);
+  border: 5px solid var(--warm-white);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--terracotta);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.show-all-photos {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--warm-white);
+  color: var(--wood-brown);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.show-all-photos:hover {
+  background-color: var(--terracotta);
+  color: var(--warm-white);
+}
+
+/* Modal Gallery */
+.modal-gallery {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(90, 68, 52, 0.95);
+  z-index: 2000;
+  overflow-y: auto;
+}
+
+.modal-gallery.active {
+  display: block;
+}
+
+.modal-content {
+  max-width: 1200px;
+  margin: 5% auto;
+  padding: var(--spacing-md);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(255, 250, 240, 0.2);
+}
+
+.modal-header h2 {
+  color: var(--warm-white);
+  font-size: 1.8rem;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: var(--warm-white);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.close-modal:hover {
+  color: var(--terracotta);
+  transform: scale(1.1);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.modal-item {
+  height: 250px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  border: 5px solid var(--warm-white);
+  transition: var(--transition);
+}
+
+.modal-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.modal-item:hover {
+  border-color: var(--terracotta);
+}
+
+.modal-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Features */
+.features h3 {
+  font-size: 1.5rem;
+  margin: var(--spacing-lg) 0 var(--spacing-md);
+  color: var(--dark-wood);
+  position: relative;
+  padding-left: 1rem;
+  border-left: 3px solid var(--moss-green);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.feature-item {
+  background-color: var(--warm-white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.feature-item:hover {
+  transform: translateX(5px);
+  box-shadow: var(--shadow-md);
+  border-left-color: var(--moss-green);
+}
+
+.feature-icon {
+  font-size: 1.3rem;
+  color: var(--moss-green);
+  width: 40px;
+  text-align: center;
+}
+
+.feature-item span {
+  color: var(--wood-brown);
+}
+
+/* Reviews */
+.reviews {
+  background-color: var(--warm-white);
+  position: relative;
+}
+
+.reviews::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--terracotta), transparent);
+}
+
+.review-rating {
+  background-color: var(--cream);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 3px solid var(--amber);
+}
+
+.stars {
+  color: var(--amber);
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.rating-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+  font-family: var(--font-display);
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.review-card {
+  background-color: var(--cream);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border-top: 3px solid transparent;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-top-color: var(--amber);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.reviewer-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: var(--warm-white);
+  color: var(--terracotta);
+  border: 2px solid var(--terracotta);
+}
+
+.reviewer-info h4 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  color: var(--dark-wood);
+}
+
+.review-date {
+  font-size: 0.9rem;
+  color: var(--cozy-gray);
+}
+
+.review-text {
+  color: var(--wood-brown);
+  font-style: italic;
+}
+
+/* Color variations for reviewer images */
+.reviewer-img.blue { color: #5D8AA8; border-color: #5D8AA8; }
+.reviewer-img.green { color: var(--moss-green); border-color: var(--moss-green); }
+.reviewer-img.purple { color: #8A6BBE; border-color: #8A6BBE; }
+.reviewer-img.orange { color: var(--terracotta); border-color: var(--terracotta); }
+.reviewer-img.red { color: #A65E58; border-color: #A65E58; }
+
+/* Booking Section */
+.booking {
+  background-color: var(--cream);
+  position: relative;
+}
+
+.booking::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: url('data:image/svg+xml;utf8,<svg width="20" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M0 5 L10 0 L20 5" fill="none" stroke="%23C47B5A" stroke-width="1" opacity="0.3"/></svg>') repeat-x;
+}
+
+.booking-card {
+  max-width: 550px;
+  margin: 0 auto;
+  background-color: var(--warm-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(140, 106, 86, 0.1);
+}
+
+.price {
+  background-color: var(--wood-brown);
+  color: var(--warm-white);
+  padding: var(--spacing-md);
+  text-align: center;
+  position: relative;
+}
+
+.price::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--amber), var(--terracotta));
+}
+
+.price span:first-child {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.booking-inputs {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(140, 106, 86, 0.1);
+}
+
+.input-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--dark-wood);
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(140, 106, 86, 0.2);
+  border-radius: var(--border-radius);
+  background-color: var(--cream);
+  color: var(--dark-wood);
+  font-family: var(--font-body);
+  transition: var(--transition);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(196, 123, 90, 0.1);
+}
+
+.error-message {
+  color: #C93F36;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: none;
+}
+
+.price-breakdown {
+  padding: var(--spacing-md);
+  background-color: var(--cream);
+}
+
+.price-breakdown p {
+  color: var(--cozy-gray) !important;
+  font-size: 0.9rem !important;
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.booking-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(140, 106, 86, 0.1);
+  color: var(--wood-brown);
+}
+
+.booking-detail.total {
+  border-bottom: none;
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 2px solid var(--terracotta);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--dark-wood);
+}
+
+.booking-btn {
+  width: 100%;
+  padding: var(--spacing-md);
+  background-color: var(--terracotta);
+  color: var(--warm-white);
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
+
+.booking-btn:hover {
+  background-color: var(--wood-brown);
+  color: var(--warm-white);
+}
+
+/* Share Section */
+.share-section {
+  margin-top: var(--spacing-lg);
+  background-color: var(--warm-white);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(140, 106, 86, 0.1);
+}
+
+.share-title {
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--dark-wood);
+  font-family: var(--font-display);
+}
+
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.share-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--border-radius);
+  color: var(--warm-white);
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.share-button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+
+.share-facebook { background-color: #1877F2; }
+.share-twitter { background-color: #1DA1F2; }
+.share-whatsapp { background-color: #25D366; }
+.share-email { background-color: var(--wood-brown); }
+.share-copy { background-color: var(--cozy-gray); }
+
+.share-button i {
+  font-size: 1.1rem;
+}
+
+.copy-message {
+  display: none;
+  margin-top: var(--spacing-sm);
+  color: var(--moss-green);
+  font-weight: 500;
+}
+
+.copy-message.show {
+  display: block;
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark-wood);
+  color: var(--cream);
+  padding: var(--spacing-lg) 0 var(--spacing-md);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.footer-column h3 {
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--cream);
+  position: relative;
+  padding-bottom: var(--spacing-sm);
+  font-family: var(--font-display);
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: var(--terracotta);
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer-links a {
+  color: rgba(247, 243, 233, 0.8);
+  transition: var(--transition);
+}
+
+.footer-links a:hover {
+  color: var(--terracotta);
+  padding-left: 5px;
+}
+
+.copyright {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid rgba(247, 243, 233, 0.1);
+  color: rgba(247, 243, 233, 0.7);
+  font-size: 0.9rem;
+}
+
+.copyright a {
+  color: var(--terracotta);
+}
+
+.copyright a:hover {
+  color: var(--amber);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .hero-content {
+    margin-left: var(--spacing-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .hero-content {
+    margin: 0 var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .about-grid,
+  .gallery-grid,
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .share-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .share-button {
+    width: 100%;
+    max-width: 250px;
+    justify-content: center;
+  }
+}
+
+/* Add a wood texture background to specific elements */
+.price, 
+footer, 
+.review-rating .rating-number {
+  background-image: url('data:image/svg+xml;utf8,<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feBlend mode="multiply" in2="SourceGraphic" result="monoNoise"/><feComposite operator="in" in="monoNoise" in2="SourceGraphic" result="noiseTexture"/></filter><rect width="300" height="300" fill="none" filter="url(%23noise)"/></svg>');
+  background-size: 300px;
+  background-blend-mode: overlay;
+}
+
+/* Add subtle texture to cards */
+.about-item,
+.feature-item,
+.review-card,
+.booking-card {
+  background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><filter id="paper"><feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feBlend mode="multiply" in2="SourceGraphic" result="monoNoise" opacity="0.05"/></filter><rect width="200" height="200" fill="none" filter="url(%23paper)"/></svg>');
+  background-size: 200px;
+  background-blend-mode: overlay;
+}
+
+/* Add decorative elements */
+.section-title::before {
+  content: '✦';
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--terracotta);
+  margin-bottom: 0.5rem;
+}
+
+/* Add subtle leaf patterns to specific sections */
+.gallery::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 80px;
+  height: 80px;
+  background-image: url('data:image/svg+xml;utf8,<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><path d="M40 4C53 20 66 36 66 50C66 64 54 76 40 76C26 76 14 64 14 50C14 36 27 20 40 4Z" fill="none" stroke="%23C47B5A" stroke-width="1" opacity="0.15"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.reviews::after {
+  content: '';
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 80px;
+  height: 80px;
+  background-image: url('data:image/svg+xml;utf8,<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><path d="M40 4C53 20 66 36 66 50C66 64 54 76 40 76C26 76 14 64 14 50C14 36 27 20 40 4Z" fill="none" stroke="%23718F75" stroke-width="1" opacity="0.15"/><path d="M40 20C45 29 50 38 50 45C50 52 45 57 40 57C35 57 30 52 30 45C30 38 35 29 40 20Z" fill="none" stroke="%23718F75" stroke-width="1" opacity="0.15"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  transform: rotate(180deg);
+  pointer-events: none;
+}
+
+/* Add cozy shadow to images */
+.gallery-item img,
+.modal-item img {
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* Enhance booking button with icon */
+.booking-btn::before {
+  content: '\f0e0';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+  margin-right: 8px;
+}
+
+/* Add subtle grain texture to body */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.05"/></svg>');
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* Style the logo with a handwritten font effect */
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Add warm transitions between sections */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: url('data:image/svg+xml;utf8,<svg width="40" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M0 20 C 10 0, 30 0, 40 20" fill="none" stroke="%23F7F3E9" stroke-width="40"/></svg>') repeat-x;
+  background-size: 40px 20px;
+  margin-top: -20px;
+  z-index: 10;
+}
+
+/* Add styling for quote marks in reviews */
+.review-text::before {
+  content: '"';
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  line-height: 0;
+  position: relative;
+  top: 0.5rem;
+  color: var(--terracotta);
+  opacity: 0.3;
+  margin-right: 0.2rem;
+}
+
+.review-text::after {
+  content: '"';
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  line-height: 0;
+  position: relative;
+  top: 0.5rem;
+  color: var(--terracotta);
+  opacity: 0.3;
+  margin-left: 0.2rem;
+}
+
+/* Style for links that mimics a handwritten underline */
+a:not(.btn):not(.nav-links a):not(.share-button):not(.booking-btn):hover {
+  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="10" xmlns="http://www.w3.org/2000/svg"><path d="M0 5 C 25 0, 75 10, 100 5" stroke="%23C47B5A" stroke-width="2" fill="none"/></svg>');
+  background-position: bottom;
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  padding-bottom: 5px;
+}
+
+/* Add subtle shadow to section headers */
+.section-title {
+  text-shadow: 1px 1px 1px rgba(140, 106, 86, 0.1);
+}
+
+/* Add wood texture background to gallery modal close button */
+.close-modal {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--terracotta);
+  border-radius: 50%;
+  opacity: 0.9;
+}
+
+.close-modal:hover {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+/* Add a cozy lantern icon to the features section title */
+.features .section-title::before {
+  content: '\f0eb';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+/* Add a cozy fire icon to the reviews section title */
+.reviews .section-title::before {
+  content: '\f06d';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+/* Add a calendar icon to the booking section title */
+.booking .section-title::before {
+  content: '\f133';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+/* Add a gallery icon to the gallery section title */
+.gallery .section-title::before {
+  content: '\f03e';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+/* Add a home icon to the about section title */
+#about .section-title::before {
+  content: '\f015';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+/* Add special styling for the price breakdown */
+.price-breakdown {
+  position: relative;
+  overflow: hidden;
+}
+
+.price-breakdown::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="20" height="20" fill="%23F7F3E9" opacity="0.5"/><rect x="20" y="20" width="20" height="20" fill="%23F7F3E9" opacity="0.5"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Add a subtle pattern to the hero content box */
+.hero-content {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5 L55 30 L30 55 L5 30 Z" stroke="%23C47B5A" stroke-width="1" fill="none" opacity="0.05"/></svg>');
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Create a ribbon effect for the price section */
+.price {
+  position: relative;
+  overflow: hidden;
+}
+
+.price::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background-color: var(--terracotta);
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+.price span {
+  position: relative;
+  z-index: 2;
+}
+
+/* Add cottagecore-style text decoration */
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+/* Ensure consistent styling across browsers */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

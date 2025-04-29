@@ -119,6 +119,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+    // lalalal
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create cursor trail elements
+        for (let i = 0; i < 15; i++) {
+          const trail = document.createElement('div');
+          trail.classList.add('cursor-fx');
+          document.body.appendChild(trail);
+        }
+        
+        // Initialize cursor trail
+        const trails = document.querySelectorAll('.cursor-fx');
+        const coords = { x: 0, y: 0 };
+        let cursorVisible = false;
+        
+        document.addEventListener('mousemove', function(e) {
+          coords.x = e.clientX;
+          coords.y = e.clientY;
+          
+          if (!cursorVisible) {
+            cursorVisible = true;
+            trails.forEach(trail => trail.style.opacity = 1);
+          }
+        });
+        
+        document.addEventListener('mouseout', function() {
+          cursorVisible = false;
+          trails.forEach(trail => trail.style.opacity = 0);
+        });
+        
+        // Animate trails
+        let index = 0;
+        function animateTrails() {
+          let delay = 0;
+          
+          trails.forEach(trail => {
+            setTimeout(() => {
+              trail.style.left = `${coords.x}px`;
+              trail.style.top = `${coords.y}px`;
+              trail.style.opacity = cursorVisible ? 1 - (delay / 30) : 0;
+              trail.style.width = `${5 + delay}px`;
+              trail.style.height = `${5 + delay}px`;
+              trail.style.zIndex = 9999 - delay;
+            }, delay * 30);
+            
+            delay++;
+          });
+          
+          requestAnimationFrame(animateTrails);
+        }
+        
+        animateTrails();
+      });
+    
+
+        // Initial call
+        if (window.scrollY <= 50) {
+          header.classList.add('js-header-transparent');
+        }
+      });
+
     // Share functionality
     const currentUrl = window.location.href;
     const title = 'Lakefront Cottage, Kawartha Lakes - Serene Lakefront Retreat';
@@ -157,5 +218,4 @@ document.addEventListener('DOMContentLoaded', function() {
                 copyMessage.classList.remove('show');
             }, 2000);
         });
-    });
-});
+    }); 
