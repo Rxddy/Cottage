@@ -1,3 +1,5 @@
+/* cottage-2.css - Warm Cozy Cottage Theme */
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -204,7 +206,7 @@ header {
 /* Hero Section */
 .hero {
     height: 80vh;
-    background-image: linear-gradient(to bottom, rgba(90, 68, 52, 0.3), rgba(90, 68, 52, 0.5)), url('Images/lake-front-view.png');
+    background-image: linear-gradient(to bottom, rgba(90, 68, 52, 0.3), rgba(90, 68, 52, 0.5)), url("/Images/lake-front-view.png");
     background-size: cover;
     background-position: center;
     display: flex;
