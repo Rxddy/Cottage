@@ -23,23 +23,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalGallery = document.querySelector('.modal-gallery');
     const closeModalBtn = document.querySelector('.close-modal');
 
-    showAllPhotosBtn.addEventListener('click', function() {
-        modalGallery.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-    });
+    if (showAllPhotosBtn && modalGallery && closeModalBtn) {
+        showAllPhotosBtn.addEventListener('click', function() {
+            modalGallery.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        });
 
-    closeModalBtn.addEventListener('click', function() {
-        modalGallery.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-    });
-
-    // Close modal when clicking outside the images
-    modalGallery.addEventListener('click', function(e) {
-        if (e.target === modalGallery) {
+        closeModalBtn.addEventListener('click', function() {
             modalGallery.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    });
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+
+        // Close modal when clicking outside the images
+        modalGallery.addEventListener('click', function(e) {
+            if (e.target === modalGallery) {
+                modalGallery.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 
     // Booking calculator functionality
     const numGuestsInput = document.getElementById('num-guests');
@@ -57,128 +59,130 @@ document.addEventListener('DOMContentLoaded', function() {
     const TAX_RATE = 0.13; // 13% tax
 
     function calculateTotal() {
+        if (!numNightsInput || !numGuestsInput) return;
+        
         const numNights = parseInt(numNightsInput.value) || 1;
         const numGuests = parseInt(numGuestsInput.value) || 1;
 
         // Update nights display
-        nightsDisplay.textContent = numNights;
+        if (nightsDisplay) nightsDisplay.textContent = numNights;
 
         // Calculate subtotal (nightly rate × number of nights)
         const subtotal = NIGHTLY_RATE * numNights;
-        subtotalDisplay.textContent = `$${subtotal} CAD`;
+        if (subtotalDisplay) subtotalDisplay.textContent = `$${subtotal} CAD`;
 
         // Calculate service fee (15% of subtotal)
         const serviceFee = Math.round(subtotal * SERVICE_FEE_RATE);
-        serviceFeeDisplay.textContent = `$${serviceFee} CAD`;
+        if (serviceFeeDisplay) serviceFeeDisplay.textContent = `$${serviceFee} CAD`;
 
         // Calculate taxes (13% of subtotal + cleaning fee + service fee)
         const preTaxTotal = subtotal + CLEANING_FEE + serviceFee;
         const taxes = Math.round(preTaxTotal * TAX_RATE);
-        taxesDisplay.textContent = `$${taxes} CAD`;
+        if (taxesDisplay) taxesDisplay.textContent = `$${taxes} CAD`;
 
         // Calculate total
         const total = preTaxTotal + taxes;
-        totalDisplay.textContent = `$${total} CAD`;
+        if (totalDisplay) totalDisplay.textContent = `$${total} CAD`;
 
         // Validate number of guests
-        if (numGuests > 12) {
-            guestsError.style.display = 'block';
-        } else {
-            guestsError.style.display = 'none';
+        if (guestsError) {
+            if (numGuests > 12) {
+                guestsError.style.display = 'block';
+            } else {
+                guestsError.style.display = 'none';
+            }
         }
     }
 
     // Add event listeners for input changes
-    numGuestsInput.addEventListener('input', calculateTotal);
-    numNightsInput.addEventListener('input', calculateTotal);
+    if (numGuestsInput && numNightsInput) {
+        numGuestsInput.addEventListener('input', calculateTotal);
+        numNightsInput.addEventListener('input', calculateTotal);
 
-    // Initial calculation
-    calculateTotal();
+        // Initial calculation
+        calculateTotal();
+    }
 
     // Mobile menu functionality
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mobileMenu = document.querySelector('.mobile-menu');
     const closeMobileMenu = document.querySelector('.close-mobile-menu');
 
-    mobileMenuBtn.addEventListener('click', function() {
-        mobileMenu.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
+    if (mobileMenuBtn && mobileMenu && closeMobileMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
 
-    closeMobileMenu.addEventListener('click', function() {
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
-    });
-
-    // Close mobile menu when clicking a link
-    const mobileLinks = mobileMenu.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        closeMobileMenu.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
         });
-    });
 
+        // Close mobile menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+    }
 
-    // lalalal
-    document.addEventListener('DOMContentLoaded', function() {
-        // Create cursor trail elements
-        for (let i = 0; i < 15; i++) {
-          const trail = document.createElement('div');
-          trail.classList.add('cursor-fx');
-          document.body.appendChild(trail);
-        }
+    // Cursor trail effects
+    for (let i = 0; i < 15; i++) {
+        const trail = document.createElement('div');
+        trail.classList.add('cursor-fx');
+        document.body.appendChild(trail);
+    }
+      
+    // Initialize cursor trail
+    const trails = document.querySelectorAll('.cursor-fx');
+    const coords = { x: 0, y: 0 };
+    let cursorVisible = false;
+      
+    document.addEventListener('mousemove', function(e) {
+        coords.x = e.clientX;
+        coords.y = e.clientY;
         
-        // Initialize cursor trail
-        const trails = document.querySelectorAll('.cursor-fx');
-        const coords = { x: 0, y: 0 };
-        let cursorVisible = false;
-        
-        document.addEventListener('mousemove', function(e) {
-          coords.x = e.clientX;
-          coords.y = e.clientY;
-          
-          if (!cursorVisible) {
+        if (!cursorVisible) {
             cursorVisible = true;
             trails.forEach(trail => trail.style.opacity = 1);
-          }
-        });
+        }
+    });
+      
+    document.addEventListener('mouseout', function() {
+        cursorVisible = false;
+        trails.forEach(trail => trail.style.opacity = 0);
+    });
+      
+    // Animate trails
+    function animateTrails() {
+        let delay = 0;
         
-        document.addEventListener('mouseout', function() {
-          cursorVisible = false;
-          trails.forEach(trail => trail.style.opacity = 0);
-        });
-        
-        // Animate trails
-        let index = 0;
-        function animateTrails() {
-          let delay = 0;
-          
-          trails.forEach(trail => {
+        trails.forEach(trail => {
             setTimeout(() => {
-              trail.style.left = `${coords.x}px`;
-              trail.style.top = `${coords.y}px`;
-              trail.style.opacity = cursorVisible ? 1 - (delay / 30) : 0;
-              trail.style.width = `${5 + delay}px`;
-              trail.style.height = `${5 + delay}px`;
-              trail.style.zIndex = 9999 - delay;
+                trail.style.left = `${coords.x}px`;
+                trail.style.top = `${coords.y}px`;
+                trail.style.opacity = cursorVisible ? 1 - (delay / 30) : 0;
+                trail.style.width = `${5 + delay}px`;
+                trail.style.height = `${5 + delay}px`;
+                trail.style.zIndex = 9999 - delay;
             }, delay * 30);
             
             delay++;
-          });
-          
-          requestAnimationFrame(animateTrails);
-        }
+        });
         
-        animateTrails();
-      });
-    
+        requestAnimationFrame(animateTrails);
+    }
+      
+    animateTrails();
 
-        // Initial call
-        if (window.scrollY <= 50) {
-          header.classList.add('js-header-transparent');
-        }
-      });
+    // Header transparency effect - FIX HERE
+    const header = document.querySelector('header'); // Define the header element
+    if (header && window.scrollY <= 50) {
+        header.classList.add('js-header-transparent');
+    }
 
     // Share functionality
     const currentUrl = window.location.href;
@@ -186,38 +190,54 @@ document.addEventListener('DOMContentLoaded', function() {
     const description = 'Welcome to a serene retreat. Nestled on the tranquil shore of a beautiful lakefront, enjoy the serenity and view, not to mention a golf course just a couple minutes away!';
 
     // Facebook Share
-    document.getElementById('share-facebook').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`, 'facebook-share-dialog', 'width=626,height=436');
-    });
+    const shareFacebook = document.getElementById('share-facebook');
+    if (shareFacebook) {
+        shareFacebook.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`, 'facebook-share-dialog', 'width=626,height=436');
+        });
+    }
 
     // Twitter Share
-    document.getElementById('share-twitter').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(currentUrl)}`, 'twitter-share-dialog', 'width=626,height=436');
-    });
+    const shareTwitter = document.getElementById('share-twitter');
+    if (shareTwitter) {
+        shareTwitter.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(currentUrl)}`, 'twitter-share-dialog', 'width=626,height=436');
+        });
+    }
 
     // WhatsApp Share
-    document.getElementById('share-whatsapp').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + currentUrl)}`, 'whatsapp-share-dialog', 'width=626,height=436');
-    });
+    const shareWhatsapp = document.getElementById('share-whatsapp');
+    if (shareWhatsapp) {
+        shareWhatsapp.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + currentUrl)}`, 'whatsapp-share-dialog', 'width=626,height=436');
+        });
+    }
 
     // Email Share
-    document.getElementById('share-email').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(description + '\n\n' + currentUrl)}`;
-    });
+    const shareEmail = document.getElementById('share-email');
+    if (shareEmail) {
+        shareEmail.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(description + '\n\n' + currentUrl)}`;
+        });
+    }
 
     // Copy Link
-    document.getElementById('share-copy').addEventListener('click', function() {
-        navigator.clipboard.writeText(currentUrl).then(function() {
-            const copyMessage = document.getElementById('copy-message');
-            copyMessage.classList.add('show');
-            setTimeout(() => {
-                copyMessage.classList.remove('show');
-            }, 2000);
+    const shareCopy = document.getElementById('share-copy');
+    const copyMessage = document.getElementById('copy-message');
+    if (shareCopy) {
+        shareCopy.addEventListener('click', function() {
+            navigator.clipboard.writeText(currentUrl).then(function() {
+                if (copyMessage) {
+                    copyMessage.classList.add('show');
+                    setTimeout(() => {
+                        copyMessage.classList.remove('show');
+                    }, 2000);
+                }
+            });
         });
-    }); 
-
-    
+    }
+});
