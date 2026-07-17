@@ -40,7 +40,7 @@ export function BookingPanel({ variant }: { variant: "hero" | "footer" }) {
           ))}
         </select>
       </label>
-      <button type="submit">Check dates <span aria-hidden="true">→</span></button>
+      <button type="submit">Check availability <span aria-hidden="true">→</span></button>
       <p className="booking-message" aria-live="polite">{message}</p>
     </form>
   );

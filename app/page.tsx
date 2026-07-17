@@ -1,13 +1,5 @@
 import { BookingPanel } from "./BookingPanel";
-
-const amenities = [
-  ["Waterfront", "Direct Canal Lake access by path and dock"],
-  ["Outdoor living", "Backyard, fire pit, dining area and gas BBQ"],
-  ["On the water", "A kayak is listed with the property"],
-  ["Room to gather", "Open living spaces, pool table and sound system"],
-  ["Comfort", "Wi-Fi, central heating and air conditioning"],
-  ["Easy arrival", "Free on-site parking and keypad self check-in"],
-];
+import { Amenities, Gallery, Reviews, ScrollAnimations } from "./PropertyExperience";
 
 const nearby = [
   {
@@ -33,6 +25,7 @@ const nearby = [
 export default function Home() {
   return (
     <main>
+      <ScrollAnimations />
       <header className="site-header">
         <a className="brand" href="#top" aria-label="LakeFront House home">
           <span>Canal Lake</span>
@@ -40,6 +33,7 @@ export default function Home() {
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           <a href="#house">The house</a>
+          <a href="#reviews">Reviews</a>
           <a href="#amenities">Amenities</a>
           <a href="#gallery">Gallery</a>
           <a href="#explore">Explore</a>
@@ -49,6 +43,7 @@ export default function Home() {
           <summary>Menu</summary>
           <nav aria-label="Mobile navigation">
             <a href="#house">The house</a>
+            <a href="#reviews">Reviews</a>
             <a href="#amenities">Amenities</a>
             <a href="#gallery">Gallery</a>
             <a href="#explore">Explore</a>
@@ -84,7 +79,7 @@ export default function Home() {
         <BookingPanel variant="hero" />
       </section>
 
-      <section className="intro section" id="house">
+      <section className="intro section reveal" id="house">
         <div className="section-label"><span>01</span> The house</div>
         <div className="intro-copy">
           <p className="eyebrow">Come together by the water</p>
@@ -104,61 +99,12 @@ export default function Home() {
         </figure>
       </section>
 
-      <section className="proof-band" aria-label="Guest review highlights">
-        <p className="eyebrow light">What guests remember</p>
-        <blockquote>
-          Spacious gathering areas, a calm waterfront setting and a responsive
-          host are the themes guests return to again and again.
-        </blockquote>
-        <div className="proof-meta">
-          <span>4.96 average rating</span>
-          <span>5.0 location</span>
-          <span>5.0 communication</span>
-        </div>
-      </section>
+      <Reviews />
+      <Amenities />
+      <Gallery />
 
-      <section className="amenities section" id="amenities">
-        <div className="section-label"><span>02</span> Included here</div>
-        <div className="amenities-heading">
-          <p className="eyebrow">Stay in, step outside</p>
-          <h2>The cottage essentials, with the lake at the centre.</h2>
-          <p>
-            Every feature below is listed with the property. Seasonal lake
-            conditions can vary; guests should review current Parks Canada
-            information before their stay.
-          </p>
-        </div>
-        <div className="amenity-grid">
-          {amenities.map(([title, text], index) => (
-            <article key={title}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="gallery-section" id="gallery">
-        <div className="gallery-heading">
-          <div className="section-label"><span>03</span> Gallery</div>
-          <div>
-            <p className="eyebrow light">Inside and out</p>
-            <h2>See yourself at Canal Lake.</h2>
-          </div>
-        </div>
-        <div className="gallery-grid">
-          <figure className="gallery-lake"><img src="/cottage/lake-chairs.jpg" alt="Canal Lake beyond the lawn and red chairs" /></figure>
-          <figure className="gallery-exterior"><img src="/cottage/exterior.webp" alt="Brick lakefront house and green backyard" /></figure>
-          <figure className="gallery-living"><img src="/cottage/living-room-2.jpg" alt="Main living room" /></figure>
-          <figure className="gallery-kitchen"><img src="/cottage/kitchen.jpg" alt="Full kitchen" /></figure>
-          <figure className="gallery-games"><img src="/cottage/games-room.jpg" alt="Pool table and darts room" /></figure>
-          <figure className="gallery-patio"><img src="/cottage/patio.jpg" alt="Outdoor patio" /></figure>
-        </div>
-      </section>
-
-      <section className="explore section" id="explore">
-        <div className="section-label"><span>04</span> Explore nearby</div>
+      <section className="explore section reveal" id="explore">
+        <div className="section-label"><span>05</span> Explore nearby</div>
         <div className="explore-heading">
           <p className="eyebrow">Beyond the property</p>
           <h2>A quiet base for discovering Kawartha Lakes.</h2>
@@ -182,8 +128,8 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="know section" id="details">
-        <div className="section-label"><span>05</span> Good to know</div>
+      <section className="know section reveal" id="details">
+        <div className="section-label"><span>06</span> Good to know</div>
         <div className="know-image"><img src="/cottage/entrance.jpg" alt="Front entrance with keypad self check-in" /></div>
         <div className="know-copy">
           <p className="eyebrow">A smooth arrival</p>
@@ -203,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="booking-section" id="book">
+      <section className="booking-section reveal" id="book">
         <div className="booking-copy">
           <p className="eyebrow light">Book direct</p>
           <h2>Keep more of your getaway for the getaway.</h2>
@@ -213,9 +159,12 @@ export default function Home() {
           </p>
         </div>
         <BookingPanel variant="footer" />
+        <div className="payment-methods" aria-label="Secure payment options">
+          <span>Secure checkout</span><b>Visa</b><b>Mastercard</b><b>Apple Pay</b><b>Google Pay</b>
+        </div>
         <p className="booking-disclosure">
-          Live availability, final pricing and payment will activate after the
-          channel manager is connected. Prefer Airbnb? <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">View the listing</a>.
+          Live Airbnb availability, final pricing and card checkout will activate after the
+          channel manager and secure payment account are connected. Until then, <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">book and pay securely on Airbnb</a>.
         </p>
       </section>
 
