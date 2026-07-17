@@ -167,6 +167,15 @@ button, input, select { font: inherit; }
 .nearby-visual.park::before { left: -5%; right: -5%; bottom: -26px; height: 145px; background: repeating-linear-gradient(104deg, transparent 0 22px, rgba(16,48,36,.7) 23px 38px, transparent 39px 49px); transform: skewY(-4deg); }
 .nearby-visual.park::after { left: -10%; right: -10%; bottom: -20px; height: 70px; border-radius: 50% 50% 0 0; background: rgba(15,44,35,.7); }
 .nearby-visual.waterway { background: linear-gradient(0deg, rgba(11,42,34,.68), rgba(11,42,34,.1)), url("/cottage/lake-hero.jpg") center / cover no-repeat; }
+.nearby-visual.headwaters { background: linear-gradient(160deg, #738b73, #203c31); }
+.nearby-visual.headwaters::before { left: -8%; right: -8%; bottom: -38px; height: 150px; border-radius: 50%; background: repeating-radial-gradient(ellipse at 50% 100%, rgba(207,220,193,.24) 0 2px, transparent 3px 17px); }
+.nearby-visual.headwaters::after { left: 12%; right: 12%; bottom: 27px; height: 64px; border-left: 2px solid rgba(222,231,211,.4); border-right: 2px solid rgba(222,231,211,.4); transform: perspective(100px) rotateX(35deg); }
+.nearby-visual.emily { background: linear-gradient(180deg, #7d9a9b 0%, #557978 50%, #1e453a 51%, #17382f 100%); }
+.nearby-visual.emily::before { left: -10%; right: -10%; top: 50%; height: 2px; background: rgba(237,238,214,.55); box-shadow: 0 14px rgba(237,238,214,.2), 0 29px rgba(237,238,214,.13); transform: rotate(-2deg); }
+.nearby-visual.emily::after { right: 14%; bottom: 25px; width: 80px; height: 18px; border: 2px solid rgba(237,238,214,.42); border-top: 0; border-radius: 0 0 50% 50%; transform: rotate(-4deg); }
+.nearby-visual.forest { background: linear-gradient(145deg, #657251, #172e25); }
+.nearby-visual.forest::before { left: 8%; right: 8%; bottom: -8px; height: 180px; background: repeating-linear-gradient(96deg, transparent 0 22px, rgba(13,47,34,.75) 23px 32px, transparent 33px 47px); transform: skewY(-5deg); }
+.nearby-visual.forest::after { left: 32%; bottom: -25px; width: 36%; height: 150px; border-left: 18px solid rgba(218,205,163,.16); border-right: 18px solid rgba(218,205,163,.16); transform: perspective(120px) rotateX(20deg); }
 .nearby-copy { min-height: 205px; padding: 23px; display: flex; flex-direction: column; }
 .nearby-copy h3 { margin: 0; font-family: Georgia, serif; font-size: 24px; font-weight: 400; }
 .nearby-copy p { margin: 12px 0 24px; color: var(--muted); font-size: 12px; line-height: 1.55; }

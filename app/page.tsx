@@ -49,6 +49,30 @@ const nearby = [
     href: "https://parks.canada.ca/lhn-nhs/on/trentsevern",
     visual: "waterway",
   },
+  {
+    number: "04",
+    category: "Conservation area",
+    title: "Pigeon River Headwaters",
+    text: "Walk nearly five kilometres of connected loops through forest, wetlands and meadows at the Pigeon River headwaters.",
+    href: "https://ontarioconservationareas.ca/conservation-areas/pigeon-river-headwaters/",
+    visual: "headwaters",
+  },
+  {
+    number: "05",
+    category: "Provincial park",
+    title: "Emily Provincial Park",
+    text: "Enjoy seasonal swimming, boating, beginner-friendly canoeing and fishing along the Pigeon River.",
+    href: "https://www.ontarioparks.ca/park/emily/activities",
+    visual: "emily",
+  },
+  {
+    number: "06",
+    category: "Multi-use forest",
+    title: "Ganaraska Forest",
+    text: "Explore hiking, mountain biking, horseback riding, cross-country skiing and snowshoeing trails. A day pass or membership is required.",
+    href: "https://grca.on.ca/forest-recreation/ganaraska-forest-trails-map/",
+    visual: "forest",
+  },
 ];
 
 export default function Home() {

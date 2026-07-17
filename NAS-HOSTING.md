@@ -8,6 +8,7 @@ The production preview is a static nginx container on the TrueNAS server.
 - Container: `canal-lake-cottage`
 - Compose file: `docker-compose.nas.yml`
 - Private Tailscale URL: `http://100.113.203.52:8097/`
+- Public HTTPS Funnel URL: `https://truenas-scale.taila4f845.ts.net:10000/`
 
 ## Update safely
 
@@ -29,3 +30,8 @@ The `100.113.203.52` address is private to Tailscale and cannot be used as a pub
 
 The safer recommendation is a Cloudflare Tunnel. The domain may remain registered at GoDaddy while its DNS is delegated to Cloudflare. Direct checkout should not be enabled until the channel manager, payment account, applicable taxes, cancellation policy, rental agreement and Renter's Code of Conduct are configured.
 
+The current Tailscale Funnel is public and persists in the background. To disable only this cottage endpoint on the NAS:
+
+```bash
+docker exec ix-tailscale-tailscale-1 tailscale funnel --https=10000 off
+```

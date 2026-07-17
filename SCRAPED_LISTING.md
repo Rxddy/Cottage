@@ -195,6 +195,9 @@ These are independent attractions and must not be presented as included cottage 
 - Balsam Lake Provincial Park for day use, beach, hiking, boating, paddling, birding, and fishing
 - Trent–Severn Waterway boating and heritage experiences
 - Kirkfield village and museum
+- Pigeon River Headwaters Conservation Area for nearly 5 km of connected forest, wetland, and meadow trails
+- Emily Provincial Park for seasonal swimming, canoeing, boating, fishing, biking, and day use
+- Ganaraska Forest for multi-use trails; visitors need a current day pass or membership and should check the official trail map
 - Nearby golf (exact course and travel time should be confirmed from the property address)
 
 ## Direct-booking positioning
