@@ -3,10 +3,10 @@ import { Amenities, Gallery, Reviews, ScrollAnimations } from "./PropertyExperie
 
 const experiences = [
   {
-    image: "/cottage/backyard.webp",
+    image: "/cottage/unwind-kayaks.jpg",
     icon: "≈",
     label: "Unwind",
-    text: "Fire-pit seating at the edge of Canal Lake",
+    text: "Fire-pit seating and kayaks at the edge of Canal Lake",
   },
   {
     image: "/cottage/gather-patio.jpg",
