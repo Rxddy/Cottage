@@ -3,22 +3,26 @@ import { Amenities, Gallery, Reviews, ScrollAnimations } from "./PropertyExperie
 
 const experiences = [
   {
-    image: "/cottage/lake-chairs.jpg",
+    image: "/cottage/backyard.webp",
+    icon: "≈",
     label: "Unwind",
-    text: "Canal Lake at the edge of the lawn",
+    text: "Fire-pit seating at the edge of Canal Lake",
   },
   {
-    image: "/cottage/backyard.webp",
+    image: "/cottage/gather-patio.jpg",
+    icon: "⌂",
     label: "Gather",
-    text: "Fire-pit evenings beside the water",
+    text: "Outdoor dining and the gas BBQ",
   },
   {
     image: "/cottage/games-room.jpg",
+    icon: "●",
     label: "Play",
     text: "Pool table and darts indoors",
   },
   {
     image: "/cottage/kitchen.jpg",
+    icon: "⌑",
     label: "Share",
     text: "A full kitchen for group meals",
   },
@@ -31,6 +35,7 @@ const nearby = [
     title: "Kirkfield Lift Lock",
     text: "See Lock 36, the world’s second-highest hydraulic lift lock, with a lift of about 15 metres.",
     href: "https://parks.canada.ca/lhn-nhs/on/trentsevern/visit/posteeclusage-lockstation/ecluse-lock-36-kirkfield",
+    icon: "↕",
     visual: "lock",
   },
   {
@@ -39,6 +44,7 @@ const nearby = [
     title: "Balsam Lake Provincial Park",
     text: "Plan a seasonal day of swimming, hiking, birding, boating or paddling at this Ontario park.",
     href: "https://www.ontarioparks.ca/park/balsamlake/activities",
+    icon: "△",
     visual: "park",
   },
   {
@@ -47,6 +53,7 @@ const nearby = [
     title: "Trent–Severn Waterway",
     text: "Explore a 386-kilometre historic waterway known for boating, paddling and its lockstations.",
     href: "https://parks.canada.ca/lhn-nhs/on/trentsevern",
+    icon: "≈",
     visual: "waterway",
   },
   {
@@ -55,6 +62,7 @@ const nearby = [
     title: "Pigeon River Headwaters",
     text: "Walk nearly five kilometres of connected loops through forest, wetlands and meadows at the Pigeon River headwaters.",
     href: "https://ontarioconservationareas.ca/conservation-areas/pigeon-river-headwaters/",
+    icon: "⌁",
     visual: "headwaters",
   },
   {
@@ -63,6 +71,7 @@ const nearby = [
     title: "Emily Provincial Park",
     text: "Enjoy seasonal swimming, boating, beginner-friendly canoeing and fishing along the Pigeon River.",
     href: "https://www.ontarioparks.ca/park/emily/activities",
+    icon: "⌣",
     visual: "emily",
   },
   {
@@ -71,6 +80,7 @@ const nearby = [
     title: "Ganaraska Forest",
     text: "Explore hiking, mountain biking, horseback riding, cross-country skiing and snowshoeing trails. A day pass or membership is required.",
     href: "https://grca.on.ca/forest-recreation/ganaraska-forest-trails-map/",
+    icon: "♧",
     visual: "forest",
   },
 ];
@@ -154,7 +164,7 @@ export default function Home() {
           {experiences.map((item) => (
             <article className="experience-card" key={item.label}>
               <img src={item.image} alt={item.text} />
-              <div><span aria-hidden="true">◇</span><h3>{item.label}</h3><p>{item.text}</p></div>
+              <div><span className="activity-icon" aria-hidden="true">{item.icon}</span><h3>{item.label}</h3><p>{item.text}</p></div>
             </article>
           ))}
         </div>
@@ -171,7 +181,7 @@ export default function Home() {
         <div className="nearby-cards">
           {nearby.map((place) => (
             <a className="nearby-card" key={place.title} href={place.href} target="_blank" rel="noreferrer">
-              <div className={`nearby-visual ${place.visual}`}><span>{place.number}</span><small>{place.category}</small></div>
+              <div className={`nearby-visual ${place.visual}`}><span>{place.number}</span><b className="place-icon" aria-hidden="true">{place.icon}</b><small>{place.category}</small></div>
               <div className="nearby-copy"><h3>{place.title}</h3><p>{place.text}</p><span>Official visitor information →</span></div>
             </a>
           ))}

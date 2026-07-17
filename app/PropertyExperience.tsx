@@ -17,10 +17,23 @@ const amenityGroups = [
 ];
 
 const keyAmenities = [
-  { number: "01", title: "At the water", text: "Waterfront setting, lake view, access by path or dock and a kayak listed for guest use." },
-  { number: "02", title: "Room to gather", text: "A full kitchen, dining table, outdoor dining area, backyard, patio and gas BBQ." },
-  { number: "03", title: "Time to play", text: "Pool table, TV and sound system for relaxed time indoors between lake days." },
-  { number: "04", title: "Everyday comfort", text: "Wi-Fi, air conditioning, central heating, laundry and free on-site parking." },
+  { number: "01", icon: "≈", title: "At the water", text: "Waterfront setting, lake view, access by path or dock and a kayak listed for guest use." },
+  { number: "02", icon: "⌂", title: "Room to gather", text: "A full kitchen, dining table, outdoor dining area, backyard, patio and gas BBQ." },
+  { number: "03", icon: "●", title: "Time to play", text: "Pool table, TV and sound system for relaxed time indoors between lake days." },
+  { number: "04", icon: "✦", title: "Everyday comfort", text: "Wi-Fi, air conditioning, central heating, laundry and free on-site parking." },
+];
+
+const activityHighlights = [
+  ["≈", "Waterfront"],
+  ["◁", "Kayak"],
+  ["✺", "Fire pit"],
+  ["●", "Pool table"],
+  ["♨", "Gas BBQ"],
+  ["⌑", "Outdoor dining"],
+  ["⌂", "Full kitchen"],
+  ["⌁", "Wi-Fi"],
+  ["◇", "Indoor fireplace"],
+  ["♧", "Backyard"],
 ];
 
 const reviewThemes = [
@@ -71,9 +84,14 @@ export function Amenities() {
         <div><p className="eyebrow">What is included</p><h2>Made for lake days and easy nights.</h2></div>
         <p>These features come directly from the public Airbnb listing. Seasonal lake conditions and amenity availability can vary.</p>
       </div>
+      <div className="activity-highlights" aria-label="Activities and features at the house">
+        {activityHighlights.map(([icon, label]) => (
+          <div key={label}><span aria-hidden="true">{icon}</span><strong>{label}</strong></div>
+        ))}
+      </div>
       <div className="key-amenities">
         {keyAmenities.map((item) => (
-          <article key={item.title}><span>{item.number}</span><h3>{item.title}</h3><p>{item.text}</p></article>
+          <article key={item.title}><div className="amenity-card-top"><span>{item.number}</span><b aria-hidden="true">{item.icon}</b></div><h3>{item.title}</h3><p>{item.text}</p></article>
         ))}
       </div>
       <div className="amenity-drawer">
