@@ -292,7 +292,6 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
   function openBooking(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
     window.dispatchEvent(new Event("open-booking-calendar"));
-    document.getElementById("book")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
