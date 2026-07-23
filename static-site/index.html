@@ -15,6 +15,11 @@
 </head>
 <body>
   <main>
+    <a class="booking-dock" id="booking-dock" href="#book" aria-label="Book the cottage and see price">
+      <span class="booking-dock-icon" aria-hidden="true"><span></span></span>
+      <span class="booking-dock-copy"><span class="booking-dock-label">Skip photos</span><strong>Book the cottage</strong><small>See dates and pricing</small></span>
+      <span class="booking-dock-arrow" aria-hidden="true">↘</span>
+    </a>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Lakefront Serenity home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand-copy"><strong>Lakefront Serenity</strong><small>Waterfront · Kawartha Lakes</small></span></a>
       <nav class="desktop-nav" aria-label="Primary navigation"><a class="active" href="#top">Home</a><a href="#house">Cottage</a><a href="#bedrooms">Bedrooms</a><a href="#explore">Things to do</a><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a><a href="#book">Availability</a><a href="#details">Guide</a></nav>
@@ -117,6 +122,7 @@
       <div class="booking-copy"><p class="eyebrow light">Ready to make memories?</p><h2>Plan your waterfront stay.</h2><p>Direct reservations can save platform fees. Applicable taxes and required charges still apply and must be shown before payment.</p></div>
       <form class="booking-panel footer" id="availability-form">
         <div class="booking-selection" aria-label="Selected stay details"><button class="date-choice" id="check-in-choice" type="button" aria-label="Choose check-in date"><span>Check in</span><strong id="check-in-value">Add date</strong></button><button class="date-choice" id="check-out-choice" type="button" aria-label="Choose check-out date"><span>Check out</span><strong id="check-out-value">Add date</strong></button><label class="guest-choice"><span>Guests</span><select name="guests" aria-label="Number of guests"><option>1 guest</option><option selected>2 guests</option><option>3 guests</option><option>4 guests</option><option>5 guests</option><option>6 guests</option><option>7 guests</option><option>8 guests</option><option>9 guests</option><option>10 guests</option></select></label></div>
+        <div class="booking-compact-card" id="booking-compact-card"><div><p class="eyebrow">Booking details</p><h3>Open the full calendar.</h3><p>Skip the photo sections and jump straight to dates, availability and pricing.</p></div><div class="booking-compact-meta"><span>Nightly rate</span><strong>From $724.71 CAD / night</strong></div><button class="booking-expand" id="booking-expand" type="button"><span class="calendar-button-icon" aria-hidden="true"></span><span>Open calendar &amp; see price</span></button></div>
         <div class="range-calendar" aria-label="Choose check-in and check-out dates"><div class="calendar-toolbar"><button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">←</button><p><strong id="calendar-status">Choose your stay</strong><span id="calendar-summary">Select check-in, then check-out</span></p><button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">→</button></div><div class="calendar-months" id="calendar-months"></div></div>
         <input name="arrival" id="arrival-input" type="hidden"><input name="departure" id="departure-input" type="hidden">
         <button class="booking-submit" type="submit">Check direct availability <span aria-hidden="true">→</span></button>
@@ -138,6 +144,23 @@
   <script src="/vendor/anime.umd.min.js"></script>
   <script>
     const form = document.getElementById('availability-form');
+    const bookingDock = document.getElementById('booking-dock');
+    const bookingExpand = document.getElementById('booking-expand');
+    const bookingCompactCard = document.getElementById('booking-compact-card');
+    form.classList.remove('calendar-open');
+    const openBookingCalendar = () => {
+      form.classList.add('calendar-open');
+      bookingDock.classList.add('is-booking-visible');
+      bookingDock.querySelector('.booking-dock-label').textContent = 'Booking details';
+      bookingDock.querySelector('.booking-dock-copy small').textContent = 'Calendar open below · see price';
+      window.requestAnimationFrame(() => form.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    };
+    bookingDock.addEventListener('click', (event) => { event.preventDefault(); openBookingCalendar(); });
+    bookingExpand.addEventListener('click', openBookingCalendar);
+    const bookingObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) openBookingCalendar();
+    }, { threshold: 0.32, rootMargin: '0px 0px -14% 0px' });
+    bookingObserver.observe(form);
     const message = document.getElementById('booking-message');
     const todayValue = new Date();
     const today = new Date(todayValue.getFullYear(), todayValue.getMonth(), todayValue.getDate());

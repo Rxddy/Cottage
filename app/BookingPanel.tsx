@@ -194,7 +194,7 @@ export function BookingPanel({
   const showExpandedCalendar = variant === "hero" || isExpanded;
 
   return (
-    <form ref={panelRef} className={`booking-panel ${variant}`} onSubmit={handleSubmit}>
+    <form ref={panelRef} className={`booking-panel ${variant} ${showExpandedCalendar ? "calendar-open" : ""}`} onSubmit={handleSubmit}>
       <div className="booking-selection" aria-label="Selected stay details">
         <button className={arrival ? "date-choice has-value" : "date-choice"} type="button" onClick={repickArrival} aria-label={arrival ? `Change check-in date, currently ${friendlyDate(arrival)}` : "Choose check-in date"}><span>Check in</span><strong>{friendlyDate(arrival)}</strong></button>
         <button className={departure ? "date-choice has-value" : "date-choice"} type="button" onClick={repickDeparture} aria-label={departure ? `Change check-out date, currently ${friendlyDate(departure)}` : "Choose check-out date"}><span>Check out</span><strong>{friendlyDate(departure)}</strong></button>

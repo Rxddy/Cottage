@@ -292,6 +292,8 @@ button, input, select { font: inherit; }
 .date-choice strong { overflow: hidden; font-size: 14px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 .guest-choice select { min-width: 0; width: 100%; border: 0; background: transparent; color: var(--ink); outline: none; font-size: 14px; }
 .booking-compact-card { margin-bottom: 14px; padding: 18px; display: grid; gap: 16px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, rgba(255,255,255,.84), rgba(244,240,229,.98)); box-shadow: 0 12px 28px rgba(17,30,24,.08); }
+.booking-panel.footer:not(.calendar-open) .range-calendar { display: none; }
+.booking-panel.footer.calendar-open .booking-compact-card { display: none; }
 .booking-compact-card h3 { margin: 0; font-family: var(--font-display); font-size: 26px; font-weight: 500; }
 .booking-compact-card p { margin: 10px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
 .booking-compact-meta { display: grid; gap: 6px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.7); }
