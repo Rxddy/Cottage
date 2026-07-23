@@ -35,3 +35,9 @@ The current Tailscale Funnel is public and persists in the background. To disabl
 ```bash
 docker exec ix-tailscale-tailscale-1 tailscale funnel --https=10000 off
 ```
+
+## Airbnb sync monitoring
+
+The `lakefront-airbnb-calendar-sync` container refreshes the read-only Airbnb calendar every three hours. The host-side `scripts/check-airbnb-calendar.sh` check should run every 15 minutes. It alerts `karansuba6@gmail.com`, `ruddyrusanth@gmail.com` and `tharan.pir@gmail.com` when the container is down or the feed is stale for more than six hours, then sends a recovery message when it returns to normal.
+
+The NAS must have outbound email configured in **System Settings → Alert Settings → Email Settings** for `/usr/bin/mail` to deliver these alerts. Configure SMTP and the sender there; do not put an SMTP password in the project files.

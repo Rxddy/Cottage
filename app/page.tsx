@@ -134,8 +134,7 @@ const nearby = [
   },
 ];
 
-export default async function Home({ searchParams }: { searchParams?: { booking?: string } }) {
-  const bookingStatus = searchParams?.booking;
+export default async function Home() {
   const airbnbAvailability = await getAirbnbAvailability();
 
   return (
@@ -158,7 +157,7 @@ export default async function Home({ searchParams }: { searchParams?: { booking?
           <a href="#book">Availability</a>
           <a href="#details">Guide</a>
         </nav>
-        <a className="nav-book" href="#book">Book direct <span aria-hidden="true">↗</span></a>
+        <a className="nav-book" href="#book">Check Airbnb dates <span aria-hidden="true">↗</span></a>
         <details className="mobile-nav">
           <summary aria-label="Open navigation"><span /><span /></summary>
           <nav aria-label="Mobile navigation">
@@ -167,7 +166,7 @@ export default async function Home({ searchParams }: { searchParams?: { booking?
             <a href="#explore">Things to do</a>
             <a href="#gallery">Gallery</a>
             <a href="#reviews">Reviews</a>
-            <a href="#book">Book direct</a>
+            <a href="#book">Check Airbnb dates</a>
           </nav>
         </details>
       </header>
@@ -184,14 +183,9 @@ export default async function Home({ searchParams }: { searchParams?: { booking?
             <small>28 reviews · Guest Favourite</small>
           </div>
           <div className="hero-actions">
-            <a className="button primary" href="#book">Book direct <span aria-hidden="true">↗</span></a>
+            <a className="button primary" href="#book">Check Airbnb dates <span aria-hidden="true">↗</span></a>
             <a className="button glass" href="#gallery">See the photos <span aria-hidden="true">↓</span></a>
           </div>
-          {bookingStatus === "success" ? (
-            <p className="booking-banner success" role="status">Stripe checkout completed. Keep the receipt email as your booking confirmation.</p>
-          ) : bookingStatus === "cancelled" ? (
-            <p className="booking-banner" role="status">Stripe checkout was cancelled. You can reopen the calendar anytime.</p>
-          ) : null}
         </div>
 
         <figure className="property-peek">
@@ -265,6 +259,19 @@ export default async function Home({ searchParams }: { searchParams?: { booking?
         </div>
       </section>
 
+      <section className="contact-section section reveal" id="contact">
+        <div className="contact-copy">
+          <p className="eyebrow">Questions before you book?</p>
+          <h2>Talk with the host.</h2>
+          <p>Email the host for stay questions, accessibility details or help planning your lake days. Availability and reservations are completed on Airbnb.</p>
+        </div>
+        <div className="contact-card">
+          <span className="contact-card-label">Host email</span>
+          <a href="mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&amp;subject=Lakefront%20Serenity%20question">karansuba6@gmail.com</a>
+          <small>The email link includes the host team.</small>
+        </div>
+      </section>
+
       <section className="booking-section reveal" id="book">
         <div className="booking-benefits" aria-label="Included cottage features">
           <div><span aria-hidden="true"><img src="/icons/flaticon/wifi.png" alt="" /></span><strong>Wi-Fi</strong><small>Included</small></div>
@@ -288,7 +295,7 @@ export default async function Home({ searchParams }: { searchParams?: { booking?
       <footer>
         <a className="brand footer-brand" href="#top"><span className="brand-mark" aria-hidden="true"><i /><i /><i /></span><span className="brand-copy"><strong>Lakefront Serenity</strong><small>Waterfront · Kawartha Lakes</small></span></a>
         <p>Entire waterfront home for up to ten guests.</p>
-        <div><a href="#details">House rules</a><a href="#book">Booking information</a><a href="https://www.flaticon.com/" target="_blank" rel="noreferrer">Icons designed by Freepik from Flaticon</a><a href="#top">Back to top ↑</a></div>
+        <div><a href="#details">House rules</a><a href="#contact">Contact</a><a href="#book">Booking information</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.flaticon.com/" target="_blank" rel="noreferrer">Icons designed by Freepik from Flaticon</a><a href="#top">Back to top ↑</a></div>
       </footer>
     </main>
   );
