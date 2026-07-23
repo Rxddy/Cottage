@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   addMonths,
   dateKey,
@@ -64,6 +64,20 @@ export function BookingPanel({
 
     observer.observe(panelRef.current);
     return () => observer.disconnect();
+  }, [variant]);
+
+  useEffect(() => {
+    if (variant !== "footer") return;
+
+    const openCalendar = () => {
+      setIsExpanded(true);
+      window.requestAnimationFrame(() => {
+        panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    };
+
+    window.addEventListener("open-booking-calendar", openCalendar);
+    return () => window.removeEventListener("open-booking-calendar", openCalendar);
   }, [variant]);
 
   const nights = nightsBetween(arrival, departure);
@@ -198,7 +212,10 @@ export function BookingPanel({
             <span>{arrival && departure ? `${nights} ${nights === 1 ? "night" : "nights"} selected` : "Live calendar below"}</span>
             <strong>{hasPricing && nights ? estimatedTotalLabel : "Stripe ready"}</strong>
           </div>
-          <button className="booking-expand" type="button" onClick={() => setIsExpanded(true)}>Show calendar</button>
+          <button className="booking-expand" type="button" onClick={() => setIsExpanded(true)}>
+            <span className="calendar-button-icon" aria-hidden="true" />
+            <span>Open calendar &amp; see price</span>
+          </button>
         </div>
       ) : null}
 
@@ -270,13 +287,23 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
 
   const fromLabel = pricing.nightlyRateCents > 0
     ? `From ${formatMoney(pricing.nightlyRateCents, pricing.currency)} / night`
-    : "Jump to booking details";
+    : "See dates and pricing";
+
+  function openBooking(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    window.dispatchEvent(new Event("open-booking-calendar"));
+    document.getElementById("book")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
-    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" aria-label="Jump to booking details">
-      <span className="booking-dock-label">Skip photos</span>
-      <strong>Calendar</strong>
-      <small>{isBookSectionVisible ? "Full calendar below" : fromLabel}</small>
+    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" onClick={openBooking} aria-label="Book the cottage and see price">
+      <span className="booking-dock-icon" aria-hidden="true"><span /></span>
+      <span className="booking-dock-copy">
+        <span className="booking-dock-label">{isBookSectionVisible ? "Booking details" : "Skip photos"}</span>
+        <strong>Book the cottage</strong>
+        <small>{isBookSectionVisible ? "Calendar open below · see price" : fromLabel}</small>
+      </span>
+      <span className="booking-dock-arrow" aria-hidden="true">↘</span>
     </a>
   );
 }
