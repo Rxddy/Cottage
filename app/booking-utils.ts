@@ -45,3 +45,35 @@ export function formatMoney(cents: number, currency: string) {
     currency: resolvedCurrency,
   }).format(cents / 100);
 }
+
+function icalDateKey(value: string) {
+  const digits = value.replace(/[^0-9]/g, "");
+  if (digits.length < 8) return "";
+  return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
+}
+
+/** Convert Airbnb's exported iCalendar reservations into booked nights. */
+export function parseIcalBookedDates(icalText: string) {
+  const unfolded = icalText.replace(/\r?\n[ \t]/g, "");
+  const booked = new Set<string>();
+
+  for (const event of unfolded.split("BEGIN:VEVENT").slice(1)) {
+    if (/^STATUS:CANCELLED$/m.test(event)) continue;
+    const startMatch = event.match(/^DTSTART[^:]*:(\d{8}(?:T\d{6}Z?)?)/m);
+    const endMatch = event.match(/^DTEND[^:]*:(\d{8}(?:T\d{6}Z?)?)/m);
+    if (!startMatch || !endMatch) continue;
+
+    const startKey = icalDateKey(startMatch[1]);
+    const endKey = icalDateKey(endMatch[1]);
+    if (!startKey || !endKey || endKey <= startKey) continue;
+
+    let cursor = fromKey(startKey);
+    const end = fromKey(endKey);
+    while (cursor < end) {
+      booked.add(dateKey(cursor));
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate() + 1);
+    }
+  }
+
+  return Array.from(booked).sort();
+}

@@ -1,5 +1,6 @@
 import { BookingDock, BookingPanel } from "./BookingPanel";
 import { Amenities, Bedrooms, ExperienceCards, Gallery, NearbyCards, Reviews, ScrollAnimations } from "./PropertyExperience";
+import { getAirbnbAvailability } from "./airbnb-calendar";
 
 const bookingPricing = {
   currency: process.env.STRIPE_CURRENCY ?? "cad",
@@ -133,8 +134,9 @@ const nearby = [
   },
 ];
 
-export default function Home({ searchParams }: { searchParams?: { booking?: string } }) {
+export default async function Home({ searchParams }: { searchParams?: { booking?: string } }) {
   const bookingStatus = searchParams?.booking;
+  const airbnbAvailability = await getAirbnbAvailability();
 
   return (
     <main>
@@ -273,14 +275,14 @@ export default function Home({ searchParams }: { searchParams?: { booking?: stri
         <div className="booking-copy">
           <p className="eyebrow light">Ready to make memories?</p>
           <h2>Plan your waterfront stay.</h2>
-          <p>Direct reservations can save platform fees. Applicable taxes and required charges still apply and must be shown before payment.</p>
+          <p>Airbnb remains the booking source. This read-only calendar shades nights already blocked on the Airbnb listing so you can check availability at a glance.</p>
           <div className="booking-shortcuts">
             <a className="button glass" href="#gallery">Jump to photos</a>
             <a className="button glass" href="#bedrooms">View all bedrooms</a>
           </div>
         </div>
-        <BookingPanel variant="footer" pricing={bookingPricing} />
-        <p className="booking-disclosure">Live direct availability and payment will activate once a channel manager, rates and secure checkout are connected. Until then, <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">view and book the verified listing on Airbnb ↗</a></p>
+        <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
+        <p className="booking-disclosure">Availability is read from the Airbnb calendar export when this page loads. Bookings are completed on Airbnb, <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">view the verified listing ↗</a></p>
       </section>
 
       <footer>

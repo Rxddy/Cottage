@@ -1,23 +1,23 @@
 # Lakefront Serenity booking sync
 
-The public calendar in this project is currently a user-interface preview. It validates a date range and guest count, but it does not claim that a stay is available and it does not accept payment.
+The public calendar is intentionally read-only. It reads blocked nights from the Airbnb iCalendar export, shades and disables those nights, and sends guests to Airbnb to complete the reservation. Airbnb remains the booking source of truth while the owner updates and books the listing manually.
 
 ## Recommended production setup
 
-Use an Airbnb-supported property-management system or channel manager as the source of truth for availability, rates and reservations. Connect the existing Airbnb listing to that provider, then connect the direct website checkout to the same property. This is the reliable route for near-real-time inventory and avoids two guests completing checkout for the same dates.
+Use an Airbnb-supported property-management system or channel manager as the source of truth for availability, rates and reservations if direct bookings are added later. Connect the existing Airbnb listing to that provider, then connect the direct website checkout to the same property. This is the reliable route for near-real-time inventory and avoids two guests completing checkout for the same dates.
 
 Airbnb's current channel-manager overview: <https://www.airbnb.com/help/article/3304>
 
 ## Lower-cost iCal option
 
-Airbnb also supports two-way `.ics` calendar feeds:
+Airbnb also supports `.ics` calendar feeds. For this project, only the Airbnb-to-website direction is enabled:
 
 1. In Airbnb, open **Calendar → Availability → Connect calendars → Connect to another website**.
-2. Export the Airbnb calendar URL and subscribe to it from the website's booking system.
-3. Export the website booking calendar as a public-secret `.ics` URL and import that URL into Airbnb.
-4. When a direct reservation is confirmed, create the event in the website calendar so Airbnb can import and block those dates.
+2. Copy the Airbnb calendar URL ending in `.ics`.
+3. Set it as the private `AIRBNB_ICAL_URL` runtime variable for the public Sites deployment. Never commit the URL or expose it in client-side code.
+4. For the NAS static site, run `AIRBNB_ICAL_URL="..." node scripts/sync-airbnb-calendar.mjs` on a schedule and keep the generated `static-site/airbnb-availability.json` mounted by nginx.
 
-Airbnb says imported calendars automatically refresh every three hours, with a manual refresh option. Because that is not instant, iCal alone still has a double-booking window; use a temporary checkout hold and re-check availability immediately before capturing payment.
+Airbnb says imported calendars automatically refresh every three hours, with a manual refresh option. The public Sites page fetches the feed when rendered; the NAS page reads the last scheduled sync. Because iCal is not instant, it should remain a display aid only unless a channel manager is introduced.
 
 Airbnb's calendar-sync instructions: <https://www.airbnb.ca/help/article/99>
 
@@ -32,9 +32,9 @@ Airbnb's calendar-sync instructions: <https://www.airbnb.ca/help/article/99>
 
 Direct bookings may avoid marketplace service fees, but they do not remove applicable taxes or legal obligations.
 
-## Stripe checkout wiring in this site
+## Stripe checkout wiring retained for a future direct-booking phase
 
-The website now creates a Stripe Checkout session from the booking form. To make it live, set these environment variables in the Sites runtime:
+The server route remains available for a future direct-booking phase, but the current public and NAS UI does not submit Stripe payments. Guests are sent to Airbnb instead. If direct checkout is re-enabled later, set these environment variables in the Sites runtime:
 
 - `STRIPE_SECRET_KEY`
 - `STRIPE_CURRENCY` for example `cad`

@@ -15,9 +15,9 @@
 </head>
 <body>
   <main>
-    <a class="booking-dock" id="booking-dock" href="#book" aria-label="Book the cottage and see price">
+    <a class="booking-dock" id="booking-dock" href="#book" aria-label="Check Airbnb availability and price">
       <span class="booking-dock-icon" aria-hidden="true"><span></span></span>
-      <span class="booking-dock-copy"><span class="booking-dock-label">Skip photos</span><strong>Book the cottage</strong><small>See dates and pricing</small></span>
+      <span class="booking-dock-copy"><span class="booking-dock-label">Skip photos</span><strong>Check Airbnb dates</strong><small>See dates and pricing</small></span>
       <span class="booking-dock-arrow" aria-hidden="true">↘</span>
     </a>
     <header class="site-header">
@@ -119,16 +119,16 @@
 
     <section class="booking-section" id="book">
       <div class="booking-benefits"><div><span aria-hidden="true"><img src="/icons/flaticon/wifi.png" alt=""></span><strong>Wi-Fi</strong><small>Included</small></div><div><span aria-hidden="true"><img src="/icons/flaticon/waterfront.png" alt=""></span><strong>Waterfront</strong><small>Lake access</small></div><div><span aria-hidden="true"><img src="/icons/flaticon/fire.png" alt=""></span><strong>Fire pit</strong><small>Bring firewood</small></div><div><span aria-hidden="true"><img src="/icons/flaticon/kitchen.png" alt=""></span><strong>Self check-in</strong><small>Keypad entry</small></div></div>
-      <div class="booking-copy"><p class="eyebrow light">Ready to make memories?</p><h2>Plan your waterfront stay.</h2><p>Direct reservations can save platform fees. Applicable taxes and required charges still apply and must be shown before payment.</p></div>
+      <div class="booking-copy"><p class="eyebrow light">Ready to make memories?</p><h2>Plan your waterfront stay.</h2><p>Airbnb remains the booking source. This read-only calendar shades nights already blocked on the Airbnb listing so you can check availability at a glance.</p><div class="booking-shortcuts"><a class="button glass" href="#gallery">Jump to photos</a><a class="button glass" href="#bedrooms">View all bedrooms</a></div></div>
       <form class="booking-panel footer" id="availability-form">
         <div class="booking-selection" aria-label="Selected stay details"><button class="date-choice" id="check-in-choice" type="button" aria-label="Choose check-in date"><span>Check in</span><strong id="check-in-value">Add date</strong></button><button class="date-choice" id="check-out-choice" type="button" aria-label="Choose check-out date"><span>Check out</span><strong id="check-out-value">Add date</strong></button><label class="guest-choice"><span>Guests</span><select name="guests" aria-label="Number of guests"><option>1 guest</option><option selected>2 guests</option><option>3 guests</option><option>4 guests</option><option>5 guests</option><option>6 guests</option><option>7 guests</option><option>8 guests</option><option>9 guests</option><option>10 guests</option></select></label></div>
-        <div class="booking-compact-card" id="booking-compact-card"><div><p class="eyebrow">Booking details</p><h3>Open the full calendar.</h3><p>Skip the photo sections and jump straight to dates, availability and pricing.</p></div><div class="booking-compact-meta"><span>Nightly rate</span><strong>From $724.71 CAD / night</strong></div><button class="booking-expand" id="booking-expand" type="button"><span class="calendar-button-icon" aria-hidden="true"></span><span>Open calendar &amp; see price</span></button></div>
-        <div class="range-calendar" aria-label="Choose check-in and check-out dates"><div class="calendar-toolbar"><button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">←</button><p><strong id="calendar-status">Choose your stay</strong><span id="calendar-summary">Select check-in, then check-out</span></p><button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">→</button></div><div class="calendar-months" id="calendar-months"></div></div>
+        <div class="booking-compact-card" id="booking-compact-card"><div><p class="eyebrow">Booking details</p><h3>Open the full calendar.</h3><p>Skip the photo sections and jump straight to Airbnb availability.</p></div><div class="booking-compact-meta"><span id="airbnb-sync-status">Airbnb calendar pending</span><strong>From $724.71 CAD / night</strong></div><button class="booking-expand" id="booking-expand" type="button"><span class="calendar-button-icon" aria-hidden="true"></span><span>Open calendar &amp; see price</span></button></div>
+        <div class="range-calendar" aria-label="Choose check-in and check-out dates"><div class="calendar-toolbar"><button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">←</button><p><strong id="calendar-status">Choose your stay</strong><span id="calendar-summary">Select check-in, then check-out</span></p><button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">→</button></div><p class="calendar-availability-note not-configured" id="calendar-availability-note">Connect the Airbnb calendar export to show booked nights automatically.</p><div class="calendar-months" id="calendar-months"></div></div>
         <input name="arrival" id="arrival-input" type="hidden"><input name="departure" id="departure-input" type="hidden">
-        <button class="booking-submit" type="submit">Check direct availability <span aria-hidden="true">→</span></button>
+        <a class="booking-submit" href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">View this stay on Airbnb <span aria-hidden="true">→</span></a>
         <p class="booking-message" id="booking-message" aria-live="polite">Select a check-in date, then choose your check-out date.</p>
       </form>
-      <p class="booking-disclosure">Live direct availability and payment will activate once a channel manager, rates and secure checkout are connected. Until then, <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">view and book the verified listing on Airbnb ↗</a></p>
+      <p class="booking-disclosure">Availability is read from the Airbnb calendar export when this page loads. Bookings are completed on Airbnb, <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">view the verified listing ↗</a></p>
     </section>
 
     <div class="lightbox" id="site-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
@@ -180,6 +180,9 @@
     const checkOutChoice = document.getElementById('check-out-choice');
     const calendarStatus = document.getElementById('calendar-status');
     const calendarSummary = document.getElementById('calendar-summary');
+    const calendarAvailabilityNote = document.getElementById('calendar-availability-note');
+    const airbnbSyncStatus = document.getElementById('airbnb-sync-status');
+    const blockedDates = new Set();
 
     const dateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     const fromKey = (value) => { const [year, month, day] = value.split('-').map(Number); return new Date(year, month - 1, day); };
@@ -206,6 +209,7 @@
       const rangeEnd = departure || previewEnd;
       monthsElement.querySelectorAll('.calendar-day').forEach((day) => {
         const key = day.dataset.date;
+        day.classList.toggle('booked', blockedDates.has(key));
         day.classList.toggle('range-start', key === arrival);
         day.classList.toggle('range-end', key === departure);
         day.classList.toggle('in-range', Boolean(rangeEnd && key > arrival && key < rangeEnd));
@@ -215,6 +219,10 @@
     };
 
     const chooseDate = (key) => {
+      if (blockedDates.has(key)) {
+        message.textContent = 'That night is already booked on Airbnb. Choose another date.';
+        return;
+      }
       if (key === arrival) {
         if (departure) {
           departure = '';
@@ -242,6 +250,12 @@
         hovered = '';
         message.textContent = 'Now choose your check-out date.';
       } else {
+        for (let cursor = fromKey(arrival), end = fromKey(key); cursor < end; cursor = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate() + 1)) {
+          if (blockedDates.has(dateKey(cursor))) {
+            message.textContent = 'That range includes a night already booked on Airbnb. Choose different dates.';
+            return;
+          }
+        }
         departure = key;
         hovered = '';
         const nights = nightCount();
@@ -278,8 +292,10 @@
           button.type = 'button';
           button.dataset.date = key;
           button.textContent = String(number);
-          button.disabled = date < today;
-          button.setAttribute('aria-label', date.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }));
+          const isBooked = blockedDates.has(key);
+          button.disabled = date < today || isBooked;
+          button.classList.toggle('booked', isBooked);
+          button.setAttribute('aria-label', `${date.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}${isBooked ? ' — booked on Airbnb' : ''}`);
           button.addEventListener('click', () => chooseDate(key));
           button.addEventListener('mouseenter', () => { hovered = key; paintCalendarRange(); });
           button.addEventListener('mouseleave', () => { hovered = ''; paintCalendarRange(); });
@@ -313,8 +329,25 @@
       updateBookingSummary();
       paintCalendarRange();
     });
-    renderCalendar();
-    updateBookingSummary();
+    const loadAirbnbAvailability = async () => {
+      try {
+        const response = await fetch(`/airbnb-availability.json?ts=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Availability feed unavailable');
+        const data = await response.json();
+        if (Array.isArray(data.blockedDates)) data.blockedDates.forEach((value) => { if (/^\d{4}-\d{2}-\d{2}$/.test(value)) blockedDates.add(value); });
+        if (data.syncedAt) {
+          calendarAvailabilityNote.className = 'calendar-availability-note connected';
+          calendarAvailabilityNote.textContent = 'Booked nights are shaded from the Airbnb calendar. This calendar is read-only.';
+          airbnbSyncStatus.textContent = 'Airbnb calendar synced';
+        }
+      } catch {
+        calendarAvailabilityNote.className = 'calendar-availability-note not-configured';
+        calendarAvailabilityNote.textContent = 'Connect the Airbnb calendar export to show booked nights automatically.';
+      }
+      renderCalendar();
+      updateBookingSummary();
+    };
+    loadAirbnbAvailability();
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();

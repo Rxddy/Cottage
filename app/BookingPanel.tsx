@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   addMonths,
   dateKey,
@@ -34,9 +34,13 @@ function monthCells(month: Date) {
 export function BookingPanel({
   variant,
   pricing,
+  blockedDates,
+  availabilityStatus,
 }: {
   variant: "hero" | "footer";
   pricing: BookingPricing;
+  blockedDates: string[];
+  availabilityStatus: "connected" | "not-configured" | "unavailable";
 }) {
   const today = useMemo(() => {
     const now = new Date();
@@ -47,9 +51,13 @@ export function BookingPanel({
   const [arrival, setArrival] = useState("");
   const [departure, setDeparture] = useState("");
   const [hovered, setHovered] = useState("");
-  const [message, setMessage] = useState("Select a check-in date, then choose your check-out date.");
+  const [message, setMessage] = useState(
+    availabilityStatus === "connected"
+      ? "Booked nights from Airbnb are shaded. Select an available check-in date."
+      : "Select a check-in date, then choose your check-out date.",
+  );
   const [isExpanded, setIsExpanded] = useState(variant === "hero");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const blockedDateSet = useMemo(() => new Set(blockedDates), [blockedDates]);
 
   useEffect(() => {
     if (variant !== "footer" || !panelRef.current) return;
@@ -82,11 +90,18 @@ export function BookingPanel({
 
   const nights = nightsBetween(arrival, departure);
   const hasPricing = pricing.nightlyRateCents > 0 || pricing.cleaningFeeCents > 0;
+  const nightlyRateLabel = pricing.nightlyRateCents > 0
+    ? `From ${formatMoney(pricing.nightlyRateCents, pricing.currency)} / night`
+    : "Rate to be confirmed";
   const estimatedTotal = nights * pricing.nightlyRateCents + pricing.cleaningFeeCents;
-  const estimatedTotalLabel = hasPricing ? formatMoney(estimatedTotal, pricing.currency) : "Add rates to activate Stripe";
+  const estimatedTotalLabel = hasPricing ? formatMoney(estimatedTotal, pricing.currency) : "Rate to be confirmed";
 
   function chooseDate(date: Date) {
     const chosen = dateKey(date);
+    if (blockedDateSet.has(chosen)) {
+      setMessage("That night is already booked on Airbnb. Choose another date.");
+      return;
+    }
     if (chosen === arrival) {
       if (departure) {
         setDeparture("");
@@ -113,11 +128,19 @@ export function BookingPanel({
       setMessage("Now choose your check-out date.");
       return;
     }
+    const cursor = new Date(date);
+    const arrivalDate = new Date(Number(arrival.slice(0, 4)), Number(arrival.slice(5, 7)) - 1, Number(arrival.slice(8, 10)));
+    for (let day = new Date(arrivalDate); day < cursor; day = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1)) {
+      if (blockedDateSet.has(dateKey(day))) {
+        setMessage("That range includes a night already booked on Airbnb. Choose different dates.");
+        return;
+      }
+    }
     setDeparture(chosen);
     setHovered("");
     if (variant === "footer") setIsExpanded(true);
     const count = nightsBetween(arrival, chosen);
-    setMessage(`${count} ${count === 1 ? "night" : "nights"} selected. Reserve with Stripe when you're ready.`);
+    setMessage(`${count} ${count === 1 ? "night" : "nights"} selected. Check those dates on Airbnb to book.`);
   }
 
   function repickArrival() {
@@ -143,6 +166,7 @@ export function BookingPanel({
     const rangeEnd = departure || previewEnd;
     return [
       "calendar-day",
+      blockedDateSet.has(key) ? "booked" : "",
       key === arrival ? "range-start" : "",
       key === departure ? "range-end" : "",
       rangeEnd && key > arrival && key < rangeEnd ? "in-range" : "",
@@ -150,51 +174,12 @@ export function BookingPanel({
     ].filter(Boolean).join(" ");
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!arrival || !departure) {
-      setMessage("Choose both a check-in and check-out date.");
-      return;
-    }
-    if (departure <= arrival) {
-      setMessage("Check-out must be after check-in.");
-      return;
-    }
-    if (!hasPricing) {
-      setMessage("Set your Stripe nightly rate or cleaning fee before opening checkout.");
-      return;
-    }
-
-    const formData = new FormData(event.currentTarget);
-    const guests = Number(formData.get("guests") ?? 2);
-
-    setIsSubmitting(true);
-    setMessage("Opening Stripe checkout...");
-    try {
-      const response = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ arrival, departure, guests }),
-      });
-
-      const result = (await response.json().catch(() => ({}))) as { url?: string; error?: string };
-      if (!response.ok || !result.url) {
-        throw new Error(result.error ?? "Stripe checkout is not ready yet.");
-      }
-
-      window.location.assign(result.url);
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Stripe checkout is not ready yet.");
-      setIsSubmitting(false);
-    }
-  }
-
   const months = [viewMonth, addMonths(viewMonth, 1)];
   const canGoBack = viewMonth > startOfMonth(today);
   const showExpandedCalendar = variant === "hero" || isExpanded;
 
   return (
-    <form ref={panelRef} className={`booking-panel ${variant} ${showExpandedCalendar ? "calendar-open" : ""}`} onSubmit={handleSubmit}>
+    <form ref={panelRef} className={`booking-panel ${variant} ${showExpandedCalendar ? "calendar-open" : ""}`} onSubmit={(event) => event.preventDefault()}>
       <div className="booking-selection" aria-label="Selected stay details">
         <button className={arrival ? "date-choice has-value" : "date-choice"} type="button" onClick={repickArrival} aria-label={arrival ? `Change check-in date, currently ${friendlyDate(arrival)}` : "Choose check-in date"}><span>Check in</span><strong>{friendlyDate(arrival)}</strong></button>
         <button className={departure ? "date-choice has-value" : "date-choice"} type="button" onClick={repickDeparture} aria-label={departure ? `Change check-out date, currently ${friendlyDate(departure)}` : "Choose check-out date"}><span>Check out</span><strong>{friendlyDate(departure)}</strong></button>
@@ -206,11 +191,11 @@ export function BookingPanel({
           <div>
             <p className="eyebrow">Booking details</p>
             <h3>Open the full calendar.</h3>
-            <p>Skip the photo sections and jump straight to dates, availability and Stripe checkout.</p>
+            <p>Skip the photo sections and jump straight to Airbnb availability.</p>
           </div>
           <div className="booking-compact-meta">
-            <span>{arrival && departure ? `${nights} ${nights === 1 ? "night" : "nights"} selected` : "Live calendar below"}</span>
-            <strong>{hasPricing && nights ? estimatedTotalLabel : "Stripe ready"}</strong>
+            <span>{availabilityStatus === "connected" ? "Airbnb calendar synced" : "Airbnb calendar pending"}</span>
+            <strong>{hasPricing && nights ? estimatedTotalLabel : nightlyRateLabel}</strong>
           </div>
           <button className="booking-expand" type="button" onClick={() => setIsExpanded(true)}>
             <span className="calendar-button-icon" aria-hidden="true" />
@@ -228,6 +213,13 @@ export function BookingPanel({
                 <p><strong>{arrival && departure ? `${nights} ${nights === 1 ? "night" : "nights"}` : "Choose your stay"}</strong><span>{arrival ? `${friendlyDate(arrival)}${departure ? ` — ${friendlyDate(departure)}` : " — select check-out"}` : "Select check-in, then check-out"}</span></p>
                 <button type="button" className="calendar-nav" onClick={() => setViewMonth(addMonths(viewMonth, 1))} aria-label="Next month">→</button>
               </div>
+              <p className={`calendar-availability-note ${availabilityStatus}`}>
+                {availabilityStatus === "connected"
+                  ? "Booked nights are shaded from the Airbnb calendar. This calendar is read-only."
+                  : availabilityStatus === "unavailable"
+                    ? "Airbnb calendar could not be refreshed. Try again shortly."
+                    : "Connect the Airbnb calendar export to show booked nights automatically."}
+              </p>
               <div className="calendar-months">
                 {months.map((month) => (
                   <section className="calendar-month" key={dateKey(month)} aria-label={month.toLocaleDateString("en-CA", { month: "long", year: "numeric" })}>
@@ -235,7 +227,7 @@ export function BookingPanel({
                     <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
                     <div className="calendar-grid">
                       {monthCells(month).map((date, index) => date ? (
-                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today} onMouseEnter={() => setHovered(dateKey(date))} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
+                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today || blockedDateSet.has(dateKey(date))} onMouseEnter={() => setHovered(dateKey(date))} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={`${date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${blockedDateSet.has(dateKey(date)) ? " — booked on Airbnb" : ""}`} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
                       ) : <span className="calendar-empty" key={`empty-${index}`} />)}
                     </div>
                   </section>
@@ -250,14 +242,14 @@ export function BookingPanel({
               </div>
               <div>
                 <span>Estimated total</span>
-                <strong>{hasPricing && nights ? estimatedTotalLabel : "Configure Stripe rates"}</strong>
+                <strong>{hasPricing && nights ? estimatedTotalLabel : nightlyRateLabel}</strong>
               </div>
             </div>
 
-            <button className="booking-submit" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Opening Stripe…" : "Reserve with Stripe"}
+            <a className="booking-submit" href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">
+              View this stay on Airbnb
               <span aria-hidden="true">→</span>
-            </button>
+            </a>
             <p className="booking-message" aria-live="polite">{message}</p>
           </div>
         ) : null}
@@ -295,11 +287,11 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
   }
 
   return (
-    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" onClick={openBooking} aria-label="Book the cottage and see price">
+    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" onClick={openBooking} aria-label="Check Airbnb availability and price">
       <span className="booking-dock-icon" aria-hidden="true"><span /></span>
       <span className="booking-dock-copy">
         <span className="booking-dock-label">{isBookSectionVisible ? "Booking details" : "Skip photos"}</span>
-        <strong>Book the cottage</strong>
+        <strong>Check Airbnb dates</strong>
         <small>{isBookSectionVisible ? "Calendar open below · see price" : fromLabel}</small>
       </span>
       <span className="booking-dock-arrow" aria-hidden="true">↘</span>
