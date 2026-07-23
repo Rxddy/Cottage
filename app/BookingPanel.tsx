@@ -1,47 +1,282 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  addMonths,
+  dateKey,
+  friendlyDate,
+  formatMoney,
+  nightsBetween,
+  startOfMonth,
+  type BookingPricing,
+} from "./booking-utils";
 
-export function BookingPanel({ variant }: { variant: "hero" | "footer" }) {
-  const [message, setMessage] = useState("");
+type AnimeApi = {
+  animate: (targets: string | Element | NodeListOf<Element>, options: Record<string, unknown>) => unknown;
+  stagger: (value: number) => unknown;
+};
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+declare global {
+  interface Window { anime?: AnimeApi }
+}
+
+const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+function monthCells(month: Date) {
+  const first = startOfMonth(month);
+  const days = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+  return [
+    ...Array.from({ length: first.getDay() }, () => null),
+    ...Array.from({ length: days }, (_, index) => new Date(first.getFullYear(), first.getMonth(), index + 1)),
+  ];
+}
+
+export function BookingPanel({
+  variant,
+  pricing,
+}: {
+  variant: "hero" | "footer";
+  pricing: BookingPricing;
+}) {
+  const today = useMemo(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }, []);
+  const panelRef = useRef<HTMLFormElement>(null);
+  const [viewMonth, setViewMonth] = useState(startOfMonth(today));
+  const [arrival, setArrival] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [hovered, setHovered] = useState("");
+  const [message, setMessage] = useState("Select a check-in date, then choose your check-out date.");
+  const [isExpanded, setIsExpanded] = useState(variant === "hero");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (variant !== "footer" || !panelRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsExpanded(true);
+        }
+      },
+      { threshold: 0.32, rootMargin: "0px 0px -14% 0px" },
+    );
+
+    observer.observe(panelRef.current);
+    return () => observer.disconnect();
+  }, [variant]);
+
+  const nights = nightsBetween(arrival, departure);
+  const hasPricing = pricing.nightlyRateCents > 0 || pricing.cleaningFeeCents > 0;
+  const estimatedTotal = nights * pricing.nightlyRateCents + pricing.cleaningFeeCents;
+  const estimatedTotalLabel = hasPricing ? formatMoney(estimatedTotal, pricing.currency) : "Add rates to activate Stripe";
+
+  function chooseDate(date: Date) {
+    const chosen = dateKey(date);
+    if (chosen === arrival) {
+      if (departure) {
+        setDeparture("");
+        setHovered("");
+        setMessage("Check-in kept. Choose a new check-out date.");
+      } else {
+        setArrival("");
+        setHovered("");
+        setMessage("Check-in cleared. Choose a new check-in date.");
+      }
+      return;
+    }
+    if (chosen === departure) {
+      setDeparture("");
+      setHovered("");
+      setMessage("Check-out cleared. Choose a new check-out date.");
+      return;
+    }
+    if (!arrival || departure || chosen <= arrival) {
+      setArrival(chosen);
+      setDeparture("");
+      setHovered("");
+      if (variant === "footer") setIsExpanded(true);
+      setMessage("Now choose your check-out date.");
+      return;
+    }
+    setDeparture(chosen);
+    setHovered("");
+    if (variant === "footer") setIsExpanded(true);
+    const count = nightsBetween(arrival, chosen);
+    setMessage(`${count} ${count === 1 ? "night" : "nights"} selected. Reserve with Stripe when you're ready.`);
+  }
+
+  function repickArrival() {
+    setArrival("");
+    setDeparture("");
+    setHovered("");
+    setMessage("Choose a new check-in date, then select check-out.");
+  }
+
+  function repickDeparture() {
+    if (!arrival) {
+      setMessage("Choose a check-in date first.");
+      return;
+    }
+    setDeparture("");
+    setHovered("");
+    setMessage("Choose a new check-out date.");
+  }
+
+  function dayClass(date: Date) {
+    const key = dateKey(date);
+    const previewEnd = !departure && hovered > arrival ? hovered : "";
+    const rangeEnd = departure || previewEnd;
+    return [
+      "calendar-day",
+      key === arrival ? "range-start" : "",
+      key === departure ? "range-end" : "",
+      rangeEnd && key > arrival && key < rangeEnd ? "in-range" : "",
+      previewEnd && key === previewEnd ? "range-preview-end" : "",
+    ].filter(Boolean).join(" ");
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const arrival = String(data.get("arrival") || "");
-    const departure = String(data.get("departure") || "");
-
     if (!arrival || !departure) {
-      setMessage("Choose both arrival and departure dates.");
+      setMessage("Choose both a check-in and check-out date.");
       return;
     }
     if (departure <= arrival) {
-      setMessage("Departure must be after arrival.");
+      setMessage("Check-out must be after check-in.");
       return;
     }
-    setMessage("Dates captured. Live price and availability will appear here once the booking calendar is connected.");
+    if (!hasPricing) {
+      setMessage("Set your Stripe nightly rate or cleaning fee before opening checkout.");
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    const guests = Number(formData.get("guests") ?? 2);
+
+    setIsSubmitting(true);
+    setMessage("Opening Stripe checkout...");
+    try {
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ arrival, departure, guests }),
+      });
+
+      const result = (await response.json().catch(() => ({}))) as { url?: string; error?: string };
+      if (!response.ok || !result.url) {
+        throw new Error(result.error ?? "Stripe checkout is not ready yet.");
+      }
+
+      window.location.assign(result.url);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Stripe checkout is not ready yet.");
+      setIsSubmitting(false);
+    }
   }
 
+  const months = [viewMonth, addMonths(viewMonth, 1)];
+  const canGoBack = viewMonth > startOfMonth(today);
+  const showExpandedCalendar = variant === "hero" || isExpanded;
+
   return (
-    <form className={`booking-panel ${variant}`} onSubmit={handleSubmit}>
-      <label>
-        <span>Arrival</span>
-        <input name="arrival" type="date" aria-label="Arrival date" />
-      </label>
-      <label>
-        <span>Departure</span>
-        <input name="departure" type="date" aria-label="Departure date" />
-      </label>
-      <label>
-        <span>Guests</span>
-        <select name="guests" defaultValue="2" aria-label="Number of guests">
-          {Array.from({ length: 10 }, (_, index) => index + 1).map((count) => (
-            <option key={count} value={count}>{count} {count === 1 ? "guest" : "guests"}</option>
-          ))}
-        </select>
-      </label>
-      <button type="submit">Check availability <span aria-hidden="true">→</span></button>
-      <p className="booking-message" aria-live="polite">{message}</p>
+    <form ref={panelRef} className={`booking-panel ${variant}`} onSubmit={handleSubmit}>
+      <div className="booking-selection" aria-label="Selected stay details">
+        <button className={arrival ? "date-choice has-value" : "date-choice"} type="button" onClick={repickArrival} aria-label={arrival ? `Change check-in date, currently ${friendlyDate(arrival)}` : "Choose check-in date"}><span>Check in</span><strong>{friendlyDate(arrival)}</strong></button>
+        <button className={departure ? "date-choice has-value" : "date-choice"} type="button" onClick={repickDeparture} aria-label={departure ? `Change check-out date, currently ${friendlyDate(departure)}` : "Choose check-out date"}><span>Check out</span><strong>{friendlyDate(departure)}</strong></button>
+        <label className="guest-choice"><span>Guests</span><select name="guests" defaultValue="2" aria-label="Number of guests">{Array.from({ length: 10 }, (_, index) => index + 1).map((count) => <option key={count} value={count}>{count} {count === 1 ? "guest" : "guests"}</option>)}</select></label>
+      </div>
+
+      {variant === "footer" && !showExpandedCalendar ? (
+        <div className="booking-compact-card">
+          <div>
+            <p className="eyebrow">Booking details</p>
+            <h3>Open the full calendar.</h3>
+            <p>Skip the photo sections and jump straight to dates, availability and Stripe checkout.</p>
+          </div>
+          <div className="booking-compact-meta">
+            <span>{arrival && departure ? `${nights} ${nights === 1 ? "night" : "nights"} selected` : "Live calendar below"}</span>
+            <strong>{hasPricing && nights ? estimatedTotalLabel : "Stripe ready"}</strong>
+          </div>
+          <button className="booking-expand" type="button" onClick={() => setIsExpanded(true)}>Show calendar</button>
+        </div>
+      ) : null}
+
+      <div className={`booking-calendar-shell ${showExpandedCalendar ? "is-expanded" : ""}`}>
+        {showExpandedCalendar ? (
+          <div className="booking-calendar-inner">
+            <div className="range-calendar" aria-label="Choose check-in and check-out dates">
+              <div className="calendar-toolbar">
+                <button type="button" className="calendar-nav" onClick={() => setViewMonth(addMonths(viewMonth, -1))} disabled={!canGoBack} aria-label="Previous month">←</button>
+                <p><strong>{arrival && departure ? `${nights} ${nights === 1 ? "night" : "nights"}` : "Choose your stay"}</strong><span>{arrival ? `${friendlyDate(arrival)}${departure ? ` — ${friendlyDate(departure)}` : " — select check-out"}` : "Select check-in, then check-out"}</span></p>
+                <button type="button" className="calendar-nav" onClick={() => setViewMonth(addMonths(viewMonth, 1))} aria-label="Next month">→</button>
+              </div>
+              <div className="calendar-months">
+                {months.map((month) => (
+                  <section className="calendar-month" key={dateKey(month)} aria-label={month.toLocaleDateString("en-CA", { month: "long", year: "numeric" })}>
+                    <h3>{month.toLocaleDateString("en-CA", { month: "long", year: "numeric" })}</h3>
+                    <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
+                    <div className="calendar-grid">
+                      {monthCells(month).map((date, index) => date ? (
+                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today} onMouseEnter={() => setHovered(dateKey(date))} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
+                      ) : <span className="calendar-empty" key={`empty-${index}`} />)}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </div>
+
+            <div className="booking-summary-row" aria-label="Booking summary">
+              <div>
+                <span>Dates selected</span>
+                <strong>{arrival && departure ? `${friendlyDate(arrival)} → ${friendlyDate(departure)}` : "Pick a range"}</strong>
+              </div>
+              <div>
+                <span>Estimated total</span>
+                <strong>{hasPricing && nights ? estimatedTotalLabel : "Configure Stripe rates"}</strong>
+              </div>
+            </div>
+
+            <button className="booking-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Opening Stripe…" : "Reserve with Stripe"}
+              <span aria-hidden="true">→</span>
+            </button>
+            <p className="booking-message" aria-live="polite">{message}</p>
+          </div>
+        ) : null}
+      </div>
+
+      <input name="arrival" type="hidden" value={arrival} />
+      <input name="departure" type="hidden" value={departure} />
     </form>
+  );
+}
+
+export function BookingDock({ pricing }: { pricing: BookingPricing }) {
+  const [isBookSectionVisible, setIsBookSectionVisible] = useState(false);
+
+  useEffect(() => {
+    const target = document.getElementById("book");
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsBookSectionVisible(entry.isIntersecting),
+      { threshold: 0.24, rootMargin: "0px 0px -18% 0px" },
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const fromLabel = pricing.nightlyRateCents > 0
+    ? `From ${formatMoney(pricing.nightlyRateCents, pricing.currency)} / night`
+    : "Jump to booking details";
+
+  return (
+    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" aria-label="Jump to booking details">
+      <span className="booking-dock-label">Skip photos</span>
+      <strong>Calendar</strong>
+      <small>{isBookSectionVisible ? "Full calendar below" : fromLabel}</small>
+    </a>
   );
 }

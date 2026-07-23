@@ -8,8 +8,10 @@ services:
       - ./static-site/index.html:/usr/share/nginx/html/index.html:ro
       - ./app/globals.css:/usr/share/nginx/html/styles.css:ro
       - ./public/cottage:/usr/share/nginx/html/cottage:ro
+      - ./public/nearby:/usr/share/nginx/html/nearby:ro
+      - ./public/icons:/usr/share/nginx/html/icons:ro
+      - ./public/vendor:/usr/share/nginx/html/vendor:ro
       - ./public/favicon.svg:/usr/share/nginx/html/favicon.svg:ro
-      - ./public/og.png:/usr/share/nginx/html/og.png:ro
+      - ./public/og-lakefront-serenity.png:/usr/share/nginx/html/og-lakefront-serenity.png:ro
       - ./nas/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     restart: unless-stopped
-

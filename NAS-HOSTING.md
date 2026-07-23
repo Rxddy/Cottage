@@ -1,4 +1,4 @@
-# LakeFront House — NAS hosting
+# Lakefront Serenity — NAS hosting
 
 The production preview is a static nginx container on the TrueNAS server.
 
