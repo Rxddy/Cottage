@@ -284,7 +284,23 @@ export default async function Home() {
               </section>
             </div>
           </div>
-          <p className="fine-print">A Renter&apos;s Code of Conduct form is required. Exterior security cameras are disclosed on the listing. Indoor taps use city water; the outdoor hose uses lake water.</p>
+          <div className="safety-detail">
+            <h3>Safety &amp; property</h3>
+            <p>Avoid surprises by reviewing these important details about the property.</p>
+            <section>
+              <h4>Safety considerations</h4>
+              <strong>Nearby lake and other bodies of water</strong>
+            </section>
+            <section>
+              <h4>Safety devices</h4>
+              <ul>
+                <li><strong>Exterior security cameras:</strong> Cameras monitor the home&apos;s entrances, back deck, both sides of the house, lake area and driveway. All exterior cameras are active and record 24/7.</li>
+                <li>Carbon monoxide alarm installed</li>
+                <li>Smoke alarm installed</li>
+              </ul>
+            </section>
+          </div>
+          <p className="fine-print">A Renter&apos;s Code of Conduct form is required. Indoor taps use city water; the outdoor hose uses lake water.</p>
         </div>
       </section>
 
