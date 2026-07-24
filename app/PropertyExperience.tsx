@@ -58,7 +58,8 @@ const reviewThemes = [
 const photos = [
   ["/cottage/lake-chairs.jpg", "The lake beyond the lawn and red chairs", "Waterfront"],
   ["/cottage/waterfront-kayaks.webp", "Three kayaks ready beside the dock", "Kayaks"],
-  ["/cottage/backyard-cedars.webp", "Mature cedar trees shading the waterfront lawn", "Backyard"],
+  ["/cottage/backyard-cedars.webp", "Backyard deck and waterfront lawn", "Backyard deck"],
+  ["/cottage/front-of-house.jpg", "Front exterior of Lakefront Serenity", "Front of the house"],
   ["/cottage/living-room-2.jpg", "Main living room inside Lakefront Serenity", "Living room"],
   ["/cottage/living-room-tv.webp", "Living room seating area with the television", "Living room"],
   ["/cottage/kitchen.jpg", "Full kitchen inside Lakefront Serenity", "Kitchen"],
@@ -68,7 +69,10 @@ const photos = [
   ["/cottage/games-room.jpg", "Pool table and darts room", "Games room"],
   ["/cottage/patio.jpg", "Outdoor dining patio", "Patio"],
   ["/cottage/dining.jpg", "Dining area inside Lakefront Serenity", "Dining"],
-  ["/cottage/bathroom-shower.webp", "Bathroom with a glass shower, vanity and toilet", "Bathroom"],
+  ["/cottage/bedroom-1-bathroom.jpg", "Bathroom attached to Bedroom 1", "Bedroom 1 bathroom"],
+  ["/cottage/bedroom-2-3-bathroom.jpg", "Hallway bathroom shared by Bedrooms 2 and 3", "Hallway bathroom"],
+  ["/cottage/bedroom-5-bathroom.jpg", "Bathroom attached to Bedroom 5", "Bedroom 5 bathroom"],
+  ["/cottage/additional-washroom.jpg", "Additional washroom", "Additional bathroom"],
 ];
 
 type Bedroom = {
@@ -82,11 +86,11 @@ type Bedroom = {
 };
 
 const bedrooms: Bedroom[] = [
-  { src: "/cottage/bedroom-1.jpg", alt: "Bedroom 1 with a queen bed", label: "Bedroom 1", detail: "Queen bed · bathroom photo coming soon", bathroomPending: true },
-  { src: "/cottage/bedroom-2.jpg", alt: "Bedroom 2 with a queen bed", label: "Bedroom 2", detail: "Queen bed" },
-  { src: "/cottage/bedroom-3.jpg", alt: "Bedroom 3 with a queen bed", label: "Bedroom 3", detail: "Queen bed" },
+  { src: "/cottage/bedroom-1.jpg", alt: "Bedroom 1 with a queen bed", label: "Bedroom 1", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-1-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 1" },
+  { src: "/cottage/bedroom-2.jpg", alt: "Bedroom 2 with a queen bed", label: "Bedroom 2", detail: "Queen bed · hallway bathroom", bathroomSrc: "/cottage/bedroom-2-3-bathroom.jpg", bathroomAlt: "Hallway bathroom shared by Bedrooms 2 and 3" },
+  { src: "/cottage/bedroom-3.jpg", alt: "Bedroom 3 with a queen bed", label: "Bedroom 3", detail: "Queen bed · hallway bathroom", bathroomSrc: "/cottage/bedroom-2-3-bathroom.jpg", bathroomAlt: "Hallway bathroom shared by Bedrooms 2 and 3" },
   { src: "/cottage/bedroom-4.jpg", alt: "Bedroom 4 with a queen bed", label: "Bedroom 4", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-4-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 4 with a glass shower" },
-  { src: "/cottage/bedroom-5.jpg", alt: "Bedroom 5 with a queen bed", label: "Bedroom 5", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-5-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 5 with a glass shower" },
+  { src: "/cottage/bedroom-5.jpg", alt: "Bedroom 5 with a queen bed", label: "Bedroom 5", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-5-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 5" },
 ];
 
 const bedroomPhotos = bedrooms.flatMap((room) => [
@@ -292,7 +296,7 @@ export function Bedrooms() {
     <section className="bedrooms-section section reveal" id="bedrooms" aria-labelledby="bedrooms-title">
       <div className="section-heading bedrooms-heading">
         <div><p className="eyebrow">Five bedrooms</p><h2 id="bedrooms-title">Space to settle in.</h2></div>
-        <p>View every bedroom in the cottage. Bathroom photography for Bedroom 1 is coming soon; Bedrooms 4 and 5 show their attached bathrooms.</p>
+        <p>View every bedroom in the cottage, including the attached bathroom for Bedroom 1, the shared hallway bathroom for Bedrooms 2 and 3, and attached bathrooms for Bedrooms 4 and 5.</p>
       </div>
       <div className="bedroom-grid">
         {bedrooms.map((room, index) => (
@@ -304,7 +308,7 @@ export function Bedrooms() {
           </button>
         ))}
       </div>
-      <p className="bedroom-note">The Bedroom 1 bathroom-photo space is reserved for the future image. Select Bedroom 4 or Bedroom 5 to view their attached bathrooms at full size.</p>
+      <p className="bedroom-note">Select a bedroom to view its bathroom photo at full size. Bedrooms 2 and 3 share the hallway bathroom.</p>
       {selected !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Bedroom photo viewer" onClick={() => setSelected(null)}>
           <button className="lightbox-close" type="button" onClick={() => setSelected(null)} aria-label="Close photo viewer">×</button>
