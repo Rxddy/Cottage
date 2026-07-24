@@ -51,6 +51,7 @@ export function BookingPanel({
   const [arrival, setArrival] = useState("");
   const [departure, setDeparture] = useState("");
   const [hovered, setHovered] = useState("");
+  const [guests, setGuests] = useState(2);
   const [message, setMessage] = useState(
     availabilityStatus === "connected"
       ? "Booked nights are shaded. Select an available check-in date."
@@ -99,9 +100,9 @@ export function BookingPanel({
     const dateLine = arrival && departure
       ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? "night" : "nights"})`
       : "the dates I selected on the availability calendar";
-    const body = `Hello,\n\nI would like to ask about Lakefront Serenity for ${dateLine}.\n\nGuests: \n\nThank you.`;
+    const body = `Hello,\n\nI would like to ask about Lakefront Serenity for ${dateLine}.\n\nGuests: ${guests}\n\nThank you.`;
     return `mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&subject=Lakefront%20Serenity%20availability%20request&body=${encodeURIComponent(body)}`;
-  }, [arrival, departure, nights]);
+  }, [arrival, departure, guests, nights]);
 
   function chooseDate(date: Date) {
     const chosen = dateKey(date);
@@ -169,7 +170,7 @@ export function BookingPanel({
 
   function dayClass(date: Date) {
     const key = dateKey(date);
-    const previewEnd = !departure && hovered > arrival ? hovered : "";
+    const previewEnd = arrival && !departure && hovered > arrival ? hovered : "";
     const rangeEnd = departure || previewEnd;
     return [
       "calendar-day",
@@ -190,7 +191,13 @@ export function BookingPanel({
       <div className="booking-selection" aria-label="Selected stay details">
         <button className={arrival ? "date-choice has-value" : "date-choice"} type="button" onClick={repickArrival} aria-label={arrival ? `Change check-in date, currently ${friendlyDate(arrival)}` : "Choose check-in date"}><span>Check in</span><strong>{friendlyDate(arrival)}</strong></button>
         <button className={departure ? "date-choice has-value" : "date-choice"} type="button" onClick={repickDeparture} aria-label={departure ? `Change check-out date, currently ${friendlyDate(departure)}` : "Choose check-out date"}><span>Check out</span><strong>{friendlyDate(departure)}</strong></button>
-        <label className="guest-choice"><span>Guests</span><select name="guests" defaultValue="2" aria-label="Number of guests">{Array.from({ length: 10 }, (_, index) => index + 1).map((count) => <option key={count} value={count}>{count} {count === 1 ? "guest" : "guests"}</option>)}</select></label>
+        <label className="guest-choice">
+          <span>Guests</span>
+          <strong>{guests} {guests === 1 ? "guest" : "guests"}</strong>
+          <select name="guests" value={guests} onChange={(event) => setGuests(Number(event.target.value))} aria-label="Number of guests">
+            {Array.from({ length: 10 }, (_, index) => index + 1).map((count) => <option key={count} value={count}>{count} {count === 1 ? "guest" : "guests"}</option>)}
+          </select>
+        </label>
       </div>
 
       {variant === "footer" && !showExpandedCalendar ? (
