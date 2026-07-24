@@ -6,6 +6,8 @@ services:
       - "${COTTAGE_PORT:-8097}:80"
     volumes:
       - ./static-site/index.html:/usr/share/nginx/html/index.html:ro
+      - ./static-site/privacy.html:/usr/share/nginx/html/privacy.html:ro
+      - ./static-site/terms.html:/usr/share/nginx/html/terms.html:ro
       - ./app/globals.css:/usr/share/nginx/html/styles.css:ro
       - ./public/cottage:/usr/share/nginx/html/cottage:ro
       - ./public/nearby:/usr/share/nginx/html/nearby:ro
