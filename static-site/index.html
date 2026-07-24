@@ -132,6 +132,7 @@
         <div class="booking-calendar-shell" id="booking-calendar-shell"><div class="booking-calendar-inner"><div class="range-calendar" aria-label="Choose check-in and check-out dates"><div class="calendar-toolbar"><button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">←</button><p><strong id="calendar-status">Choose your stay</strong><span id="calendar-summary">Select check-in, then check-out</span></p><button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">→</button></div><p class="calendar-availability-note not-configured" id="calendar-availability-note">Availability data is not connected yet.</p><div class="calendar-months" id="calendar-months"></div></div></div></div>
         <input name="arrival" id="arrival-input" type="hidden"><input name="departure" id="departure-input" type="hidden">
         <a class="booking-submit" id="booking-submit" href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request">Request these dates <span aria-hidden="true">→</span></a>
+        <details class="booking-email-fallback"><summary>Email link not opening?</summary><p>Copy this prepared request into Gmail, Outlook or your preferred email app.</p><textarea id="booking-email-draft" readonly aria-label="Prepared booking email"></textarea><button type="button" id="copy-booking-email">Copy email draft</button></details>
         <p class="booking-message" id="booking-message" aria-live="polite">Select a check-in date, then choose your check-out date.</p>
       </form>
       <p class="booking-disclosure"><strong class="licence-badge">Kawartha Lakes Short-Term Rental Licence STR2026-163</strong>Availability is refreshed automatically. Select your dates, then email the host to request your stay. The exact arrival address and access instructions are sent privately in the confirmation email after the host accepts the reservation.</p>
@@ -193,6 +194,8 @@
     const calendarAvailabilityNote = document.getElementById('calendar-availability-note');
     const availabilitySyncStatus = document.getElementById('availability-sync-status');
     const bookingSubmit = document.getElementById('booking-submit');
+    const bookingEmailDraft = document.getElementById('booking-email-draft');
+    const copyBookingEmail = document.getElementById('copy-booking-email');
     const blockedDates = new Set();
 
     const dateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -214,8 +217,9 @@
       calendarStatus.textContent = nights ? `${nights} ${nights === 1 ? 'night' : 'nights'}` : 'Choose your stay';
       calendarSummary.textContent = arrival ? `${friendlyDate(arrival)}${departure ? ` — ${friendlyDate(departure)}` : ' — select check-out'}` : 'Select check-in, then check-out';
       const dateLine = arrival && departure ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? 'night' : 'nights'})` : 'the dates I selected on the availability calendar';
-      const body = `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: \n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
+      const body = `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guestsSelect.value}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
       bookingSubmit.href = `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(body)}`;
+      bookingEmailDraft.value = body;
     };
 
     const paintCalendarRange = () => {
@@ -345,7 +349,11 @@
       updateBookingSummary();
       paintCalendarRange();
     });
-    guestsSelect.addEventListener('change', () => { guestsValue.textContent = guestsSelect.options[guestsSelect.selectedIndex].textContent; });
+    guestsSelect.addEventListener('change', () => { guestsValue.textContent = guestsSelect.options[guestsSelect.selectedIndex].textContent; updateBookingSummary(); });
+    copyBookingEmail.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(bookingEmailDraft.value); copyBookingEmail.textContent = 'Copied'; setTimeout(() => { copyBookingEmail.textContent = 'Copy email draft'; }, 1800); }
+      catch { bookingEmailDraft.focus(); bookingEmailDraft.select(); copyBookingEmail.textContent = 'Select and copy the draft'; }
+    });
     const loadAirbnbAvailability = async () => {
       try {
         const response = await fetch(`/airbnb-availability.json?ts=${Date.now()}`, { cache: 'no-store' });

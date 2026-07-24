@@ -96,13 +96,15 @@ export function BookingPanel({
     : "Rate to be confirmed";
   const estimatedTotal = nights * pricing.nightlyRateCents + pricing.cleaningFeeCents;
   const estimatedTotalLabel = hasPricing ? formatMoney(estimatedTotal, pricing.currency) : "Rate to be confirmed";
-  const bookingRequestHref = useMemo(() => {
+  const bookingRequestBody = useMemo(() => {
     const dateLine = arrival && departure
       ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? "night" : "nights"})`
       : "the dates I selected on the availability calendar";
-    const body = `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guests}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
-    return `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(body)}`;
+    return `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guests}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
   }, [arrival, departure, guests, nights]);
+  const bookingRequestHref = useMemo(() => {
+    return `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(bookingRequestBody)}`;
+  }, [bookingRequestBody]);
 
   function chooseDate(date: Date) {
     const chosen = dateKey(date);
@@ -266,6 +268,12 @@ export function BookingPanel({
               Request these dates
               <span aria-hidden="true">→</span>
             </a>
+            <details className="booking-email-fallback">
+              <summary>Email link not opening?</summary>
+              <p>Copy this prepared request into Gmail, Outlook or your preferred email app.</p>
+              <textarea readOnly value={bookingRequestBody} aria-label="Prepared booking email" />
+              <button type="button" onClick={() => navigator.clipboard?.writeText(bookingRequestBody)}>Copy email draft</button>
+            </details>
             <p className="booking-message" aria-live="polite">{message}</p>
           </div>
         ) : null}
