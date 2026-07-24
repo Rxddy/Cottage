@@ -31,8 +31,14 @@ export default function TermsPage() {
 
         <h2>House rules and safety</h2>
         <ul>
+          <li>Check-in is available at any time. Checkout is before 10:00 a.m.</li>
+          <li>Entry is by self check-in with a keypad. The private code is provided after payment is received.</li>
+          <li>A maximum of 10 guests is permitted.</li>
           <li>No pets, parties, events or smoking.</li>
-          <li>Quiet hours are 11:00 p.m.–7:00 a.m.</li>
+          <li>Quiet hours are 11:00 p.m.–5:00 a.m.</li>
+          <li>Commercial photography is allowed.</li>
+          <li>Do not move indoor furniture outside. Please bring your own firewood if needed.</li>
+          <li>Before leaving, throw trash away, turn things off and lock up.</li>
           <li>Exterior security cameras are disclosed on the listing and record continuously around the entrances, back deck, sides, lake area and driveway.</li>
           <li>A Renter&apos;s Code of Conduct form is required where applicable.</li>
           <li>Guests should follow the host&apos;s current instructions and local laws.</li>

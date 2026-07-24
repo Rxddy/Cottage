@@ -248,12 +248,42 @@ export default async function Home() {
           <p className="eyebrow">Good to know</p>
           <h2>A simple arrival, with the important details upfront.</h2>
           <dl>
-            <div><dt>Check-in</dt><dd>3:00 p.m.–12:00 a.m.</dd></div>
+            <div><dt>Check-in</dt><dd>Any time</dd></div>
             <div><dt>Checkout</dt><dd>Before 10:00 a.m.</dd></div>
-            <div><dt>Entry</dt><dd>Self check-in with keypad</dd></div>
-            <div><dt>Quiet hours</dt><dd>11:00 p.m.–7:00 a.m.</dd></div>
-            <div><dt>House rules</dt><dd>No pets, parties, events or smoking</dd></div>
+            <div><dt>Entry</dt><dd>Self check-in with keypad<small>The private keypad code is provided after payment is received.</small></dd></div>
+            <div><dt>Quiet hours</dt><dd>11:00 p.m.–5:00 a.m.</dd></div>
           </dl>
+          <div className="house-rules-detail">
+            <h3>House rules</h3>
+            <p>You&apos;ll be staying in someone&apos;s home, so please treat it with care and respect.</p>
+            <div className="rule-groups">
+              <section>
+                <h4>During your stay</h4>
+                <ul>
+                  <li>Maximum 10 guests</li>
+                  <li>No pets</li>
+                  <li>No parties or events</li>
+                  <li>Commercial photography is allowed</li>
+                  <li>No smoking</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Additional rules</h4>
+                <ul>
+                  <li>Do not move indoor furniture outside. This helps prevent damage and keeps bugs from travelling indoors.</li>
+                  <li>Please bring your own firewood if needed.</li>
+                </ul>
+              </section>
+              <section>
+                <h4>Before you leave</h4>
+                <ul>
+                  <li>Throw trash away</li>
+                  <li>Turn things off</li>
+                  <li>Lock up</li>
+                </ul>
+              </section>
+            </div>
+          </div>
           <p className="fine-print">A Renter&apos;s Code of Conduct form is required. Exterior security cameras are disclosed on the listing. Indoor taps use city water; the outdoor hose uses lake water.</p>
         </div>
       </section>
