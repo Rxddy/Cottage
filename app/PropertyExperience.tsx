@@ -66,7 +66,7 @@ const photos = [
   ["/cottage/kitchen-wide.webp", "Wide view of the fully equipped wood kitchen", "Kitchen"],
   ["/cottage/kitchen-dishware.webp", "Plates, bowls and glassware stored in the kitchen", "Dishware"],
   ["/cottage/kitchen-coffee-station.webp", "Coffee maker, kettle and toaster in the kitchen", "Coffee station"],
-  ["/cottage/games-room.jpg", "Pool table and darts room", "Games room"],
+  ["/cottage/living-room-2.jpg", "Bright living room for relaxing together", "Play"],
   ["/cottage/patio.jpg", "Outdoor dining patio", "Patio"],
   ["/cottage/dining.jpg", "Dining area inside Lakefront Serenity", "Dining"],
   ["/cottage/bedroom-1-bathroom.jpg", "Bathroom attached to Bedroom 1", "Bedroom 1 bathroom"],
@@ -89,8 +89,8 @@ const bedrooms: Bedroom[] = [
   { src: "/cottage/bedroom-1.jpg", alt: "Bedroom 1 with a queen bed", label: "Bedroom 1", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-1-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 1" },
   { src: "/cottage/bedroom-2.jpg", alt: "Bedroom 2 with a queen bed", label: "Bedroom 2", detail: "Queen bed · hallway bathroom", bathroomSrc: "/cottage/bedroom-2-3-bathroom.jpg", bathroomAlt: "Hallway bathroom shared by Bedrooms 2 and 3" },
   { src: "/cottage/bedroom-3.jpg", alt: "Bedroom 3 with a queen bed", label: "Bedroom 3", detail: "Queen bed · hallway bathroom", bathroomSrc: "/cottage/bedroom-2-3-bathroom.jpg", bathroomAlt: "Hallway bathroom shared by Bedrooms 2 and 3" },
-  { src: "/cottage/bedroom-4.jpg", alt: "Bedroom 4 with a queen bed", label: "Bedroom 4", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-4-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 4 with a glass shower" },
-  { src: "/cottage/bedroom-5.jpg", alt: "Bedroom 5 with a queen bed", label: "Bedroom 5", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-5-bathroom.jpg", bathroomAlt: "Bathroom attached to Bedroom 5" },
+  { src: "/cottage/bedroom-4.jpg", alt: "Bedroom 4 with a queen bed", label: "Bedroom 4", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-4-bathroom.jpg", bathroomAlt: "Updated bathroom attached to Bedroom 4" },
+  { src: "/cottage/bedroom-5.jpg", alt: "Bedroom 5 with a queen bed", label: "Bedroom 5", detail: "Queen bed · attached bathroom", bathroomSrc: "/cottage/bedroom-5-bathroom.jpg", bathroomAlt: "Updated bathroom attached to Bedroom 5" },
 ];
 
 const bedroomPhotos = bedrooms.flatMap((room) => [

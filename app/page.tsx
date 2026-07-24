@@ -22,10 +22,10 @@ const experiences = [
     text: "Outdoor dining and the gas BBQ",
   },
   {
-    image: "/cottage/games-room.jpg",
+    image: "/cottage/living-room-2.jpg",
     icon: "/icons/flaticon/pool-table.png",
     label: "Play",
-    text: "Pool table and darts indoors",
+    text: "A bright living room for relaxing together",
   },
   {
     image: "/cottage/share-dining.jpg",
@@ -233,8 +233,8 @@ export default async function Home() {
             <p>Explore the surrounding area interactively. The cottage&apos;s exact location is provided only after a reservation is confirmed.</p>
           </div>
           <iframe
-            title="Interactive map of the Western Trent Golf Club area in Kawartha Lakes"
-            src="https://www.google.com/maps?q=Western+Trent+Golf+Club,+Kawartha+Lakes,+Ontario&output=embed"
+            title="Interactive map of Canal Lake in Kawartha Lakes"
+            src="https://www.google.com/maps?q=Canal+Lake,+Kawartha+Lakes,+Ontario&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
@@ -256,7 +256,10 @@ export default async function Home() {
       <Reviews />
 
       <section className="know section reveal" id="details">
-        <div className="know-image"><img src="/cottage/exterior.webp" alt="Front exterior and lawn at Lakefront Serenity" /></div>
+        <div className="know-image" aria-label="Front and back views of Lakefront Serenity">
+          <figure><img src="/cottage/front-of-house.jpg" alt="Front exterior of Lakefront Serenity" /><figcaption>Arrive at the front of the house</figcaption></figure>
+          <figure><img src="/cottage/exterior.webp" alt="Back exterior and lawn at Lakefront Serenity" /><figcaption>Settle into the waterfront backyard</figcaption></figure>
+        </div>
         <div className="know-copy">
           <p className="eyebrow">Good to know</p>
           <h2>A simple arrival, with the important details upfront.</h2>

@@ -271,8 +271,11 @@ button, input, select { font: inherit; }
 .review-categories strong { display: block; margin-top: 5px; font-family: var(--font-display); font-size: 20px; font-weight: 500; }
 .review-note { margin: 15px 0 0; color: #6c736b; font-size: 11px; line-height: 1.55; }
 
-.know { padding-top: 35px; display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; align-items: center; background: var(--paper); }
-.know-image { height: 590px; border-radius: 8px; overflow: hidden; }
+.know { padding-top: 35px; display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; align-items: start; background: var(--paper); }
+.know-image { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-self: start; }
+.know-image figure { min-width: 0; margin: 0; }
+.know-image img { height: 300px; border-radius: 8px; object-fit: cover; }
+.know-image figcaption { margin-top: 9px; color: var(--muted); font-size: 11px; line-height: 1.4; }
 .know-copy { max-width: 560px; }
 .know-copy dl { margin: 35px 0 0; }
 .know-copy dl div { display: grid; grid-template-columns: 115px 1fr; gap: 20px; padding: 14px 0; border-top: 1px solid var(--line); }
@@ -480,7 +483,8 @@ footer > div { display: flex; justify-content: flex-end; gap: 18px; color: rgba(
   .reviews-heading > a { justify-self: start; }
   .review-categories { grid-template-columns: repeat(3, 1fr); }
   .know { padding-top: 0; grid-template-columns: 1fr; }
-  .know-image { height: 480px; }
+  .know-image { grid-template-columns: 1fr 1fr; }
+  .know-image img { height: 240px; }
   .contact-section { grid-template-columns: 1fr; gap: 28px; }
   .booking-section { padding: 0 22px 85px; grid-template-columns: 1fr; }
   .booking-benefits { grid-column: 1; grid-template-columns: repeat(2, 1fr); margin: 0; padding: 18px 0; }
