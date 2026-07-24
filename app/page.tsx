@@ -363,12 +363,12 @@ export default async function Home() {
           </div>
         </div>
         <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
-        <p className="booking-disclosure">Availability is refreshed automatically. Select your dates, then email the host to request your stay. The exact arrival address and access instructions are sent privately in the confirmation email after the host accepts the reservation.</p>
+        <p className="booking-disclosure"><strong className="licence-badge">Kawartha Lakes Short-Term Rental Licence STR2026-163</strong>Availability is refreshed automatically. Select your dates, then email the host to request your stay. The exact arrival address and access instructions are sent privately in the confirmation email after the host accepts the reservation.</p>
       </section>
 
       <footer>
         <a className="brand footer-brand" href="#top"><span className="brand-mark" aria-hidden="true"><i /><i /><i /></span><span className="brand-copy"><strong>Lakefront Serenity</strong><small>Waterfront · Kawartha Lakes</small></span></a>
-        <p>Entire waterfront home for up to ten guests.</p>
+        <p>Entire waterfront home for up to ten guests.<small>Short-Term Rental Licence STR2026-163</small></p>
         <div><a href="#details">House rules</a><a href="#contact">Contact</a><a href="#book">Booking information</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.flaticon.com/" target="_blank" rel="noreferrer">Icons by Freepik and HAJICON from Flaticon</a><a href="#top">Back to top ↑</a></div>
       </footer>
     </main>
