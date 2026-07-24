@@ -42,7 +42,7 @@ export default function TermsPage() {
         <p>Nearby parks, trails, waterways and businesses are independent third parties. Check current hours, fees, closures, weather and safety conditions directly with each operator. Lakefront Serenity does not promise availability or provide those outside services.</p>
 
         <h2>Questions</h2>
-        <p>Contact the host at <a href="mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&amp;subject=Lakefront%20Serenity%20question">karansuba6@gmail.com</a>. The final accommodation agreement and reservation terms must be confirmed with the host.</p>
+        <p>Contact the host at <a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20question">lakefrontserenitysupport@gmail.com</a>. The final accommodation agreement and reservation terms must be confirmed with the host.</p>
         <p className="legal-note">This is a basic website summary, not a substitute for a signed rental agreement, municipal requirements or professional legal advice.</p>
       </article>
     </main>

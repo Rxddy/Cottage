@@ -31,7 +31,7 @@ test("server-renders the Lakefront Serenity guest experience", async () => {
   const html = await response.text();
   assert.match(html, /<title>Lakefront Serenity \| Kawartha Lakes<\/title>/i);
   assert.match(html, /Your escape<br\/>starts here\./i);
-  assert.match(html, /aria-label="Check availability and price"/i);
+  assert.match(html, /aria-label="Skip to check availability and pricing"/i);
   assert.match(html, /Plan your waterfront stay\./i);
   assert.match(html, /href="\/privacy"/i);
   assert.match(html, /href="\/terms"/i);

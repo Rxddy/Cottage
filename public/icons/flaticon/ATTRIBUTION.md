@@ -1,8 +1,8 @@
 # Flaticon icon attribution
 
-The icons in this directory are free Flaticon resources designed by Freepik and are used under the Flaticon Free License with attribution.
+The icons in this directory are free Flaticon resources designed by Freepik and HAJICON and are used under the Flaticon Free License with attribution.
 
-Visible website credit: “Icons designed by Freepik from Flaticon.”
+Visible website credit: “Icons by Freepik and HAJICON from Flaticon.”
 
 Source pages:
 
@@ -19,5 +19,6 @@ Source pages:
 - Badminton: https://www.flaticon.com/free-icon/badminton_2042701
 - Washing machine: https://www.flaticon.com/free-icon/washing-machine_75258
 - Dryer: https://www.flaticon.com/free-icon/dryer_3159553
+- Living room (HAJICON): https://www.flaticon.com/free-icon/living_13139120
 
 License: https://www.flaticon.com/license/license.pdf

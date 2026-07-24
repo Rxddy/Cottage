@@ -100,8 +100,8 @@ export function BookingPanel({
     const dateLine = arrival && departure
       ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? "night" : "nights"})`
       : "the dates I selected on the availability calendar";
-    const body = `Hello,\n\nI would like to ask about Lakefront Serenity for ${dateLine}.\n\nGuests: ${guests}\n\nThank you.`;
-    return `mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&subject=Lakefront%20Serenity%20availability%20request&body=${encodeURIComponent(body)}`;
+    const body = `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guests}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
+    return `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(body)}`;
   }, [arrival, departure, guests, nights]);
 
   function chooseDate(date: Date) {

@@ -265,9 +265,9 @@ export default async function Home() {
           <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps. The exact arrival address and access instructions are shared privately after a reservation is accepted.</p>
         </div>
         <div className="contact-card">
-          <span className="contact-card-label">Host email</span>
-          <a href="mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&amp;subject=Lakefront%20Serenity%20question">karansuba6@gmail.com</a>
-          <small>The email link includes the host team.</small>
+          <span className="contact-card-label">Booking &amp; guest support</span>
+          <a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20inquiry">lakefrontserenitysupport@gmail.com</a>
+          <small>We usually respond within one business day.</small>
         </div>
       </section>
 
@@ -294,7 +294,7 @@ export default async function Home() {
       <footer>
         <a className="brand footer-brand" href="#top"><span className="brand-mark" aria-hidden="true"><i /><i /><i /></span><span className="brand-copy"><strong>Lakefront Serenity</strong><small>Waterfront · Kawartha Lakes</small></span></a>
         <p>Entire waterfront home for up to ten guests.</p>
-        <div><a href="#details">House rules</a><a href="#contact">Contact</a><a href="#book">Booking information</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.flaticon.com/" target="_blank" rel="noreferrer">Icons designed by Freepik from Flaticon</a><a href="#top">Back to top ↑</a></div>
+        <div><a href="#details">House rules</a><a href="#contact">Contact</a><a href="#book">Booking information</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.flaticon.com/" target="_blank" rel="noreferrer">Icons by Freepik and HAJICON from Flaticon</a><a href="#top">Back to top ↑</a></div>
       </footer>
     </main>
   );

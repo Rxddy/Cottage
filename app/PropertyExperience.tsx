@@ -28,7 +28,7 @@ const amenityGroups = [
 
 const keyAmenities = [
   { number: "01", icon: "/icons/flaticon/waterfront.png", title: "At the water", text: "Waterfront setting, lake view, access by path or dock and a kayak listed for guest use." },
-  { number: "02", icon: "/icons/flaticon/outdoor-dining.png", title: "Room to gather", text: "A full kitchen, dining table, outdoor dining area, backyard, patio and gas BBQ." },
+  { number: "02", icon: "/icons/flaticon/living-room.png", title: "Room to gather", text: "A full kitchen, dining table, outdoor dining area, backyard, patio and gas BBQ." },
   { number: "03", icon: "/icons/flaticon/pool-table.png", title: "Time to play", text: "Pool table, darts, badminton, TV and a sound system for easygoing time together." },
   { number: "04", icon: "/icons/flaticon/wifi.png", title: "Everyday comfort", text: "Wi-Fi, air conditioning, central heating, laundry and free on-site parking." },
 ];
