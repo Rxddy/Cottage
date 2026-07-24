@@ -57,11 +57,18 @@ const reviewThemes = [
 
 const photos = [
   ["/cottage/lake-chairs.jpg", "The lake beyond the lawn and red chairs", "Waterfront"],
+  ["/cottage/waterfront-kayaks.webp", "Three kayaks ready beside the dock", "Kayaks"],
+  ["/cottage/backyard-cedars.webp", "Mature cedar trees shading the waterfront lawn", "Backyard"],
   ["/cottage/living-room-2.jpg", "Main living room inside Lakefront Serenity", "Living room"],
+  ["/cottage/living-room-tv.webp", "Living room seating area with the television", "Living room"],
   ["/cottage/kitchen.jpg", "Full kitchen inside Lakefront Serenity", "Kitchen"],
+  ["/cottage/kitchen-wide.webp", "Wide view of the fully equipped wood kitchen", "Kitchen"],
+  ["/cottage/kitchen-dishware.webp", "Plates, bowls and glassware stored in the kitchen", "Dishware"],
+  ["/cottage/kitchen-coffee-station.webp", "Coffee maker, kettle and toaster in the kitchen", "Coffee station"],
   ["/cottage/games-room.jpg", "Pool table and darts room", "Games room"],
   ["/cottage/patio.jpg", "Outdoor dining patio", "Patio"],
   ["/cottage/dining.jpg", "Dining area inside Lakefront Serenity", "Dining"],
+  ["/cottage/bathroom-shower.webp", "Bathroom with a glass shower, vanity and toilet", "Bathroom"],
 ];
 
 type Bedroom = {

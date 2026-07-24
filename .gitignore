@@ -22,6 +22,8 @@
 .DS_Store
 /.dev-server.out.log
 /.dev-server.err.log
+/.tmp-image-review/
+/site-build.tar.gz
 *.pem
 
 # debug
