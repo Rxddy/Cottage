@@ -23,6 +23,9 @@ export default function TermsPage() {
         <h2>Bookings</h2>
         <p>This website does not currently accept a reservation or payment. The availability calendar is read-only and is intended as a convenience. Guests should confirm dates, price, taxes, cancellation terms and final booking details with the host before travelling.</p>
 
+        <h2>Owner launch checklist</h2>
+        <p>Before accepting a direct reservation, the host should confirm the applicable municipal short-term-rental licence, insurance, tax registration and collection obligations, a written rental agreement, cancellation terms, any deposit or damage authorization, and the final arrival instructions. None of those details are implied by this informational website.</p>
+
         <h2>House rules and safety</h2>
         <ul>
           <li>No pets, parties, events or smoking.</li>
