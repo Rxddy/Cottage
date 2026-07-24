@@ -39,7 +39,7 @@ button, input, select { font: inherit; }
   height: 108px;
   padding: 0 clamp(24px, 5vw, 82px);
   display: grid;
-  grid-template-columns: 275px 1fr 176px;
+  grid-template-columns: 275px 1fr;
   align-items: center;
   gap: 34px;
   border-bottom: 1px solid rgba(255,255,255,.14);
@@ -62,9 +62,8 @@ button, input, select { font: inherit; }
 .desktop-nav { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 1.7vw, 28px); font-size: 13px; }
 .desktop-nav a { padding: 15px 0; border-bottom: 1px solid transparent; transition: opacity .2s ease, border-color .2s ease; }
 .desktop-nav a:hover, .desktop-nav a.active { border-color: rgba(255,255,255,.8); }
-.nav-book, .button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; border-radius: 5px; transition: transform .2s ease, background .2s ease, color .2s ease; }
-.nav-book { justify-self: end; min-height: 56px; padding: 0 24px; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.1); font-size: 13px; font-weight: 700; }
-.nav-book:hover, .button:hover { transform: translateY(-2px); }
+.button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; border-radius: 5px; transition: transform .2s ease, background .2s ease, color .2s ease; }
+.button:hover { transform: translateY(-2px); }
 .mobile-nav { display: none; justify-self: end; position: relative; }
 .mobile-nav summary { width: 38px; height: 38px; display: grid; place-content: center; gap: 6px; list-style: none; cursor: pointer; border: 1px solid rgba(255,255,255,.5); }
 .mobile-nav summary::-webkit-details-marker { display: none; }
@@ -396,7 +395,7 @@ footer > div { display: flex; justify-content: flex-end; gap: 18px; color: rgba(
 .motion-ready .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
 .motion-ready .reveal.is-visible { opacity: 1; transform: none; }
 @media (max-width: 1180px) {
-  .site-header { grid-template-columns: 1fr auto auto; }
+  .site-header { grid-template-columns: 1fr auto; }
   .desktop-nav { display: none; }
   .mobile-nav { display: block; }
   .property-peek { width: 38vw; height: 340px; }
@@ -413,7 +412,6 @@ footer > div { display: flex; justify-content: flex-end; gap: 18px; color: rgba(
 
 @media (max-width: 820px) {
   .site-header { height: 84px; padding: 0 22px; grid-template-columns: 1fr auto; }
-  .site-header > .nav-book { display: none; }
   .brand-copy strong { font-size: 15px; }
   .hero { min-height: 980px; padding: 120px 22px 360px; background-position: 54% center; }
   .hero-content { width: 100%; padding-top: 10px; }

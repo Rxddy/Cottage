@@ -157,7 +157,6 @@ export default async function Home() {
           <a href="#book">Availability</a>
           <a href="#details">Guide</a>
         </nav>
-        <a className="nav-book" href="#book">Check availability <span aria-hidden="true">↗</span></a>
         <details className="mobile-nav">
           <summary aria-label="Open navigation"><span /><span /></summary>
           <nav aria-label="Mobile navigation">
