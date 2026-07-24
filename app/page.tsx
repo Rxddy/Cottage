@@ -263,7 +263,7 @@ export default async function Home() {
         <div className="contact-copy">
           <p className="eyebrow">Questions before you book?</p>
           <h2>Talk with the host.</h2>
-          <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps.</p>
+          <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps. The exact arrival address and access instructions are shared privately after a reservation is accepted.</p>
         </div>
         <div className="contact-card">
           <span className="contact-card-label">Host email</span>
@@ -289,7 +289,7 @@ export default async function Home() {
           </div>
         </div>
         <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
-        <p className="booking-disclosure">Availability is refreshed automatically. Select your dates, then email the host to request your stay.</p>
+        <p className="booking-disclosure">Availability is refreshed automatically. Select your dates, then email the host to request your stay. The exact arrival address and access instructions are sent privately in the confirmation email after the host accepts the reservation.</p>
       </section>
 
       <footer>

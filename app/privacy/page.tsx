@@ -21,7 +21,7 @@ export default function PrivacyPage() {
         <p>The site does not currently run an account system, contact form, advertising tracker or analytics profile. If you email the host, your email provider handles that message and the host team receives the information you choose to include.</p>
 
         <h2>Availability and booking</h2>
-        <p>The availability display reads blocked nights from a private calendar feed. It is kept server-side and is not intentionally shown in the page. This website does not currently process reservations or payments.</p>
+        <p>The availability display reads blocked nights from a private calendar feed. It is kept server-side and is not intentionally shown in the page. This website does not currently process reservations or payments. The exact arrival address is intentionally not published; it should be shared only in a private confirmation message after the host accepts a reservation.</p>
 
         <h2>Images and nearby links</h2>
         <p>Property photos are supplied for this cottage website. Nearby destination photos are credited with their reuse licences in the gallery. Links to parks and other destinations take you to third-party websites with their own policies.</p>
