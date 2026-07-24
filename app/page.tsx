@@ -342,8 +342,24 @@ export default async function Home() {
           <h2>Plan your waterfront stay.</h2>
           <p>This read-only calendar shades nights that are already unavailable so you can check dates at a glance.</p>
           <div className="booking-shortcuts">
-            <a className="button glass" href="#gallery">Jump to photos</a>
-            <a className="button glass" href="#bedrooms">View all bedrooms</a>
+            <a className="photo-stack-button" href="#gallery" aria-label="Jump to the cottage photo gallery">
+              <span className="photo-stack" aria-hidden="true">
+                <img src="/cottage/lake-chairs.jpg" alt="" />
+                <img src="/cottage/kitchen-wide.webp" alt="" />
+                <img src="/cottage/living-room-2.jpg" alt="" />
+              </span>
+              <span><small>Explore the cottage</small><strong>View all photos</strong></span>
+              <b aria-hidden="true">↗</b>
+            </a>
+            <a className="photo-stack-button" href="#bedrooms" aria-label="Jump to the cottage bedrooms">
+              <span className="photo-stack" aria-hidden="true">
+                <img src="/cottage/bedroom-1.jpg" alt="" />
+                <img src="/cottage/bedroom-3.jpg" alt="" />
+                <img src="/cottage/bedroom-5.jpg" alt="" />
+              </span>
+              <span><small>See where you&apos;ll sleep</small><strong>View bedrooms</strong></span>
+              <b aria-hidden="true">↗</b>
+            </a>
           </div>
         </div>
         <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
