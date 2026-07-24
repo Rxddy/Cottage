@@ -320,6 +320,7 @@
     previousMonth.addEventListener('click', () => { viewMonth = addMonths(viewMonth, -1); renderCalendar(); });
     nextMonth.addEventListener('click', () => { viewMonth = addMonths(viewMonth, 1); renderCalendar(); });
     checkInChoice.addEventListener('click', () => {
+      openBookingCalendar();
       arrival = '';
       departure = '';
       hovered = '';
@@ -328,6 +329,7 @@
       paintCalendarRange();
     });
     checkOutChoice.addEventListener('click', () => {
+      openBookingCalendar();
       if (!arrival) {
         message.textContent = 'Choose a check-in date first.';
         return;

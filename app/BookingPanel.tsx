@@ -152,6 +152,7 @@ export function BookingPanel({
   }
 
   function repickArrival() {
+    if (variant === "footer") setIsExpanded(true);
     setArrival("");
     setDeparture("");
     setHovered("");
@@ -159,6 +160,7 @@ export function BookingPanel({
   }
 
   function repickDeparture() {
+    if (variant === "footer") setIsExpanded(true);
     if (!arrival) {
       setMessage("Choose a check-in date first.");
       return;
