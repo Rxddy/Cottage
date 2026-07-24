@@ -53,7 +53,7 @@ export function BookingPanel({
   const [hovered, setHovered] = useState("");
   const [message, setMessage] = useState(
     availabilityStatus === "connected"
-      ? "Booked nights from Airbnb are shaded. Select an available check-in date."
+      ? "Booked nights are shaded. Select an available check-in date."
       : "Select a check-in date, then choose your check-out date.",
   );
   const [isExpanded, setIsExpanded] = useState(variant === "hero");
@@ -95,11 +95,18 @@ export function BookingPanel({
     : "Rate to be confirmed";
   const estimatedTotal = nights * pricing.nightlyRateCents + pricing.cleaningFeeCents;
   const estimatedTotalLabel = hasPricing ? formatMoney(estimatedTotal, pricing.currency) : "Rate to be confirmed";
+  const bookingRequestHref = useMemo(() => {
+    const dateLine = arrival && departure
+      ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? "night" : "nights"})`
+      : "the dates I selected on the availability calendar";
+    const body = `Hello,\n\nI would like to ask about Lakefront Serenity for ${dateLine}.\n\nGuests: \n\nThank you.`;
+    return `mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&subject=Lakefront%20Serenity%20availability%20request&body=${encodeURIComponent(body)}`;
+  }, [arrival, departure, nights]);
 
   function chooseDate(date: Date) {
     const chosen = dateKey(date);
     if (blockedDateSet.has(chosen)) {
-      setMessage("That night is already booked on Airbnb. Choose another date.");
+      setMessage("That night is already unavailable. Choose another date.");
       return;
     }
     if (chosen === arrival) {
@@ -132,7 +139,7 @@ export function BookingPanel({
     const arrivalDate = new Date(Number(arrival.slice(0, 4)), Number(arrival.slice(5, 7)) - 1, Number(arrival.slice(8, 10)));
     for (let day = new Date(arrivalDate); day < cursor; day = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1)) {
       if (blockedDateSet.has(dateKey(day))) {
-        setMessage("That range includes a night already booked on Airbnb. Choose different dates.");
+        setMessage("That range includes an unavailable night. Choose different dates.");
         return;
       }
     }
@@ -140,7 +147,7 @@ export function BookingPanel({
     setHovered("");
     if (variant === "footer") setIsExpanded(true);
     const count = nightsBetween(arrival, chosen);
-    setMessage(`${count} ${count === 1 ? "night" : "nights"} selected. Check those dates on Airbnb to book.`);
+    setMessage(`${count} ${count === 1 ? "night" : "nights"} selected. Email the host to request these dates.`);
   }
 
   function repickArrival() {
@@ -191,10 +198,10 @@ export function BookingPanel({
           <div>
             <p className="eyebrow">Booking details</p>
             <h3>Open the full calendar.</h3>
-            <p>Skip the photo sections and jump straight to Airbnb availability.</p>
+            <p>Skip the photo sections and jump straight to availability.</p>
           </div>
           <div className="booking-compact-meta">
-            <span>{availabilityStatus === "connected" ? "Airbnb calendar synced" : "Airbnb calendar pending"}</span>
+            <span>{availabilityStatus === "connected" ? "Availability synced" : "Availability pending"}</span>
             <strong>{hasPricing && nights ? estimatedTotalLabel : nightlyRateLabel}</strong>
           </div>
           <button className="booking-expand" type="button" onClick={() => setIsExpanded(true)}>
@@ -215,10 +222,10 @@ export function BookingPanel({
               </div>
               <p className={`calendar-availability-note ${availabilityStatus}`}>
                 {availabilityStatus === "connected"
-                  ? "Booked nights are shaded from the Airbnb calendar. This calendar is read-only."
+                  ? "Booked nights are shaded. This calendar is read-only."
                   : availabilityStatus === "unavailable"
-                    ? "Airbnb calendar could not be refreshed. Try again shortly."
-                    : "Connect the Airbnb calendar export to show booked nights automatically."}
+                    ? "Availability could not be refreshed. Try again shortly."
+                    : "Availability data is not connected yet."}
               </p>
               <div className="calendar-months">
                 {months.map((month) => (
@@ -227,7 +234,7 @@ export function BookingPanel({
                     <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
                     <div className="calendar-grid">
                       {monthCells(month).map((date, index) => date ? (
-                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today || blockedDateSet.has(dateKey(date))} onMouseEnter={() => setHovered(dateKey(date))} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={`${date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${blockedDateSet.has(dateKey(date)) ? " — booked on Airbnb" : ""}`} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
+                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today || blockedDateSet.has(dateKey(date))} onMouseEnter={() => setHovered(dateKey(date))} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={`${date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${blockedDateSet.has(dateKey(date)) ? " — unavailable" : ""}`} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
                       ) : <span className="calendar-empty" key={`empty-${index}`} />)}
                     </div>
                   </section>
@@ -246,8 +253,8 @@ export function BookingPanel({
               </div>
             </div>
 
-            <a className="booking-submit" href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">
-              View this stay on Airbnb
+            <a className="booking-submit" href={bookingRequestHref}>
+              Request these dates
               <span aria-hidden="true">→</span>
             </a>
             <p className="booking-message" aria-live="polite">{message}</p>
@@ -287,11 +294,11 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
   }
 
   return (
-    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" onClick={openBooking} aria-label="Check Airbnb availability and price">
+    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" onClick={openBooking} aria-label="Check availability and price">
       <span className="booking-dock-icon" aria-hidden="true"><span /></span>
       <span className="booking-dock-copy">
         <span className="booking-dock-label">{isBookSectionVisible ? "Booking details" : "Skip photos"}</span>
-        <strong>Check Airbnb dates</strong>
+        <strong>Check availability</strong>
         <small>{isBookSectionVisible ? "Calendar open below · see price" : fromLabel}</small>
       </span>
       <span className="booking-dock-arrow" aria-hidden="true">↘</span>

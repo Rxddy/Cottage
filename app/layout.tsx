@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const base = new URL(`${protocol}://${host}`);
   const title = "Lakefront Serenity | Kawartha Lakes";
-  const description = "A five-bedroom waterfront house in Kawartha Lakes for up to ten guests. Explore the property, nearby destinations and check Airbnb availability.";
+  const description = "A five-bedroom waterfront house in Kawartha Lakes for up to ten guests. Explore the property, nearby destinations and check availability.";
 
   return {
     metadataBase: base,

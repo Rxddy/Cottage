@@ -157,7 +157,7 @@ export default async function Home() {
           <a href="#book">Availability</a>
           <a href="#details">Guide</a>
         </nav>
-        <a className="nav-book" href="#book">Check Airbnb dates <span aria-hidden="true">↗</span></a>
+        <a className="nav-book" href="#book">Check availability <span aria-hidden="true">↗</span></a>
         <details className="mobile-nav">
           <summary aria-label="Open navigation"><span /><span /></summary>
           <nav aria-label="Mobile navigation">
@@ -166,7 +166,7 @@ export default async function Home() {
             <a href="#explore">Things to do</a>
             <a href="#gallery">Gallery</a>
             <a href="#reviews">Reviews</a>
-            <a href="#book">Check Airbnb dates</a>
+            <a href="#book">Check availability</a>
           </nav>
         </details>
       </header>
@@ -183,7 +183,7 @@ export default async function Home() {
             <small>28 reviews · Guest Favourite</small>
           </div>
           <div className="hero-actions">
-            <a className="button primary" href="#book">Check Airbnb dates <span aria-hidden="true">↗</span></a>
+            <a className="button primary" href="#book">Check availability <span aria-hidden="true">↗</span></a>
             <a className="button glass" href="#gallery">See the photos <span aria-hidden="true">↓</span></a>
           </div>
         </div>
@@ -263,7 +263,7 @@ export default async function Home() {
         <div className="contact-copy">
           <p className="eyebrow">Questions before you book?</p>
           <h2>Talk with the host.</h2>
-          <p>Email the host for stay questions, accessibility details or help planning your lake days. Availability and reservations are completed on Airbnb.</p>
+          <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps.</p>
         </div>
         <div className="contact-card">
           <span className="contact-card-label">Host email</span>
@@ -282,14 +282,14 @@ export default async function Home() {
         <div className="booking-copy">
           <p className="eyebrow light">Ready to make memories?</p>
           <h2>Plan your waterfront stay.</h2>
-          <p>Airbnb remains the booking source. This read-only calendar shades nights already blocked on the Airbnb listing so you can check availability at a glance.</p>
+          <p>This read-only calendar shades nights that are already unavailable so you can check dates at a glance.</p>
           <div className="booking-shortcuts">
             <a className="button glass" href="#gallery">Jump to photos</a>
             <a className="button glass" href="#bedrooms">View all bedrooms</a>
           </div>
         </div>
         <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
-        <p className="booking-disclosure">Availability is read from the Airbnb calendar export when this page loads. Bookings are completed on Airbnb, <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">view the verified listing ↗</a></p>
+        <p className="booking-disclosure">Availability is refreshed automatically. Select your dates, then email the host to request your stay.</p>
       </section>
 
       <footer>

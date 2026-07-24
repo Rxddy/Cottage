@@ -21,7 +21,7 @@ export default function TermsPage() {
         <p>Lakefront Serenity presents a waterfront vacation home, its listed features and nearby destinations. Website content is provided for general planning and may change with seasons, maintenance, weather or listing updates.</p>
 
         <h2>Bookings</h2>
-        <p>This website does not accept a reservation or payment. The availability calendar is read-only and is intended as a convenience. Guests must confirm dates, price, taxes, cancellation terms and final booking details on the Airbnb listing before travelling.</p>
+        <p>This website does not currently accept a reservation or payment. The availability calendar is read-only and is intended as a convenience. Guests should confirm dates, price, taxes, cancellation terms and final booking details with the host before travelling.</p>
 
         <h2>House rules and safety</h2>
         <ul>
@@ -29,15 +29,15 @@ export default function TermsPage() {
           <li>Quiet hours are 11:00 p.m.–7:00 a.m.</li>
           <li>Exterior security cameras are disclosed on the listing and record continuously around the entrances, back deck, sides, lake area and driveway.</li>
           <li>A Renter&apos;s Code of Conduct form is required where applicable.</li>
-          <li>Guests should follow the current Airbnb listing, host instructions and local laws.</li>
+          <li>Guests should follow the host&apos;s current instructions and local laws.</li>
         </ul>
 
         <h2>Nearby activities</h2>
         <p>Nearby parks, trails, waterways and businesses are independent third parties. Check current hours, fees, closures, weather and safety conditions directly with each operator. Lakefront Serenity does not promise availability or provide those outside services.</p>
 
         <h2>Questions</h2>
-        <p>Contact the host at <a href="mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&amp;subject=Lakefront%20Serenity%20question">karansuba6@gmail.com</a>. The Airbnb listing controls the final accommodation agreement and reservation terms.</p>
-        <p className="legal-note">This is a basic website summary, not a substitute for the final Airbnb agreement, rental agreement, municipal requirements or professional legal advice.</p>
+        <p>Contact the host at <a href="mailto:karansuba6@gmail.com?cc=ruddyrusanth@gmail.com%2Ctharan.pir@gmail.com&amp;subject=Lakefront%20Serenity%20question">karansuba6@gmail.com</a>. The final accommodation agreement and reservation terms must be confirmed with the host.</p>
+        <p className="legal-note">This is a basic website summary, not a substitute for a signed rental agreement, municipal requirements or professional legal advice.</p>
       </article>
     </main>
   );

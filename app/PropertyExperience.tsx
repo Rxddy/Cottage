@@ -195,7 +195,7 @@ export function Amenities() {
     <section className="amenities-section section reveal" id="amenities">
       <div className="section-heading amenities-heading">
         <div><p className="eyebrow">What is included</p><h2>Made for lake days and easy nights.</h2></div>
-        <p>These features come directly from the public Airbnb listing. Seasonal lake conditions and amenity availability can vary.</p>
+        <p>These features are provided at the cottage. Seasonal lake conditions and amenity availability can vary.</p>
       </div>
       <div className="activity-highlights" aria-label="Activities and features at the house">
         {activityHighlights.map(({ icons, label }) => (
@@ -285,7 +285,7 @@ export function Bedrooms() {
     <section className="bedrooms-section section reveal" id="bedrooms" aria-labelledby="bedrooms-title">
       <div className="section-heading bedrooms-heading">
         <div><p className="eyebrow">Five bedrooms</p><h2 id="bedrooms-title">Space to settle in.</h2></div>
-        <p>View every bedroom shown in the current Airbnb listing. Bathroom photography for Bedroom 1 is coming soon; Bedrooms 4 and 5 show their attached bathrooms.</p>
+        <p>View every bedroom in the cottage. Bathroom photography for Bedroom 1 is coming soon; Bedrooms 4 and 5 show their attached bathrooms.</p>
       </div>
       <div className="bedroom-grid">
         {bedrooms.map((room, index) => (
