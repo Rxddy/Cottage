@@ -38,19 +38,19 @@ const experiences = [
 const nearby = [
   {
     number: "01",
-    category: "Historic waterway",
-    title: "Kirkfield Lift Lock",
-    text: "See Lock 36, the world’s second-highest hydraulic lift lock, with a lift of about 15 metres.",
-    href: "https://parks.canada.ca/lhn-nhs/on/trentsevern/visit/posteeclusage-lockstation/ecluse-lock-36-kirkfield",
-    icon: "/icons/flaticon/waterfront.png",
-    visual: "lock",
-    image: "/nearby/kirkfield-lock.jpg",
-    imageAlt: "Kirkfield Lift Lock and its steel lift structure reflected in the water",
-    photoTitle: "Kirkfield Lift Lock",
-    photographer: "The Cosmonaut",
-    photoSource: "https://commons.wikimedia.org/wiki/File:Kirkfield_Lift_Lock.jpg",
-    licenseName: "CC BY-SA 2.5 CA",
-    licenseUrl: "https://creativecommons.org/licenses/by-sa/2.5/ca/deed.en",
+    category: "Public golf course",
+    title: "Western Trent Golf Club",
+    text: "Play a scenic nine-hole course beside the Trent–Severn Waterway, with a driving range, club rentals and an on-site patio.",
+    href: "https://www.westerntrentgolfclub.com/golf",
+    icon: "/icons/flaticon/backyard.png",
+    visual: "golf",
+    image: "/nearby/western-trent-golf.png",
+    imageAlt: "Aerial view of Western Trent Golf Club beside the waterway",
+    photoTitle: "Western Trent Golf Club course",
+    photographer: "Western Trent Golf Club",
+    photoSource: "https://www.westerntrentgolfclub.com/golf",
+    licenseName: "Official website",
+    licenseUrl: "https://www.westerntrentgolfclub.com/golf",
   },
   {
     number: "02",
@@ -224,11 +224,24 @@ export default async function Home() {
       <section className="explore section reveal" id="explore">
         <div className="section-heading">
           <div><p className="eyebrow">Things to do nearby</p><h2>Adventure awaits.</h2></div>
-          <p>Independent destinations to consider while staying in Kawartha Lakes. Real Creative Commons photographs are credited below; these places are not services or amenities provided by Lakefront Serenity.</p>
+          <p>Independent destinations to consider while staying in Kawartha Lakes. Destination imagery is credited below; these places are not services or amenities provided by Lakefront Serenity.</p>
         </div>
         <NearbyCards places={nearby} />
+        <div className="area-map">
+          <div className="area-map-heading">
+            <div><p className="eyebrow">Where you&apos;ll be</p><h3>Kawartha Lakes, Ontario</h3></div>
+            <p>Explore the surrounding area interactively. The cottage&apos;s exact location is provided only after a reservation is confirmed.</p>
+          </div>
+          <iframe
+            title="Interactive map of the Western Trent Golf Club area in Kawartha Lakes"
+            src="https://www.google.com/maps?q=Western+Trent+Golf+Club,+Kawartha+Lakes,+Ontario&output=embed"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
         <details className="photo-credits">
-          <summary>Photo credits and reuse licences</summary>
+          <summary>Photo credits and source links</summary>
           <ul>
             {nearby.map((place) => (
               <li key={place.photoTitle}>
