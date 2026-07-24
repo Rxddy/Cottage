@@ -367,19 +367,21 @@ button, input, select { font: inherit; }
 .booking-message { min-height: 34px; margin: 12px 2px 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .booking-disclosure { grid-column: 2; margin: 0; color: rgba(255,255,255,.66); font-size: 11px; line-height: 1.65; }
 .booking-disclosure a { color: white; text-decoration: underline; text-underline-offset: 3px; }
-.booking-dock { position: fixed; right: 20px; bottom: 20px; z-index: 70; width: 284px; min-height: 84px; padding: 13px 14px; display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 11px; border: 1px solid rgba(255,255,255,.24); border-radius: 18px; background: rgba(8,31,26,.94); color: white; box-shadow: 0 20px 46px rgba(0,0,0,.28); backdrop-filter: blur(14px); animation: booking-dock-bob 3.5s ease-in-out infinite; transition: transform .25s ease, box-shadow .25s ease, width .25s ease, background .25s ease; }
+.booking-dock { position: fixed; right: 24px; bottom: 24px; z-index: 70; width: min(354px, calc(100vw - 32px)); min-height: 76px; padding: 12px 16px; display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 22px; background: rgba(8,31,26,.96); color: white; box-shadow: 0 22px 60px rgba(0,0,0,.28); backdrop-filter: blur(16px); animation: booking-dock-bob 3.5s ease-in-out infinite; transition: width .62s cubic-bezier(.2,.8,.2,1), min-height .62s cubic-bezier(.2,.8,.2,1), right .62s cubic-bezier(.2,.8,.2,1), bottom .62s cubic-bezier(.2,.8,.2,1), border-radius .62s cubic-bezier(.2,.8,.2,1), background .4s ease, color .4s ease, opacity .32s ease, transform .62s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
 .booking-dock:hover { transform: translateY(-3px); box-shadow: 0 24px 54px rgba(0,0,0,.33); }
-.booking-dock-icon { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.33); border-radius: 12px; background: rgba(255,255,255,.08); }
+.booking-dock-icon { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.24); border-radius: 15px; background: var(--olive); }
 .booking-dock-icon > span { position: relative; width: 19px; height: 18px; display: block; border: 1.5px solid white; border-radius: 4px; }
 .booking-dock-icon > span::before { content: ""; position: absolute; inset: 5px 2px auto; border-top: 1.5px solid white; }
 .booking-dock-icon > span::after { content: ""; position: absolute; top: -4px; left: 3px; width: 2px; height: 6px; border-radius: 2px; background: white; box-shadow: 9px 0 white; }
 .booking-dock-copy { min-width: 0; display: grid; gap: 3px; }
 .booking-dock-label { text-transform: uppercase; letter-spacing: .12em; font-size: 9px; color: rgba(255,255,255,.7); }
-.booking-dock strong { font-family: var(--font-display); font-size: 22px; font-weight: 500; line-height: 1; }
+.booking-dock strong { font-family: var(--font-display); font-size: 19px; font-weight: 500; line-height: 1.05; }
 .booking-dock small { color: rgba(255,255,255,.82); font-size: 11px; line-height: 1.35; }
 .booking-dock-arrow { align-self: center; color: rgba(255,255,255,.72); font-size: 22px; transition: transform .2s ease, color .2s ease; }
 .booking-dock:hover .booking-dock-arrow { transform: translate(2px, 2px); color: white; }
-.booking-dock.is-booking-visible { width: 300px; background: rgba(13,43,36,.98); }
+.booking-dock.is-opening { width: min(620px, calc(100vw - 44px)); min-height: 104px; border-radius: 26px; background: rgba(244,240,229,.98); color: var(--forest); opacity: .2; transform: translateY(-8px) scale(.985); pointer-events: none; animation: none; }
+.booking-dock.is-opening .booking-dock-label, .booking-dock.is-opening small { color: var(--muted); }
+.booking-dock.is-booking-visible { width: min(760px, calc(100vw - 44px)); min-height: 112px; border-radius: 28px; background: rgba(244,240,229,.98); color: var(--forest); opacity: 0; transform: translateY(-10px) scale(.98); pointer-events: none; animation: none; }
 @keyframes booking-dock-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
 footer { min-height: 115px; padding: 28px 5vw; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; align-items: center; border-top: 1px solid rgba(255,255,255,.1); background: #071d18; color: white; }

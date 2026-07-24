@@ -277,6 +277,7 @@ export function BookingPanel({
 
 export function BookingDock({ pricing }: { pricing: BookingPricing }) {
   const [isBookSectionVisible, setIsBookSectionVisible] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
 
   useEffect(() => {
     const target = document.getElementById("book");
@@ -297,16 +298,24 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
 
   function openBooking(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
+    setIsOpening(true);
     window.dispatchEvent(new Event("open-booking-calendar"));
+    window.setTimeout(() => setIsOpening(false), 760);
   }
 
   return (
-    <a className={`booking-dock ${isBookSectionVisible ? "is-booking-visible" : ""}`} href="#book" onClick={openBooking} aria-label="Check availability and price">
+    <a
+      className={`booking-dock${isOpening ? " is-opening" : ""}${isBookSectionVisible ? " is-booking-visible" : ""}`}
+      href="#book"
+      onClick={openBooking}
+      aria-label="Skip to check availability and pricing"
+      tabIndex={isBookSectionVisible ? -1 : 0}
+    >
       <span className="booking-dock-icon" aria-hidden="true"><span /></span>
       <span className="booking-dock-copy">
-        <span className="booking-dock-label">{isBookSectionVisible ? "Booking details" : "Skip photos"}</span>
-        <strong>Check availability</strong>
-        <small>{isBookSectionVisible ? "Calendar open below · see price" : fromLabel}</small>
+        <span className="booking-dock-label">Skip ahead</span>
+        <strong>Check availability &amp; pricing</strong>
+        <small>Choose dates · {fromLabel}</small>
       </span>
       <span className="booking-dock-arrow" aria-hidden="true">↘</span>
     </a>
