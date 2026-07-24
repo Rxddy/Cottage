@@ -20,6 +20,8 @@
 
 # misc
 .DS_Store
+/.dev-server.out.log
+/.dev-server.err.log
 *.pem
 
 # debug
