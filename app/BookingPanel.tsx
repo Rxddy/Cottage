@@ -243,7 +243,7 @@ export function BookingPanel({
                     <div className="calendar-weekdays" aria-hidden="true">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
                     <div className="calendar-grid">
                       {monthCells(month).map((date, index) => date ? (
-                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today || blockedDateSet.has(dateKey(date))} onMouseEnter={() => setHovered(dateKey(date))} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={`${date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${blockedDateSet.has(dateKey(date)) ? " — unavailable" : ""}`} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
+                        <button key={dateKey(date)} className={dayClass(date)} type="button" disabled={date < today || blockedDateSet.has(dateKey(date))} onMouseEnter={() => { if (arrival && !departure) setHovered(dateKey(date)); }} onMouseLeave={() => setHovered("")} onClick={() => chooseDate(date)} aria-label={`${date.toLocaleDateString("en-CA", { weekday: "long", month: "long", day: "numeric", year: "numeric" })}${blockedDateSet.has(dateKey(date)) ? " — unavailable" : ""}`} aria-pressed={dateKey(date) === arrival || dateKey(date) === departure}>{date.getDate()}</button>
                       ) : <span className="calendar-empty" key={`empty-${index}`} />)}
                     </div>
                   </section>

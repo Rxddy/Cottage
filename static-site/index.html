@@ -127,7 +127,7 @@
       <div class="booking-benefits"><div><span aria-hidden="true"><img src="/icons/flaticon/wifi.png" alt=""></span><strong>Wi-Fi</strong><small>Included</small></div><div><span aria-hidden="true"><img src="/icons/flaticon/waterfront.png" alt=""></span><strong>Waterfront</strong><small>Lake access</small></div><div><span aria-hidden="true"><img src="/icons/flaticon/fire.png" alt=""></span><strong>Fire pit</strong><small>Bring firewood</small></div><div><span aria-hidden="true"><img src="/icons/flaticon/kitchen.png" alt=""></span><strong>Self check-in</strong><small>Keypad entry</small></div></div>
       <div class="booking-copy"><p class="eyebrow light">Ready to make memories?</p><h2>Plan your waterfront stay.</h2><p>This read-only calendar shades nights that are already unavailable so you can check dates at a glance.</p><div class="booking-shortcuts"><a class="photo-stack-button" href="#gallery" aria-label="Jump to the cottage photo gallery"><span class="photo-stack" aria-hidden="true"><img src="/cottage/lake-chairs.jpg" alt=""><img src="/cottage/kitchen-wide.webp" alt=""><img src="/cottage/living-room-2.jpg" alt=""></span><span><small>Explore the cottage</small><strong>View all photos</strong></span><b aria-hidden="true">↗</b></a><a class="photo-stack-button" href="#bedrooms" aria-label="Jump to the cottage bedrooms"><span class="photo-stack" aria-hidden="true"><img src="/cottage/bedroom-1.jpg" alt=""><img src="/cottage/bedroom-3.jpg" alt=""><img src="/cottage/bedroom-5.jpg" alt=""></span><span><small>See where you’ll sleep</small><strong>View bedrooms</strong></span><b aria-hidden="true">↗</b></a></div></div>
       <form class="booking-panel footer" id="availability-form">
-        <div class="booking-selection" aria-label="Selected stay details"><button class="date-choice" id="check-in-choice" type="button" aria-label="Choose check-in date"><span>Check in</span><strong id="check-in-value">Add date</strong></button><button class="date-choice" id="check-out-choice" type="button" aria-label="Choose check-out date"><span>Check out</span><strong id="check-out-value">Add date</strong></button><label class="guest-choice"><span>Guests</span><select name="guests" aria-label="Number of guests"><option>1 guest</option><option selected>2 guests</option><option>3 guests</option><option>4 guests</option><option>5 guests</option><option>6 guests</option><option>7 guests</option><option>8 guests</option><option>9 guests</option><option>10 guests</option></select></label></div>
+        <div class="booking-selection" aria-label="Selected stay details"><button class="date-choice" id="check-in-choice" type="button" aria-label="Choose check-in date"><span>Check in</span><strong id="check-in-value">Add date</strong></button><button class="date-choice" id="check-out-choice" type="button" aria-label="Choose check-out date"><span>Check out</span><strong id="check-out-value">Add date</strong></button><label class="guest-choice"><span>Guests</span><strong id="guests-value">2 guests</strong><select name="guests" aria-label="Number of guests"><option value="1">1 guest</option><option value="2" selected>2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option><option value="5">5 guests</option><option value="6">6 guests</option><option value="7">7 guests</option><option value="8">8 guests</option><option value="9">9 guests</option><option value="10">10 guests</option></select></label></div>
         <div class="booking-compact-card" id="booking-compact-card"><div><p class="eyebrow">Booking details</p><h3>Open the full calendar.</h3><p>Skip the photo sections and jump straight to availability.</p></div><div class="booking-compact-meta"><span id="availability-sync-status">Availability pending</span><strong>From $724.71 CAD / night</strong></div><button class="booking-expand" id="booking-expand" type="button"><span class="calendar-button-icon" aria-hidden="true"></span><span>Open calendar &amp; see price</span></button></div>
         <div class="booking-calendar-shell" id="booking-calendar-shell"><div class="booking-calendar-inner"><div class="range-calendar" aria-label="Choose check-in and check-out dates"><div class="calendar-toolbar"><button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">←</button><p><strong id="calendar-status">Choose your stay</strong><span id="calendar-summary">Select check-in, then check-out</span></p><button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">→</button></div><p class="calendar-availability-note not-configured" id="calendar-availability-note">Availability data is not connected yet.</p><div class="calendar-months" id="calendar-months"></div></div></div></div>
         <input name="arrival" id="arrival-input" type="hidden"><input name="departure" id="departure-input" type="hidden">
@@ -184,6 +184,8 @@
     const departureInput = document.getElementById('departure-input');
     const checkInValue = document.getElementById('check-in-value');
     const checkOutValue = document.getElementById('check-out-value');
+    const guestsSelect = document.querySelector('.guest-choice select');
+    const guestsValue = document.getElementById('guests-value');
     const checkInChoice = document.getElementById('check-in-choice');
     const checkOutChoice = document.getElementById('check-out-choice');
     const calendarStatus = document.getElementById('calendar-status');
@@ -217,7 +219,7 @@
     };
 
     const paintCalendarRange = () => {
-      const previewEnd = !departure && hovered > arrival ? hovered : '';
+      const previewEnd = arrival && !departure && hovered > arrival ? hovered : '';
       const rangeEnd = departure || previewEnd;
       monthsElement.querySelectorAll('.calendar-day').forEach((day) => {
         const key = day.dataset.date;
@@ -309,7 +311,7 @@
           button.classList.toggle('booked', isBooked);
           button.setAttribute('aria-label', `${date.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}${isBooked ? ' — unavailable' : ''}`);
           button.addEventListener('click', () => chooseDate(key));
-          button.addEventListener('mouseenter', () => { hovered = key; paintCalendarRange(); });
+          button.addEventListener('mouseenter', () => { if (arrival && !departure) hovered = key; paintCalendarRange(); });
           button.addEventListener('mouseleave', () => { hovered = ''; paintCalendarRange(); });
           grid.appendChild(button);
         }
@@ -343,6 +345,7 @@
       updateBookingSummary();
       paintCalendarRange();
     });
+    guestsSelect.addEventListener('change', () => { guestsValue.textContent = guestsSelect.options[guestsSelect.selectedIndex].textContent; });
     const loadAirbnbAvailability = async () => {
       try {
         const response = await fetch(`/airbnb-availability.json?ts=${Date.now()}`, { cache: 'no-store' });
