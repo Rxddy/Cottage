@@ -15,7 +15,7 @@ Airbnb also supports `.ics` calendar feeds. For this project, only the Airbnb-to
 1. In Airbnb, open **Calendar → Availability → Connect calendars → Connect to another website**.
 2. Copy the Airbnb calendar URL ending in `.ics`.
 3. Set it as the private `AIRBNB_ICAL_URL` runtime variable for the public Sites deployment. Never commit the URL or expose it in client-side code.
-4. For the NAS static site, the `airbnb-calendar-sync` Compose service runs `scripts/sync-airbnb-calendar.mjs` every three hours and keeps the generated `static-site/airbnb-availability.json` mounted by nginx. The private `nas/airbnb-calendar.env` file contains the feed URL and is never committed.
+4. For the NAS static site, the `airbnb-calendar-sync` Compose service runs `scripts/sync-airbnb-calendar.mjs` every five minutes and keeps the generated `static-site/airbnb-availability.json` mounted by nginx. The private `nas/airbnb-calendar.env` file contains the feed URL and is never committed.
 
 Airbnb says imported calendars automatically refresh every three hours, with a manual refresh option. The public Sites page fetches the feed when rendered; the NAS page reads the last scheduled sync. Because iCal is not instant, it should remain a display aid only unless a channel manager is introduced.
 

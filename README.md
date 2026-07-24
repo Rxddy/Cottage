@@ -25,7 +25,7 @@ arrival details after accepting a reservation.
   keyboard-friendly interactions, a sticky shortcut, and an optional price
   preview.
 - Airbnb remains the current availability source of truth. Its private iCalendar
-  feed is read at runtime by the full application and synchronized every three
+  feed is read at runtime by the full application and synchronized every five
   hours for the NAS mirror.
 - The NAS mirror includes nginx security headers, cache rules, privacy and terms
   pages, an availability sync container, and a host-side health-check script.
@@ -201,8 +201,8 @@ The NAS requires an uncommitted `nas/airbnb-calendar.env`:
 AIRBNB_ICAL_URL=https://www.airbnb.com/calendar/ical/...
 ```
 
-The sync service updates `static-site/airbnb-availability.json` every three
-hours. Run `scripts/check-airbnb-calendar.sh` every fifteen minutes from the host
+The sync service updates `static-site/airbnb-availability.json` every five
+minutes. Run `scripts/check-airbnb-calendar.sh` every fifteen minutes from the host
 to detect a stopped container or a feed older than six hours. Outbound mail must
 be configured in TrueNAS for alerts to be delivered.
 

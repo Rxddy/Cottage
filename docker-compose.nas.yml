@@ -30,5 +30,5 @@ services:
       - ./scripts/sync-airbnb-calendar.mjs:/app/scripts/sync-airbnb-calendar.mjs:ro
       - ./static-site/airbnb-availability.json:/app/static-site/airbnb-availability.json
     working_dir: /app
-    command: ["sh", "-c", "while true; do node /app/scripts/sync-airbnb-calendar.mjs || true; sleep 10800; done"]
+    command: ["sh", "-c", "while true; do node /app/scripts/sync-airbnb-calendar.mjs || true; sleep 300; done"]
     restart: unless-stopped
