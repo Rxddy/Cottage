@@ -188,7 +188,7 @@ export default async function Home() {
         </div>
 
         <figure className="property-peek">
-          <img src="/cottage/exterior.webp" alt="The actual exterior of Lakefront Serenity" />
+          <img src="/cottage/front-of-house.jpg" alt="The actual front exterior of Lakefront Serenity" />
           <figcaption>
             <span>Lakefront Serenity</span>
             <strong>The actual cottage</strong>
