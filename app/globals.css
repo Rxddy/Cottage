@@ -276,6 +276,10 @@ button, input, select { font: inherit; }
 .know-image figure { min-width: 0; margin: 0; }
 .know-image img { height: 300px; border-radius: 8px; object-fit: cover; }
 .know-image figcaption { margin-top: 9px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.arrival-note { grid-column: 1 / -1; padding: 17px 20px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.52); }
+.arrival-note .eyebrow { margin-bottom: 6px; }
+.arrival-note h3 { margin: 0 0 7px; font-family: var(--font-display); font-size: 23px; font-weight: 500; }
+.arrival-note p:last-child { max-width: 560px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
 .know-copy { max-width: 560px; }
 .know-copy dl { margin: 35px 0 0; }
 .know-copy dl div { display: grid; grid-template-columns: 115px 1fr; gap: 20px; padding: 14px 0; border-top: 1px solid var(--line); }

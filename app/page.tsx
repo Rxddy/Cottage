@@ -257,8 +257,10 @@ export default async function Home() {
 
       <section className="know section reveal" id="details">
         <div className="know-image" aria-label="Front and back views of Lakefront Serenity">
+          <div className="arrival-note"><p className="eyebrow">A calm arrival</p><h3>Find the house, then settle in.</h3><p>Use the front entrance for check-in, with the waterfront backyard waiting just beyond the house.</p></div>
           <figure><img src="/cottage/front-of-house.jpg" alt="Front exterior of Lakefront Serenity" /><figcaption>Arrive at the front of the house</figcaption></figure>
           <figure><img src="/cottage/exterior.webp" alt="Back exterior and lawn at Lakefront Serenity" /><figcaption>Settle into the waterfront backyard</figcaption></figure>
+          <div className="arrival-note"><p className="eyebrow">Before you arrive</p><h3>Everything you need is shared privately.</h3><p>The exact address, parking guidance and unique keypad code are sent after payment and confirmation, so your arrival stays simple and secure.</p></div>
         </div>
         <div className="know-copy">
           <p className="eyebrow">Good to know</p>
