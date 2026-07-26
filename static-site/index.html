@@ -11,7 +11,7 @@
   <meta property="og:image" content="/og-lakefront-serenity.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg">
-  <link rel="stylesheet" href="/styles.css?v=18">
+  <link rel="stylesheet" href="/styles.css?v=19">
 </head>
 <body>
   <main>
@@ -138,16 +138,18 @@
       <div class="booking-request-backdrop" id="booking-request-backdrop" role="presentation" hidden>
         <div class="booking-request-dialog" role="dialog" aria-modal="true" aria-labelledby="booking-request-title" aria-describedby="booking-request-description">
           <button class="booking-request-close" id="booking-request-close" type="button" aria-label="Close booking request">×</button>
-          <form id="booking-request-form">
-            <p class="eyebrow">Request to book</p>
-            <h3 id="booking-request-title">Send your stay request.</h3>
-            <p id="booking-request-description">This is not an instant booking. The host will review the dates and reply with availability, pricing and next steps.</p>
-            <div class="booking-request-stay" aria-label="Requested stay"><div><span>Dates</span><strong id="request-stay-dates">Choose dates</strong></div><div><span>Guests</span><strong id="request-stay-guests">2 guests</strong></div><div><span>Standard estimate</span><strong id="request-stay-estimate">Choose dates</strong><small>Long-weekend adjustment, if applicable, is confirmed by the host.</small></div></div>
-            <label class="booking-request-field"><span>Your email</span><input id="booking-request-email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="254"><small>We’ll send a copy of the request to this address.</small></label>
-            <label class="booking-request-field"><span>Anything else the host should know? <em>Optional</em></span><textarea id="booking-request-note" placeholder="Questions, accessibility needs, occasion, or other helpful details" maxlength="1200" rows="5"></textarea></label>
-            <label class="booking-request-honeypot" aria-hidden="true">Website<input id="booking-request-website" type="text" tabindex="-1" autocomplete="off"></label>
-            <div class="booking-request-error" id="booking-request-error" role="alert" hidden><strong>We couldn’t send the request.</strong><span id="booking-request-error-message"></span></div>
-            <div class="booking-request-actions"><button id="booking-request-cancel" type="button">Cancel</button><button class="send" id="booking-request-send" type="submit">Send request <span aria-hidden="true">→</span></button></div>
+          <form class="booking-request-form" id="booking-request-form">
+            <header class="booking-request-heading"><p class="eyebrow">Request to book</p><h3 id="booking-request-title">Send your stay request.</h3><p id="booking-request-description">Share where we should reply. The host will confirm availability, the final price and next steps.</p></header>
+            <div class="booking-request-layout">
+              <aside class="booking-request-overview" aria-label="Requested stay"><p class="booking-request-overview-label">Your stay</p><div class="booking-request-stay"><div><span>Dates</span><strong id="request-stay-dates">Choose dates</strong></div><div><span>Guests</span><strong id="request-stay-guests">2 guests</strong></div><div><span>Standard estimate</span><strong id="request-stay-estimate">Choose dates</strong><small>Long-weekend pricing is confirmed by the host.</small></div></div><p class="booking-request-notice"><span aria-hidden="true">✓</span>This is a request, not an instant booking. No payment is taken now.</p></aside>
+              <div class="booking-request-inputs">
+                <label class="booking-request-field"><span>Your email</span><input id="booking-request-email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="254"><small>We’ll send a copy of the request to this address.</small></label>
+                <label class="booking-request-field"><span>Message for the host <em>Optional</em></span><textarea id="booking-request-note" placeholder="Questions, accessibility needs, occasion, or anything else we should know" maxlength="1200" rows="5"></textarea></label>
+                <label class="booking-request-honeypot" aria-hidden="true">Website<input id="booking-request-website" type="text" tabindex="-1" autocomplete="off"></label>
+                <div class="booking-request-error" id="booking-request-error" role="alert" hidden><strong>We couldn’t send the request.</strong><span id="booking-request-error-message"></span></div>
+                <div class="booking-request-actions"><button id="booking-request-cancel" type="button">Cancel</button><button class="send" id="booking-request-send" type="submit">Send stay request <span aria-hidden="true">→</span></button></div>
+              </div>
+            </div>
           </form>
           <div class="booking-request-success" id="booking-request-success" hidden><span aria-hidden="true">✓</span><p class="eyebrow">Request sent</p><h3>Your dates are with the host.</h3><p>A copy was sent to <strong id="booking-request-sent-email"></strong>. The host will confirm availability, the final rate and next steps.</p><button id="booking-request-done" type="button">Done</button></div>
         </div>

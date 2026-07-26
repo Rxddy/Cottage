@@ -399,40 +399,50 @@ export function BookingPanel({
               <button type="button" onClick={() => setIsRequestOpen(false)}>Done</button>
             </div>
           ) : (
-            <form onSubmit={sendBookingRequest}>
-              <p className="eyebrow">Request to book</p>
-              <h3 id="booking-request-title">Send your stay request.</h3>
-              <p id="booking-request-description">This is not an instant booking. The host will review the dates and reply with availability, pricing and next steps.</p>
-              <div className="booking-request-stay" aria-label="Requested stay">
-                <div><span>Dates</span><strong>{friendlyDate(arrival)} → {friendlyDate(departure)}</strong></div>
-                <div><span>Guests</span><strong>{guests} {guests === 1 ? "guest" : "guests"}</strong></div>
-                <div><span>Standard estimate</span><strong>{estimatedTotalLabel}</strong><small>Long-weekend adjustment, if applicable, is confirmed by the host.</small></div>
-              </div>
-              <label className="booking-request-field">
-                <span>Your email</span>
-                <input ref={requestEmailRef} type="email" value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} autoComplete="email" placeholder="you@example.com" required maxLength={254} />
-                <small>We’ll send a copy of the request to this address.</small>
-              </label>
-              <label className="booking-request-field">
-                <span>Anything else the host should know? <em>Optional</em></span>
-                <textarea value={guestMessage} onChange={(event) => setGuestMessage(event.target.value)} placeholder="Questions, accessibility needs, occasion, or other helpful details" maxLength={1200} rows={5} />
-              </label>
-              <label className="booking-request-honeypot" aria-hidden="true">
-                Website
-                <input name="website" type="text" tabIndex={-1} autoComplete="off" />
-              </label>
-              {requestState === "error" ? (
-                <div className="booking-request-error" role="alert">
-                  <strong>We couldn’t send the request.</strong>
-                  <span>{requestError}</span>
+            <form className="booking-request-form" onSubmit={sendBookingRequest}>
+              <header className="booking-request-heading">
+                <p className="eyebrow">Request to book</p>
+                <h3 id="booking-request-title">Send your stay request.</h3>
+                <p id="booking-request-description">Share where we should reply. The host will confirm availability, the final price and next steps.</p>
+              </header>
+              <div className="booking-request-layout">
+                <aside className="booking-request-overview" aria-label="Requested stay">
+                  <p className="booking-request-overview-label">Your stay</p>
+                  <div className="booking-request-stay">
+                    <div><span>Dates</span><strong>{friendlyDate(arrival)} → {friendlyDate(departure)}</strong></div>
+                    <div><span>Guests</span><strong>{guests} {guests === 1 ? "guest" : "guests"}</strong></div>
+                    <div><span>Standard estimate</span><strong>{estimatedTotalLabel}</strong><small>Long-weekend pricing is confirmed by the host.</small></div>
+                  </div>
+                  <p className="booking-request-notice"><span aria-hidden="true">✓</span>This is a request, not an instant booking. No payment is taken now.</p>
+                </aside>
+                <div className="booking-request-inputs">
+                  <label className="booking-request-field">
+                    <span>Your email</span>
+                    <input ref={requestEmailRef} type="email" value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} autoComplete="email" placeholder="you@example.com" required maxLength={254} />
+                    <small>We’ll send a copy of the request to this address.</small>
+                  </label>
+                  <label className="booking-request-field">
+                    <span>Message for the host <em>Optional</em></span>
+                    <textarea value={guestMessage} onChange={(event) => setGuestMessage(event.target.value)} placeholder="Questions, accessibility needs, occasion, or anything else we should know" maxLength={1200} rows={5} />
+                  </label>
+                  <label className="booking-request-honeypot" aria-hidden="true">
+                    Website
+                    <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+                  </label>
+                  {requestState === "error" ? (
+                    <div className="booking-request-error" role="alert">
+                      <strong>We couldn’t send the request.</strong>
+                      <span>{requestError}</span>
+                    </div>
+                  ) : null}
+                  <div className="booking-request-actions">
+                    <button type="button" onClick={() => setIsRequestOpen(false)} disabled={requestState === "sending"}>Cancel</button>
+                    <button className="send" type="submit" disabled={requestState === "sending"}>
+                      {requestState === "sending" ? "Sending…" : "Send stay request"}
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  </div>
                 </div>
-              ) : null}
-              <div className="booking-request-actions">
-                <button type="button" onClick={() => setIsRequestOpen(false)} disabled={requestState === "sending"}>Cancel</button>
-                <button className="send" type="submit" disabled={requestState === "sending"}>
-                  {requestState === "sending" ? "Sending…" : "Send request"}
-                  <span aria-hidden="true">→</span>
-                </button>
               </div>
             </form>
           )}
