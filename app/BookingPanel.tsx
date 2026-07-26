@@ -452,7 +452,12 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
     if (!target) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setIsBookSectionVisible(entry.isIntersecting),
+      ([entry]) => {
+        setIsBookSectionVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          window.dispatchEvent(new Event("open-booking-calendar"));
+        }
+      },
       { threshold: 0.24, rootMargin: "0px 0px -18% 0px" },
     );
 

@@ -95,12 +95,15 @@ test("keeps the responsive contact, full calendar horizon and amenity grid on bo
   assert.match(staticPage, /Planning calendar shown through/);
   assert.match(staticPage, /id="calendar-previous"/);
   assert.match(staticPage, /id="calendar-next"/);
+  assert.match(staticPage, /bookingDock\.classList\.toggle\('is-booking-visible', entry\.isIntersecting\)/);
+  assert.match(staticPage, /openBookingCalendar\(\{ scroll: false \}\)/);
   assert.match(syncScript, /availabilityThrough/);
   assert.match(styles, /\.amenity-groups\s*\{[^}]*grid-template-columns:\s*repeat\(4/);
   assert.match(styles, /\.contact-card a\s*\{[^}]*white-space:\s*nowrap/);
   assert.match(styles, /html\s*\{[^}]*overflow-x:\s*clip/);
   assert.match(styles, /body\s*\{[^}]*min-height:\s*100dvh/);
   assert.match(styles, /\.booking-request-dialog\s*\{[^}]*max-height:\s*calc\(100dvh - 56px\)/);
+  assert.match(styles, /\.booking-dock\s*\{\s*position:\s*fixed/);
   assert.doesNotMatch(amenities, /<details[^>]*\sopen=/);
 });
 
