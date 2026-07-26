@@ -89,8 +89,12 @@ test("keeps the responsive contact, full calendar horizon and amenity grid on bo
 
   assert.match(bookingPanel, /availabilityThrough/);
   assert.match(bookingPanel, /Planning calendar shown through/);
+  assert.match(bookingPanel, /aria-label="Previous month"/);
+  assert.match(bookingPanel, /aria-label="Next month"/);
   assert.match(staticPage, /availabilityThrough/);
   assert.match(staticPage, /Planning calendar shown through/);
+  assert.match(staticPage, /id="calendar-previous"/);
+  assert.match(staticPage, /id="calendar-next"/);
   assert.match(syncScript, /availabilityThrough/);
   assert.match(styles, /\.amenity-groups\s*\{[^}]*grid-template-columns:\s*repeat\(4/);
   assert.match(styles, /\.contact-card a\s*\{[^}]*white-space:\s*nowrap/);
@@ -120,6 +124,10 @@ test("keeps pricing, nearby travel times and the in-site email request aligned",
     assert.match(homepage, /\$200/);
     assert.match(homepage, /About 4 minutes by car/);
     assert.match(homepage, /About 5 minutes by car/);
+    assert.match(homepage, /About 25 minutes by car/);
+    assert.match(homepage, /About 45 minutes by car/);
+    assert.match(homepage, /About 50 minutes by car/);
+    assert.match(homepage, /About 60 minutes by car/);
   }
 
   assert.match(bookingPanel, /fetch\("\/api\/booking-request"/);

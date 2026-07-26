@@ -57,6 +57,7 @@ export function BookingPanel({
   const [arrival, setArrival] = useState("");
   const [departure, setDeparture] = useState("");
   const [hovered, setHovered] = useState("");
+  const [viewMonth, setViewMonth] = useState(() => startOfMonth(today));
   const [guests, setGuests] = useState(2);
   const [message, setMessage] = useState(
     availabilityStatus === "connected"
@@ -76,18 +77,12 @@ export function BookingPanel({
     const feedHorizon = fromKey(availabilityThrough);
     return Number.isNaN(feedHorizon.getTime()) || feedHorizon < today ? fallback : feedHorizon;
   }, [availabilityStatus, availabilityThrough, today]);
-  const months = useMemo(() => {
-    const firstMonth = startOfMonth(today);
-    const lastMonth = startOfMonth(calendarHorizon);
-    const monthCount = Math.max(
-      1,
-      (lastMonth.getFullYear() - firstMonth.getFullYear()) * 12
-        + lastMonth.getMonth()
-        - firstMonth.getMonth()
-        + 1,
-    );
-    return Array.from({ length: monthCount }, (_, index) => addMonths(firstMonth, index));
-  }, [calendarHorizon, today]);
+  const firstCalendarMonth = startOfMonth(today);
+  const lastCalendarMonth = startOfMonth(calendarHorizon);
+  const months = useMemo(
+    () => [viewMonth, addMonths(viewMonth, 1)].filter((month) => month <= lastCalendarMonth),
+    [lastCalendarMonth, viewMonth],
+  );
   const calendarHorizonLabel = calendarHorizon.toLocaleDateString("en-CA", {
     month: "short",
     day: "numeric",
@@ -313,7 +308,25 @@ export function BookingPanel({
           <div className="booking-calendar-inner">
             <div className="range-calendar" aria-label="Choose check-in and check-out dates">
               <div className="calendar-toolbar full-calendar-toolbar">
+                <button
+                  className="calendar-nav"
+                  type="button"
+                  aria-label="Previous month"
+                  disabled={viewMonth <= firstCalendarMonth}
+                  onClick={() => setViewMonth((month) => addMonths(month, -1))}
+                >
+                  ←
+                </button>
                 <p><strong>{arrival && departure ? `${nights} ${nights === 1 ? "night" : "nights"}` : "Choose your stay"}</strong><span>{arrival ? `${friendlyDate(arrival)}${departure ? ` — ${friendlyDate(departure)}` : " — select check-out"}` : "Select check-in, then check-out"}</span></p>
+                <button
+                  className="calendar-nav"
+                  type="button"
+                  aria-label="Next month"
+                  disabled={viewMonth >= lastCalendarMonth}
+                  onClick={() => setViewMonth((month) => addMonths(month, 1))}
+                >
+                  →
+                </button>
                 <span className="calendar-horizon">Planning calendar shown through {calendarHorizonLabel}</span>
               </div>
               <p className={`calendar-availability-note ${availabilityStatus}`}>

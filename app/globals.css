@@ -409,8 +409,8 @@ main, section, article, aside, header, footer, nav, div { min-width: 0; }
 .calendar-toolbar p { margin: 0; display: grid; gap: 2px; text-align: center; }
 .calendar-toolbar strong { font-family: var(--font-display); font-size: 18px; font-weight: 500; }
 .calendar-toolbar span { color: var(--muted); font-size: 11px; }
-.full-calendar-toolbar { grid-template-columns: 1fr; gap: 6px; }
-.calendar-toolbar .calendar-horizon { color: var(--olive); text-align: center; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.full-calendar-toolbar { grid-template-columns: 42px minmax(0, 1fr) 42px; gap: 10px 12px; }
+.calendar-toolbar .calendar-horizon { grid-column: 1 / -1; color: var(--olive); text-align: center; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .calendar-nav { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); color: var(--forest); cursor: pointer; font-size: 18px; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
 .calendar-nav:not(:disabled):hover { transform: translateY(-2px); background: white; box-shadow: 0 8px 18px rgba(20,42,32,.12); }
 .calendar-nav:disabled { opacity: .3; cursor: not-allowed; }
@@ -643,6 +643,7 @@ footer > div { display: flex; justify-content: flex-end; gap: 18px; color: rgba(
   .booking-summary-row { grid-template-columns: 1fr; }
   .range-calendar { padding: 12px 9px; border-radius: 15px; }
   .calendar-months { grid-template-columns: 1fr; }
+  .calendar-months .calendar-month:nth-child(n+2) { display: none; }
   .calendar-toolbar { grid-template-columns: 40px 1fr 40px; gap: 7px; }
   .calendar-toolbar strong { font-size: 16px; }
   .calendar-toolbar span { font-size: 11px; }
