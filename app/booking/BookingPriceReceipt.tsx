@@ -4,6 +4,19 @@ import { formatMoney, type BookingPriceBreakdown } from "../booking-utils";
 
 export function BookingPriceReceipt({ breakdown, compact = false }: { breakdown: BookingPriceBreakdown; compact?: boolean }) {
   const taxPercent = breakdown.taxRateBasisPoints / 100;
+
+  if (compact && !breakdown.nights.length) {
+    return (
+      <section className="price-receipt price-receipt-compact price-receipt-empty-state" aria-labelledby="price-details-title">
+        <div>
+          <h3 id="price-details-title">Estimate</h3>
+          <p>Pick a check-in and check-out date to see the rental total.</p>
+        </div>
+        <strong>Rate to be confirmed</strong>
+      </section>
+    );
+  }
+
   return (
     <section className={`price-receipt${compact ? " price-receipt-compact" : ""}`} aria-labelledby="price-details-title">
       <div className="price-receipt-heading"><h3 id="price-details-title">Price details</h3><span>{breakdown.nights.length} {breakdown.nights.length === 1 ? "night" : "nights"}</span></div>
