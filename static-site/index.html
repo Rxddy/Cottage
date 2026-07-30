@@ -128,7 +128,7 @@
         <div class="booking-compact-card" id="booking-compact-card"><div><p class="eyebrow">Booking details</p><h3>Open the full calendar.</h3><p>Skip the photo sections and jump straight to availability.</p></div><div class="booking-compact-meta"><span id="availability-sync-status">Availability pending</span><strong>From $724.71 CAD / night</strong></div><button class="booking-expand" id="booking-expand" type="button"><span class="calendar-button-icon" aria-hidden="true"></span><span>Open calendar &amp; see price</span></button></div>
         <div class="booking-calendar-shell" id="booking-calendar-shell"><div class="booking-calendar-inner"><div class="range-calendar" aria-label="Choose check-in and check-out dates"><div class="calendar-toolbar"><button class="calendar-nav" id="calendar-previous" type="button" aria-label="Previous month">←</button><p><strong id="calendar-status">Choose your stay</strong><span id="calendar-summary">Select check-in, then check-out</span></p><button class="calendar-nav" id="calendar-next" type="button" aria-label="Next month">→</button></div><p class="calendar-availability-note not-configured" id="calendar-availability-note">Availability data is not connected yet.</p><div class="calendar-months" id="calendar-months"></div></div></div></div>
         <input name="arrival" id="arrival-input" type="hidden"><input name="departure" id="departure-input" type="hidden">
-        <a class="booking-submit" id="booking-submit" href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request">Request these dates <span aria-hidden="true">→</span></a>
+        <button class="booking-submit" id="booking-submit" type="button">Request these dates <span aria-hidden="true">→</span></button>
         <details class="booking-email-fallback"><summary>Email link not opening?</summary><p>Copy this prepared request into Gmail, Outlook or your preferred email app.</p><textarea id="booking-email-draft" readonly aria-label="Prepared booking email"></textarea><button type="button" id="copy-booking-email">Copy email draft</button></details>
         <p class="booking-message" id="booking-message" aria-live="polite">Select a check-in date, then choose your check-out date.</p>
       </form>
@@ -136,6 +136,19 @@
     </section>
 
     <section class="contact-section section" id="contact"><div class="contact-copy"><p class="eyebrow">Questions before you book?</p><h2>Talk with the host.</h2><p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps.</p></div><div class="contact-card"><span class="contact-card-label">Booking &amp; guest support</span><a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20inquiry">lakefrontserenitysupport@gmail.com</a><small>We usually respond within one business day.</small></div></section>
+
+    <div class="email-composer-backdrop" id="email-composer-backdrop" role="presentation" hidden>
+      <section class="email-composer" role="dialog" aria-modal="true" aria-labelledby="email-composer-title">
+        <div class="email-composer-heading"><div><p class="eyebrow">Booking request</p><h2 id="email-composer-title">Review your email draft.</h2></div><button type="button" class="email-composer-close" id="email-composer-close" aria-label="Close email draft">×</button></div>
+        <p class="email-composer-note">This draft stays inside the website. Send it to <strong>lakefrontserenitysupport@gmail.com</strong>, or copy it if sending is not configured.</p>
+        <label class="email-composer-field">To<input readonly value="lakefrontserenitysupport@gmail.com"></label>
+        <label class="email-composer-field">Your email for replies<input id="email-composer-reply-to" inputmode="email" autocomplete="email" placeholder="you@example.com"></label>
+        <label class="email-composer-field">Subject<input id="email-composer-subject" readonly value="Lakefront Serenity booking request"></label>
+        <label class="email-composer-field">Message<textarea id="email-composer-body" rows="14"></textarea></label>
+        <p class="email-composer-status" id="email-composer-status" role="status" hidden></p>
+        <div class="email-composer-actions"><button type="button" id="email-composer-cancel">Close</button><button type="button" id="email-composer-copy">Copy draft</button><button type="button" class="email-composer-primary" id="email-composer-send">Send email</button></div>
+      </section>
+    </div>
 
     <div class="lightbox" id="site-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
       <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close photo viewer">×</button>
@@ -195,7 +208,17 @@
     const bookingSubmit = document.getElementById('booking-submit');
     const bookingEmailDraft = document.getElementById('booking-email-draft');
     const copyBookingEmail = document.getElementById('copy-booking-email');
+    const emailComposerBackdrop = document.getElementById('email-composer-backdrop');
+    const emailComposerClose = document.getElementById('email-composer-close');
+    const emailComposerCancel = document.getElementById('email-composer-cancel');
+    const emailComposerCopy = document.getElementById('email-composer-copy');
+    const emailComposerSend = document.getElementById('email-composer-send');
+    const emailComposerReplyTo = document.getElementById('email-composer-reply-to');
+    const emailComposerSubject = document.getElementById('email-composer-subject');
+    const emailComposerBody = document.getElementById('email-composer-body');
+    const emailComposerStatus = document.getElementById('email-composer-status');
     const blockedDates = new Set();
+    let lockedScrollY = 0;
 
     const dateKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     const fromKey = (value) => { const [year, month, day] = value.split('-').map(Number); return new Date(year, month - 1, day); };
@@ -217,9 +240,77 @@
       calendarSummary.textContent = arrival ? `${friendlyDate(arrival)}${departure ? ` — ${friendlyDate(departure)}` : ' — select check-out'}` : 'Select check-in, then check-out';
       const dateLine = arrival && departure ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? 'night' : 'nights'})` : 'the dates I selected on the availability calendar';
       const body = `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guestsSelect.value}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
-      bookingSubmit.href = `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(body)}`;
       bookingEmailDraft.value = body;
+      emailComposerBody.value = body;
     };
+
+    const showComposerStatus = (text) => {
+      emailComposerStatus.hidden = !text;
+      emailComposerStatus.textContent = text;
+    };
+
+    const lockPage = () => {
+      lockedScrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    };
+
+    const unlockPage = () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      window.scrollTo(0, lockedScrollY);
+    };
+
+    const openEmailComposer = () => {
+      updateBookingSummary();
+      showComposerStatus('');
+      emailComposerBackdrop.hidden = false;
+      lockPage();
+      emailComposerReplyTo.focus();
+    };
+
+    const closeEmailComposer = () => {
+      emailComposerBackdrop.hidden = true;
+      unlockPage();
+    };
+
+    bookingSubmit.addEventListener('click', openEmailComposer);
+    emailComposerClose.addEventListener('click', closeEmailComposer);
+    emailComposerCancel.addEventListener('click', closeEmailComposer);
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !emailComposerBackdrop.hidden) closeEmailComposer();
+    });
+    emailComposerCopy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(`To: lakefrontserenitysupport@gmail.com\nSubject: ${emailComposerSubject.value}\n\n${emailComposerBody.value}`);
+        emailComposerCopy.textContent = 'Copied';
+        window.setTimeout(() => { emailComposerCopy.textContent = 'Copy draft'; }, 1600);
+      } catch {
+        showComposerStatus('Select the draft and copy it manually.');
+      }
+    });
+    emailComposerSend.addEventListener('click', async () => {
+      emailComposerSend.textContent = 'Sending...';
+      showComposerStatus('');
+      try {
+        const response = await fetch('/api/booking-email', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ subject: emailComposerSubject.value, body: emailComposerBody.value, replyTo: emailComposerReplyTo.value, website: '' })
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'The email could not be sent.');
+        emailComposerSend.textContent = 'Sent';
+        showComposerStatus(result.message || 'Email sent to Lakefront Serenity support.');
+      } catch (error) {
+        emailComposerSend.textContent = 'Send email';
+        showComposerStatus(error instanceof Error ? error.message : 'The email could not be sent. Copy the draft and email the host directly.');
+      }
+    });
 
     const paintCalendarRange = () => {
       const previewEnd = arrival && !departure && hovered > arrival ? hovered : '';

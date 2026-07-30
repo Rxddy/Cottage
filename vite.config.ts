@@ -31,6 +31,7 @@ const localBindingConfig = {
         },
       ]
     : [],
+  send_email: [{ name: "EMAIL" }],
 };
 
 export default defineConfig(async () => {
