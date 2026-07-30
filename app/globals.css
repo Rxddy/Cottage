@@ -435,6 +435,7 @@ button, input, select { font: inherit; }
 .security-deposit-notice p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .booking-submit { width: 100%; appearance: none; font: inherit; cursor: pointer; }
 .email-composer-backdrop { position: fixed; inset: 0; z-index: 120; width: 100vw; height: 100dvh; overflow: hidden; display: grid; place-items: center; padding: 22px; background: rgba(10, 31, 26, .72); backdrop-filter: blur(8px); overscroll-behavior: contain; touch-action: none; }
+.email-composer-backdrop[hidden], .email-composer-status[hidden] { display: none !important; }
 .email-composer { width: min(720px, 100%); max-height: calc(100dvh - 44px); overflow: hidden; display: grid; grid-template-rows: auto auto auto auto minmax(190px, 1fr) auto auto; gap: 12px; padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); box-shadow: 0 24px 80px rgba(10, 31, 26, .24); color: var(--ink); touch-action: auto; }
 .email-composer-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
 .email-composer-heading h2 { margin: 0; font-family: var(--font-display); font-size: 32px; font-weight: 500; }
