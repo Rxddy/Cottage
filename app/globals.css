@@ -428,6 +428,20 @@ button, input, select { font: inherit; }
 .security-deposit-notice > div { display: flex; justify-content: space-between; gap: 12px; }
 .security-deposit-notice strong, .security-deposit-notice span { font-size: 12px; }
 .security-deposit-notice p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.booking-submit { width: 100%; appearance: none; font: inherit; cursor: pointer; }
+.email-composer-backdrop { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 22px; background: rgba(10, 31, 26, .62); backdrop-filter: blur(8px); }
+.email-composer { width: min(680px, 100%); max-height: min(780px, calc(100vh - 44px)); overflow: auto; display: grid; gap: 14px; padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); box-shadow: 0 24px 80px rgba(10, 31, 26, .24); color: var(--ink); }
+.email-composer-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+.email-composer-heading h2 { margin: 0; font-family: var(--font-display); font-size: 32px; font-weight: 500; }
+.email-composer-heading .eyebrow { margin: 0 0 5px; }
+.email-composer-close { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); font-size: 25px; line-height: 1; cursor: pointer; }
+.email-composer-note { margin: 0; padding: 12px 14px; border-radius: 11px; background: #edf0e7; color: var(--forest); font-size: 13px; line-height: 1.5; }
+.email-composer-field { display: grid; gap: 6px; color: var(--olive); font-size: 10px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+.email-composer-field input, .email-composer-field textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink); font: 15px/1.45 var(--font-body); letter-spacing: normal; text-transform: none; }
+.email-composer-field textarea { min-height: 260px; resize: vertical; }
+.email-composer-actions { display: flex; justify-content: flex-end; gap: 9px; }
+.email-composer-actions button { min-height: 46px; padding: 0 16px; border: 1px solid var(--forest); border-radius: 10px; background: transparent; color: var(--forest); cursor: pointer; font-size: 11px; font-weight: 750; }
+.email-composer-actions .email-composer-primary { background: var(--olive); border-color: var(--olive); color: white; }
 .security-deposit-notice { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin-top: 15px; padding: 12px; border-radius: 11px; background: #e9eee3; color: var(--forest); font-size: 12px; }
 .security-deposit-notice span { font-weight: 700; white-space: nowrap; }
 .security-deposit-notice p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
@@ -614,6 +628,12 @@ footer > div { display: flex; justify-content: flex-end; gap: 18px; color: rgba(
   .mobile-flow-primary:disabled { opacity: .45; cursor: not-allowed; }
   .mobile-submit { width: 100%; justify-content: space-between; }
   .mobile-flow-back { width: 100%; margin-top: 5px; }
+  .email-composer-backdrop { align-items: end; padding: 10px; }
+  .email-composer { max-height: calc(100vh - 20px); padding: 18px; border-radius: 17px; }
+  .email-composer-heading h2 { font-size: 27px; }
+  .email-composer-field textarea { min-height: 220px; }
+  .email-composer-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .email-composer-actions button { width: 100%; }
   .mobile-review { display: grid; gap: 8px; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.55); }
   .mobile-review p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
   .mobile-review strong { color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 500; }

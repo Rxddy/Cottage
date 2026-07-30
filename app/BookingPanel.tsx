@@ -12,6 +12,7 @@ import {
   type BookingPricing,
 } from "./booking-utils";
 import { BookingPriceReceipt } from "./booking/BookingPriceReceipt";
+import { BookingEmailComposer } from "./booking/BookingEmailComposer";
 import { MobileBookingFlow } from "./booking/MobileBookingFlow";
 
 type AnimeApi = {
@@ -61,6 +62,7 @@ export function BookingPanel({
       : "Select a check-in date, then choose your check-out date.",
   );
   const [isExpanded, setIsExpanded] = useState(variant === "hero");
+  const [isEmailComposerOpen, setIsEmailComposerOpen] = useState(false);
   const blockedDateSet = useMemo(() => new Set(blockedDates), [blockedDates]);
 
   useEffect(() => {
@@ -105,9 +107,6 @@ export function BookingPanel({
       : "the dates I selected on the availability calendar";
     return `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guests}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
   }, [arrival, departure, guests, nights]);
-  const bookingRequestHref = useMemo(() => {
-    return `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(bookingRequestBody)}`;
-  }, [bookingRequestBody]);
   const priceBreakdown = useMemo(() => calculateBookingPriceBreakdown(arrival, departure, pricing), [arrival, departure, pricing]);
 
   function chooseDate(date: Date) {
@@ -271,10 +270,10 @@ export function BookingPanel({
 
             <BookingPriceReceipt breakdown={priceBreakdown} compact />
 
-            <a className="booking-submit" href={bookingRequestHref}>
+            <button className="booking-submit" type="button" onClick={() => setIsEmailComposerOpen(true)}>
               Request these dates
               <span aria-hidden="true">→</span>
-            </a>
+            </button>
             <details className="booking-email-fallback">
               <summary>Email link not opening?</summary>
               <p>Copy this prepared request into Gmail, Outlook or your preferred email app.</p>
@@ -290,6 +289,7 @@ export function BookingPanel({
       <input name="departure" type="hidden" value={departure} />
       </div>
       <MobileBookingFlow pricing={pricing} blockedDates={blockedDates} />
+      <BookingEmailComposer open={isEmailComposerOpen} subject="Lakefront Serenity booking request" initialBody={bookingRequestBody} onClose={() => setIsEmailComposerOpen(false)} />
     </form>
   );
 }
