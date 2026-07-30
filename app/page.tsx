@@ -327,19 +327,6 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="contact-section section reveal" id="contact">
-        <div className="contact-copy">
-          <p className="eyebrow">Questions before you book?</p>
-          <h2>Talk with the host.</h2>
-          <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps. The exact arrival address and access instructions are shared privately after a reservation is accepted.</p>
-        </div>
-        <div className="contact-card">
-          <span className="contact-card-label">Booking &amp; guest support</span>
-          <a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20inquiry">lakefrontserenitysupport@gmail.com</a>
-          <small>We usually respond within one business day.</small>
-        </div>
-      </section>
-
       <section className="booking-section reveal" id="book">
         <div className="booking-benefits" aria-label="Included cottage features">
           <div><span aria-hidden="true"><img src="/icons/flaticon/wifi.png" alt="" /></span><strong>Wi-Fi</strong><small>Included</small></div>
@@ -374,6 +361,19 @@ export default async function Home() {
         </div>
         <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
         <p className="booking-disclosure"><strong className="licence-badge">Kawartha Lakes Short-Term Rental Licence STR2026-163</strong>Availability is refreshed automatically. Select your dates, then email the host to request your stay. The exact arrival address and access instructions are sent privately in the confirmation email after the host accepts the reservation.</p>
+      </section>
+
+      <section className="contact-section section reveal" id="contact">
+        <div className="contact-copy">
+          <p className="eyebrow">Questions before you book?</p>
+          <h2>Talk with the host.</h2>
+          <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps. The exact arrival address and access instructions are shared privately after a reservation is accepted.</p>
+        </div>
+        <div className="contact-card">
+          <span className="contact-card-label">Booking &amp; guest support</span>
+          <a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20inquiry">lakefrontserenitysupport@gmail.com</a>
+          <small>We usually respond within one business day.</small>
+        </div>
       </section>
 
       <footer>

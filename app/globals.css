@@ -59,7 +59,7 @@ button, input, select { font: inherit; }
 .brand-copy { display: flex; flex-direction: column; gap: 2px; text-transform: uppercase; letter-spacing: .13em; }
 .brand-copy strong { font-family: var(--font-display); font-size: 16px; font-weight: 500; }
 .brand-copy small { font-size: 10px; opacity: .82; }
-.desktop-nav { display: flex; justify-content: flex-start; align-items: center; gap: clamp(15px, 1.7vw, 28px); font-size: 13px; }
+.desktop-nav { width: fit-content; justify-self: start; display: flex; justify-content: flex-start; align-items: center; gap: clamp(15px, 1.7vw, 28px); font-size: 13px; }
 .desktop-nav a { padding: 5px 0; border-bottom: 1px solid transparent; transition: opacity .2s ease, border-color .2s ease; }
 .desktop-nav a:hover, .desktop-nav a.active { border-color: rgba(255,255,255,.8); }
 .button { display: inline-flex; justify-content: center; align-items: center; gap: 14px; border-radius: 5px; transition: transform .2s ease, background .2s ease, color .2s ease; }
