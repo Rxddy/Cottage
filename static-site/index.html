@@ -245,7 +245,8 @@
     };
 
     const showComposerStatus = (text) => {
-      emailComposerStatus.hidden = !text;
+      if (text) emailComposerStatus.removeAttribute('hidden');
+      else emailComposerStatus.setAttribute('hidden', '');
       emailComposerStatus.textContent = text;
     };
 
@@ -268,13 +269,13 @@
     const openEmailComposer = () => {
       updateBookingSummary();
       showComposerStatus('');
-      emailComposerBackdrop.hidden = false;
+      emailComposerBackdrop.removeAttribute('hidden');
       lockPage();
       emailComposerReplyTo.focus();
     };
 
     const closeEmailComposer = () => {
-      emailComposerBackdrop.hidden = true;
+      emailComposerBackdrop.setAttribute('hidden', '');
       unlockPage();
     };
 
@@ -282,7 +283,7 @@
     emailComposerClose.addEventListener('click', closeEmailComposer);
     emailComposerCancel.addEventListener('click', closeEmailComposer);
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !emailComposerBackdrop.hidden) closeEmailComposer();
+      if (event.key === 'Escape' && !emailComposerBackdrop.hasAttribute('hidden')) closeEmailComposer();
     });
     emailComposerCopy.addEventListener('click', async () => {
       try {
