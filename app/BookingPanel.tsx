@@ -6,10 +6,13 @@ import {
   dateKey,
   friendlyDate,
   formatMoney,
+  calculateBookingPriceBreakdown,
   nightsBetween,
   startOfMonth,
   type BookingPricing,
 } from "./booking-utils";
+import { BookingPriceReceipt } from "./booking/BookingPriceReceipt";
+import { MobileBookingFlow } from "./booking/MobileBookingFlow";
 
 type AnimeApi = {
   animate: (targets: string | Element | NodeListOf<Element>, options: Record<string, unknown>) => unknown;
@@ -105,6 +108,7 @@ export function BookingPanel({
   const bookingRequestHref = useMemo(() => {
     return `mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20booking%20request&body=${encodeURIComponent(bookingRequestBody)}`;
   }, [bookingRequestBody]);
+  const priceBreakdown = useMemo(() => calculateBookingPriceBreakdown(arrival, departure, pricing), [arrival, departure, pricing]);
 
   function chooseDate(date: Date) {
     const chosen = dateKey(date);
@@ -192,6 +196,7 @@ export function BookingPanel({
 
   return (
     <form ref={panelRef} className={`booking-panel ${variant} ${showExpandedCalendar ? "calendar-open" : ""}`} onSubmit={(event) => event.preventDefault()}>
+      <div className="legacy-booking-controls">
       <div className="booking-selection" aria-label="Selected stay details">
         <button className={arrival ? "date-choice has-value" : "date-choice"} type="button" onClick={repickArrival} aria-label={arrival ? `Change check-in date, currently ${friendlyDate(arrival)}` : "Choose check-in date"}><span>Check in</span><strong>{friendlyDate(arrival)}</strong></button>
         <button className={departure ? "date-choice has-value" : "date-choice"} type="button" onClick={repickDeparture} aria-label={departure ? `Change check-out date, currently ${friendlyDate(departure)}` : "Choose check-out date"}><span>Check out</span><strong>{friendlyDate(departure)}</strong></button>
@@ -264,6 +269,8 @@ export function BookingPanel({
               </div>
             </div>
 
+            <BookingPriceReceipt breakdown={priceBreakdown} compact />
+
             <a className="booking-submit" href={bookingRequestHref}>
               Request these dates
               <span aria-hidden="true">→</span>
@@ -281,6 +288,8 @@ export function BookingPanel({
 
       <input name="arrival" type="hidden" value={arrival} />
       <input name="departure" type="hidden" value={departure} />
+      </div>
+      <MobileBookingFlow pricing={pricing} blockedDates={blockedDates} />
     </form>
   );
 }

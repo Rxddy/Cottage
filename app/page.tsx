@@ -3,9 +3,14 @@ import { Amenities, Bedrooms, ExperienceCards, Gallery, NearbyCards, Reviews, Sc
 import { getAirbnbAvailability } from "./airbnb-calendar";
 
 const bookingPricing = {
-  currency: process.env.STRIPE_CURRENCY ?? "cad",
-  nightlyRateCents: Number(process.env.STRIPE_NIGHTLY_RATE_CENTS ?? 0),
-  cleaningFeeCents: Number(process.env.STRIPE_CLEANING_FEE_CENTS ?? 0),
+  currency: process.env.BOOKING_CURRENCY ?? "cad",
+  nightlyRateCents: Number(process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
+  weekdayRateCents: Number(process.env.BOOKING_WEEKDAY_RATE_CENTS ?? process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
+  weekendRateCents: Number(process.env.BOOKING_WEEKEND_RATE_CENTS ?? process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
+  longWeekendRateCents: Number(process.env.BOOKING_LONG_WEEKEND_RATE_CENTS ?? process.env.BOOKING_WEEKEND_RATE_CENTS ?? process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
+  cleaningFeeCents: Number(process.env.BOOKING_CLEANING_FEE_CENTS ?? 0),
+  taxRateBasisPoints: Number(process.env.BOOKING_TAX_RATE_BASIS_POINTS ?? 0),
+  refundableSecurityDepositCents: Number(process.env.BOOKING_SECURITY_DEPOSIT_CENTS ?? 100000),
 };
 
 const experiences = [

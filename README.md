@@ -29,8 +29,9 @@ arrival details after accepting a reservation.
   hours for the NAS mirror.
 - The NAS mirror includes nginx security headers, cache rules, privacy and terms
   pages, an availability sync container, and a host-side health-check script.
-- A server-side Stripe Checkout route is retained for a possible later
-  direct-booking phase, but no current customer-facing flow submits payment.
+- A mobile request-to-book flow now persists a server-side request and quote
+  snapshot when D1 is configured. Approved guests are guided to Persona,
+  Adobe Acrobat Sign, and Interac e-Transfer; no card payment is collected.
 - Exact property address, access instructions, and private calendar credentials
   are intentionally excluded from source and public copy.
 
@@ -54,7 +55,11 @@ arrival details after accepting a reservation.
 - Airbnb iCalendar parsing that treats checkout as the first available date
 - Disabled past and blocked nights
 - Clear connected, not-configured, and unavailable feed states
-- Optional nightly-rate and cleaning-fee estimate
+- Receipt-style nightly rates, cleaning fee, tax (when configured), rental
+  total, and a separate refundable security deposit
+- Mobile multi-step request flow with renter, address, occupancy, stay details,
+  and required acknowledgements
+- D1-backed booking-request records with versioned quote snapshots
 - Pre-filled email inquiry containing selected dates and estimated total
 - Sticky availability control that expands into the calendar
 - Airbnb feed URL kept server-side and ignored by Git
@@ -67,7 +72,8 @@ arrival details after accepting a reservation.
 - Fifteen-minute host-side monitor with alert and recovery email support
 - Tailscale Funnel deployment notes and safer public-domain guidance
 - Privacy/terms routing in nginx
-- Future Stripe session creation isolated to a server route
+- Host-only Adobe Acrobat Sign and Persona integration hooks, disabled until
+  their server credentials are configured
 
 ## Architecture
 
@@ -78,8 +84,9 @@ arrival details after accepting a reservation.
 | Styling and motion | Global CSS and vendored Anime.js | No third-party runtime CDN is required. |
 | Availability | Private Airbnb `.ics` feed | Server-side fetch for the full app; JSON snapshot for the static mirror. |
 | Static hosting | nginx in Docker Compose | Uses `static-site/` plus shared public assets and CSS. |
-| Optional data layer | Drizzle ORM and Cloudflare D1 scaffolding | No production booking records are stored yet. |
-| Future payments | Server-side Stripe Checkout route | Dormant until business, inventory, tax, and webhook requirements are complete. |
+| Booking data | Drizzle ORM and Cloudflare D1 | Stores request details, acknowledgements, status, and quote snapshot. |
+| Payments | Interac e-Transfer | Host sends instructions after approval; the public form never collects card data. |
+| Identity and signing | Persona + Adobe Acrobat Sign hooks | Host-only routes remain disabled until credentials and workflows are configured. |
 
 ### Request and sync flow
 
@@ -92,7 +99,8 @@ Private Airbnb iCalendar URL
                     --> static-site/airbnb-availability.json
                     --> nginx static calendar
 
-Guest chooses dates --> pre-filled email --> host accepts or declines
+Guest chooses dates --> server request + quote snapshot --> host review
+    --> Adobe agreement + Persona verification --> Interac rental payment + deposit
 ```
 
 The React app and `static-site/index.html` are separate renderings of the same
@@ -107,7 +115,8 @@ app/
   PropertyExperience.tsx       amenities, bedrooms, gallery, reviews, motion
   airbnb-calendar.ts           server-side availability fetch
   booking-utils.ts             date, money, and iCalendar helpers
-  api/stripe/checkout/route.ts future direct-checkout session endpoint
+  api/booking-requests/route.ts authoritative request + quote endpoint
+  api/admin/booking-requests/  host-only Adobe Sign and Persona hooks
   privacy/ and terms/          legal pages
 assets/listing/                preserved listing-source image derivatives
 public/cottage/                production property photography
@@ -160,13 +169,14 @@ logs are ignored.
 | Variable | Current use | Required |
 | --- | --- | --- |
 | `AIRBNB_ICAL_URL` | Private Airbnb export used to block unavailable nights | Yes for live availability |
-| `STRIPE_CURRENCY` | Display/checkout currency, defaults to `cad` | Only for future direct checkout |
-| `STRIPE_NIGHTLY_RATE_CENTS` | Optional price estimate and checkout line item | Only for future direct checkout |
-| `STRIPE_CLEANING_FEE_CENTS` | Optional price estimate and checkout line item | Only for future direct checkout |
-| `STRIPE_SECRET_KEY` | Creates a server-side Stripe Checkout session | Only for future direct checkout |
-| `STRIPE_ENABLE_AUTOMATIC_TAX` | Enables Stripe automatic tax when configured | Only for future direct checkout |
+| `BOOKING_CURRENCY`, `BOOKING_*_RATE_CENTS` | Server-authoritative receipt pricing | Set before accepting requests |
+| `BOOKING_CLEANING_FEE_CENTS`, `BOOKING_TAX_RATE_BASIS_POINTS` | Fee and optional tax treatment | Confirm with the owner/accountant |
+| `BOOKING_SECURITY_DEPOSIT_CENTS` | Separate refundable deposit amount | Set before launch |
+| `INTERAC_PAYMENT_EMAIL` | Host payment address released after approval | Optional until payment workflow is ready |
+| `ADOBE_SIGN_*` | Host-only agreement integration | Required to send agreements |
+| `PERSONA_*` | Host-only identity-verification integration | Required to send inquiries |
 
-Never commit the Airbnb feed URL, Stripe keys, access codes, or the exact arrival
+Never commit the Airbnb feed URL, provider keys, access codes, or the exact arrival
 address. The `.ics` URL functions like a private credential because anyone with
 it can read booking timing.
 

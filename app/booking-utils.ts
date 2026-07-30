@@ -2,6 +2,30 @@ export type BookingPricing = {
   currency: string;
   nightlyRateCents: number;
   cleaningFeeCents: number;
+  weekdayRateCents?: number;
+  weekendRateCents?: number;
+  longWeekendRateCents?: number;
+  taxRateBasisPoints?: number;
+  refundableSecurityDepositCents?: number;
+};
+
+export type BookingPriceLine = {
+  id: string;
+  label: string;
+  description?: string;
+  amountCents: number;
+};
+
+export type BookingPriceBreakdown = {
+  currency: string;
+  nights: BookingPriceLine[];
+  fees: BookingPriceLine[];
+  accommodationSubtotalCents: number;
+  taxableSubtotalCents: number;
+  taxRateBasisPoints: number;
+  taxCents: number;
+  totalCents: number;
+  refundableSecurityDepositCents: number;
 };
 
 export function startOfMonth(date: Date) {
@@ -44,6 +68,64 @@ export function formatMoney(cents: number, currency: string) {
     style: "currency",
     currency: resolvedCurrency,
   }).format(cents / 100);
+}
+
+/** Build the receipt-style estimate used by the booking UI and request email. */
+export function calculateBookingPriceBreakdown(
+  arrival: string,
+  departure: string,
+  pricing: BookingPricing,
+  longWeekendDates: ReadonlySet<string> = new Set(),
+): BookingPriceBreakdown {
+  const taxRateBasisPoints = pricing.taxRateBasisPoints ?? 0;
+  const refundableSecurityDepositCents = pricing.refundableSecurityDepositCents ?? 0;
+  if (!arrival || !departure || departure <= arrival) {
+    return {
+      currency: pricing.currency,
+      nights: [],
+      fees: [],
+      accommodationSubtotalCents: 0,
+      taxableSubtotalCents: 0,
+      taxRateBasisPoints,
+      taxCents: 0,
+      totalCents: 0,
+      refundableSecurityDepositCents,
+    };
+  }
+
+  const nights: BookingPriceLine[] = [];
+  let cursor = fromKey(arrival);
+  const checkout = fromKey(departure);
+  const weekdayRate = pricing.weekdayRateCents ?? pricing.nightlyRateCents;
+  const weekendRate = pricing.weekendRateCents ?? pricing.nightlyRateCents;
+  const longWeekendRate = pricing.longWeekendRateCents ?? weekendRate;
+  while (cursor < checkout) {
+    const key = dateKey(cursor);
+    const day = cursor.getDay();
+    const isLongWeekend = longWeekendDates.has(key);
+    const isWeekend = day === 5 || day === 6 || day === 0;
+    const amountCents = isLongWeekend ? longWeekendRate : isWeekend ? weekendRate : weekdayRate;
+    const label = isLongWeekend ? "Long-weekend rate" : isWeekend ? "Friday–Sunday rate" : "Monday–Thursday rate";
+    nights.push({ id: `night-${key}`, label: friendlyDate(key), description: label, amountCents });
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate() + 1);
+  }
+
+  const fees: BookingPriceLine[] = pricing.cleaningFeeCents > 0
+    ? [{ id: "cleaning-fee", label: "Cleaning fee", amountCents: pricing.cleaningFeeCents }]
+    : [];
+  const accommodationSubtotalCents = nights.reduce((sum, line) => sum + line.amountCents, 0) + fees.reduce((sum, line) => sum + line.amountCents, 0);
+  const taxCents = Math.round(accommodationSubtotalCents * taxRateBasisPoints / 10_000);
+  return {
+    currency: pricing.currency,
+    nights,
+    fees,
+    accommodationSubtotalCents,
+    taxableSubtotalCents: accommodationSubtotalCents,
+    taxRateBasisPoints,
+    taxCents,
+    totalCents: accommodationSubtotalCents + taxCents,
+    refundableSecurityDepositCents,
+  };
 }
 
 function icalDateKey(value: string) {
