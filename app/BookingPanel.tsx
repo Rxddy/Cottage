@@ -96,18 +96,19 @@ export function BookingPanel({
 
   const nights = nightsBetween(arrival, departure);
   const hasPricing = pricing.nightlyRateCents > 0 || pricing.cleaningFeeCents > 0;
+  const priceBreakdown = useMemo(() => calculateBookingPriceBreakdown(arrival, departure, pricing), [arrival, departure, pricing]);
   const nightlyRateLabel = pricing.nightlyRateCents > 0
     ? `From ${formatMoney(pricing.nightlyRateCents, pricing.currency)} / night`
     : "Rate to be confirmed";
-  const estimatedTotal = nights * pricing.nightlyRateCents + pricing.cleaningFeeCents;
-  const estimatedTotalLabel = hasPricing ? formatMoney(estimatedTotal, pricing.currency) : "Rate to be confirmed";
+  const estimatedTotalLabel = hasPricing && priceBreakdown.totalCents
+    ? formatMoney(priceBreakdown.totalCents, pricing.currency)
+    : nightlyRateLabel;
   const bookingRequestBody = useMemo(() => {
     const dateLine = arrival && departure
       ? `${friendlyDate(arrival)} to ${friendlyDate(departure)} (${nights} ${nights === 1 ? "night" : "nights"})`
       : "the dates I selected on the availability calendar";
     return `Hello Lakefront Serenity Team,\n\nI would like to request availability for the following stay:\n\nDates: ${dateLine}\nGuests: ${guests}\n\nPlease confirm availability, the final rate, payment instructions and the next steps required to reserve the cottage.\n\nThank you.`;
   }, [arrival, departure, guests, nights]);
-  const priceBreakdown = useMemo(() => calculateBookingPriceBreakdown(arrival, departure, pricing), [arrival, departure, pricing]);
 
   function chooseDate(date: Date) {
     const chosen = dateKey(date);
@@ -194,7 +195,7 @@ export function BookingPanel({
   const showExpandedCalendar = variant === "hero" || isExpanded;
 
   return (
-    <form ref={panelRef} className={`booking-panel ${variant} ${showExpandedCalendar ? "calendar-open" : ""}`} onSubmit={(event) => event.preventDefault()}>
+    <form id="availability-form" ref={panelRef} className={`booking-panel ${variant} ${showExpandedCalendar ? "calendar-open" : ""}`} onSubmit={(event) => event.preventDefault()}>
       <div className="legacy-booking-controls">
       <div className="booking-selection" aria-label="Selected stay details">
         <button className={arrival ? "date-choice has-value" : "date-choice"} type="button" onClick={repickArrival} aria-label={arrival ? `Change check-in date, currently ${friendlyDate(arrival)}` : "Choose check-in date"}><span>Check in</span><strong>{friendlyDate(arrival)}</strong></button>
@@ -301,12 +302,10 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
   useEffect(() => {
     const target = document.getElementById("book");
     if (!target) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => setIsBookSectionVisible(entry.isIntersecting),
-      { threshold: 0.24, rootMargin: "0px 0px -18% 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px -8% 0px" },
     );
-
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
@@ -328,7 +327,6 @@ export function BookingDock({ pricing }: { pricing: BookingPricing }) {
       href="#book"
       onClick={openBooking}
       aria-label="Skip to check availability and pricing"
-      tabIndex={isBookSectionVisible ? -1 : 0}
     >
       <span className="booking-dock-icon" aria-hidden="true"><span /></span>
       <span className="booking-dock-copy">

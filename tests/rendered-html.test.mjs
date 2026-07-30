@@ -30,9 +30,12 @@ test("server-renders the Lakefront Serenity guest experience", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Lakefront Serenity \| Kawartha Lakes<\/title>/i);
-  assert.match(html, /Your escape<br\/>starts here\./i);
+  assert.match(html, /The lake is<br\/>at your back door\./i);
   assert.match(html, /aria-label="Skip to check availability and pricing"/i);
   assert.match(html, /Plan your waterfront stay\./i);
+  assert.match(html, /Price before taxes/i);
+  assert.match(html, /Talk with the host\./i);
+  assert.match(html, /Walk through the cottage\./i);
   assert.match(html, /href="\/privacy"/i);
   assert.match(html, /href="\/terms"/i);
   assert.doesNotMatch(html, /AIRBNB_ICAL_URL|STRIPE_SECRET_KEY/i);
@@ -52,9 +55,10 @@ test("renders the legal pages", async () => {
 });
 
 test("keeps the full app and NAS mirror aligned on core booking policy", async () => {
-  const [appPage, staticPage, staticPrivacy, staticTerms, readme] =
+  const [appPage, propertyExperience, staticPage, staticPrivacy, staticTerms, readme] =
     await Promise.all([
       readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+      readFile(new URL("../app/PropertyExperience.tsx", import.meta.url), "utf8"),
       readFile(new URL("../static-site/index.html", import.meta.url), "utf8"),
       readFile(new URL("../static-site/privacy.html", import.meta.url), "utf8"),
       readFile(new URL("../static-site/terms.html", import.meta.url), "utf8"),
@@ -66,7 +70,13 @@ test("keeps the full app and NAS mirror aligned on core booking policy", async (
     assert.match(homepage, /five bedrooms, six beds and three bathrooms/i);
     assert.match(homepage, /email the host to request your stay/i);
     assert.match(homepage, /exact arrival address and access instructions/i);
+    assert.match(homepage, /\$550/);
   }
+
+  const homepageSources = [appPage, propertyExperience, staticPage].join("\n");
+  assert.match(homepageSources, /Check what is here before you pack/i);
+  assert.doesNotMatch(homepageSources, /Adventure awaits|Browse the complete amenity inventory|Ready to make memories|See the real Lakefront Serenity/i);
+  assert.doesNotMatch(staticPage, /Spend a second lake day/i);
 
   assert.match(staticPage, /airbnb-availability\.json/);
   assert.match(staticPage, /href="\/privacy\.html"/);

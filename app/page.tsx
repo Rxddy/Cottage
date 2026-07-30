@@ -1,14 +1,14 @@
 import { BookingDock, BookingPanel } from "./BookingPanel";
-import { Amenities, Bedrooms, ExperienceCards, Gallery, NearbyCards, Reviews, ScrollAnimations } from "./PropertyExperience";
+import { Amenities, Bedrooms, CottagePeek, ExperienceCards, Gallery, NearbyCards, Reviews, ScrollAnimations } from "./PropertyExperience";
 import { getAirbnbAvailability } from "./airbnb-calendar";
 
 const bookingPricing = {
   currency: process.env.BOOKING_CURRENCY ?? "cad",
-  nightlyRateCents: Number(process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
-  weekdayRateCents: Number(process.env.BOOKING_WEEKDAY_RATE_CENTS ?? process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
-  weekendRateCents: Number(process.env.BOOKING_WEEKEND_RATE_CENTS ?? process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
-  longWeekendRateCents: Number(process.env.BOOKING_LONG_WEEKEND_RATE_CENTS ?? process.env.BOOKING_WEEKEND_RATE_CENTS ?? process.env.BOOKING_NIGHTLY_RATE_CENTS ?? 0),
-  cleaningFeeCents: Number(process.env.BOOKING_CLEANING_FEE_CENTS ?? 0),
+  nightlyRateCents: Number(process.env.BOOKING_NIGHTLY_RATE_CENTS ?? process.env.BOOKING_WEEKDAY_RATE_CENTS ?? 55000),
+  weekdayRateCents: Number(process.env.BOOKING_WEEKDAY_RATE_CENTS ?? 55000),
+  weekendRateCents: Number(process.env.BOOKING_WEEKEND_RATE_CENTS ?? 60000),
+  longWeekendRateCents: Number(process.env.BOOKING_LONG_WEEKEND_RATE_CENTS ?? 65000),
+  cleaningFeeCents: Number(process.env.BOOKING_CLEANING_FEE_CENTS ?? 20000),
   taxRateBasisPoints: Number(process.env.BOOKING_TAX_RATE_BASIS_POINTS ?? 0),
   refundableSecurityDepositCents: Number(process.env.BOOKING_SECURITY_DEPOSIT_CENTS ?? 100000),
 };
@@ -107,22 +107,6 @@ const nearby = [
   },
   {
     number: "05",
-    category: "Provincial park",
-    title: "Balsam Lake Provincial Park",
-    text: "Spend a second lake day at the beach, on the trails, or out on the water at Balsam Lake Provincial Park.",
-    href: "https://www.ontarioparks.ca/park/balsamlake/activities",
-    icon: "/icons/flaticon/waterfront.png",
-    visual: "park",
-    image: "/nearby/balsam-lake-sunrise.jpg",
-    imageAlt: "Quiet sunrise over the beach at Balsam Lake Provincial Park",
-    photoTitle: "Balsam Lake Provincial Park at sunrise",
-    photographer: "RichardBH",
-    photoSource: "https://commons.wikimedia.org/wiki/File:Balsam_Lake_Provincial_Park_at_sunrise.jpg",
-    licenseName: "CC BY 2.0",
-    licenseUrl: "https://creativecommons.org/licenses/by/2.0/",
-  },
-  {
-    number: "06",
     category: "Multi-use forest",
     title: "Ganaraska Forest",
     text: "Explore hiking, mountain biking, horseback riding, cross-country skiing and snowshoeing trails. A day pass or membership is required.",
@@ -178,9 +162,9 @@ export default async function Home() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-shade" />
         <div className="hero-content">
-          <p className="eyebrow light">A waterfront stay in Kawartha Lakes</p>
-          <h1 id="hero-title">Your escape<br />starts here.</h1>
-          <p className="hero-copy">A spacious Kawartha Lakes retreat where groups can slow down, reconnect and keep the water in view.</p>
+          <p className="eyebrow light">A waterfront cottage in Kawartha Lakes</p>
+          <h1 id="hero-title">The lake is<br />at your back door.</h1>
+          <p className="hero-copy">Five bedrooms, a broad lawn and a dock on Canal Lake. Bring up to ten guests and settle in by the water.</p>
           <div className="hero-rating" aria-label="Rated 4.96 out of 5 from 28 Airbnb reviews">
             <span aria-hidden="true">★★★★★</span>
             <strong>4.96</strong>
@@ -192,13 +176,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <figure className="property-peek">
-          <img src="/cottage/front-of-house.jpg" alt="The actual front exterior of Lakefront Serenity" />
-          <figcaption>
-            <span>Lakefront Serenity</span>
-            <strong>The actual cottage</strong>
-          </figcaption>
-        </figure>
+        <CottagePeek />
 
         <div className="hero-facts" aria-label="Property overview">
           <div><span className="fact-icon" aria-hidden="true">10</span><p><strong>Guests</strong><small>Maximum</small></p></div>
@@ -212,10 +190,9 @@ export default async function Home() {
 
       <section className="welcome section reveal" id="house">
         <div className="welcome-copy">
-          <p className="eyebrow">Welcome to Lakefront Serenity</p>
-          <h2>Relax. Recharge.<br />Reconnect.</h2>
+          <p className="eyebrow">Inside the cottage</p>
+          <h2>Five bedrooms, one waterfront home base.</h2>
           <p>Set directly on the waterfront, this entire home gives up to ten guests five bedrooms, six beds and three bathrooms, plus generous spaces for cooking, playing and gathering.</p>
-          <p className="handwritten">Make it memorable.</p>
           <a className="button dark" href="#amenities">Discover the cottage</a>
         </div>
         <ExperienceCards items={experiences} />
@@ -228,7 +205,7 @@ export default async function Home() {
 
       <section className="explore section reveal" id="explore">
         <div className="section-heading">
-          <div><p className="eyebrow">Things to do nearby</p><h2>Adventure awaits.</h2></div>
+          <div><p className="eyebrow">Things to do nearby</p><h2>Five places worth knowing.</h2></div>
           <p>Independent destinations to consider while staying in Kawartha Lakes. Destination imagery is credited below; these places are not services or amenities provided by Lakefront Serenity.</p>
         </div>
         <NearbyCards places={nearby} />
@@ -262,14 +239,14 @@ export default async function Home() {
 
       <section className="know section reveal" id="details">
         <div className="know-image" aria-label="Front and back views of Lakefront Serenity">
-          <div className="arrival-note"><p className="eyebrow">A calm arrival</p><h3>Find the house, then settle in.</h3><p>Use the front entrance for check-in, with the waterfront backyard waiting just beyond the house.</p></div>
+          <div className="arrival-note"><p className="eyebrow">Arrival</p><h3>Use the front entrance for check-in.</h3><p>The waterfront lawn and dock sit behind the house.</p></div>
           <figure><img src="/cottage/front-of-house.jpg" alt="Front exterior of Lakefront Serenity" /><figcaption>Arrive at the front of the house</figcaption></figure>
           <figure><img src="/cottage/exterior.webp" alt="Back exterior and lawn at Lakefront Serenity" /><figcaption>Settle into the waterfront backyard</figcaption></figure>
-          <div className="arrival-note"><p className="eyebrow">Before you arrive</p><h3>Everything you need is shared privately.</h3><p>The exact address, parking guidance and unique keypad code are sent after payment and confirmation, so your arrival stays simple and secure.</p></div>
+          <div className="arrival-note"><p className="eyebrow">Before you arrive</p><h3>Address and access stay private.</h3><p>The exact address, parking guidance and unique keypad code are sent after payment and confirmation.</p></div>
         </div>
         <div className="know-copy">
-          <p className="eyebrow">Good to know</p>
-          <h2>A simple arrival, with the important details upfront.</h2>
+          <p className="eyebrow">Guest guide</p>
+          <h2>Check-in, checkout and house rules.</h2>
           <dl>
             <div><dt>Check-in</dt><dd>Any time</dd></div>
             <div><dt>Checkout</dt><dd>Before 10:00 a.m.</dd></div>
@@ -335,9 +312,9 @@ export default async function Home() {
           <div><span aria-hidden="true"><img src="/icons/flaticon/kitchen.png" alt="" /></span><strong>Self check-in</strong><small>Keypad entry</small></div>
         </div>
         <div className="booking-copy">
-          <p className="eyebrow light">Ready to make memories?</p>
+          <p className="eyebrow light">Availability &amp; rates</p>
           <h2>Plan your waterfront stay.</h2>
-          <p>This read-only calendar shades nights that are already unavailable so you can check dates at a glance.</p>
+          <p>Booked nights are shaded. Choose your dates to see an itemized estimate before you contact the host.</p>
           <div className="booking-shortcuts">
             <a className="photo-stack-button" href="#gallery" aria-label="Jump to the cottage photo gallery">
               <span className="photo-stack" aria-hidden="true">
@@ -358,22 +335,33 @@ export default async function Home() {
               <b aria-hidden="true">↗</b>
             </a>
           </div>
+          <section className="booking-rate-card" aria-labelledby="rates-title">
+            <div className="booking-rate-heading">
+              <div><span>Rates in Canadian dollars</span><h3 id="rates-title">Price before taxes</h3></div>
+              <a href="#availability-form">Choose dates</a>
+            </div>
+            <dl>
+              <div><dt>Monday–Thursday</dt><dd>$550 <small>per night</small></dd></div>
+              <div><dt>Friday–Sunday</dt><dd>$600 <small>per night</small></dd></div>
+              <div><dt>Long weekends</dt><dd>$650 <small>per night</small></dd></div>
+              <div><dt>Cleaning fee</dt><dd>$200 <small>per stay</small></dd></div>
+            </dl>
+            <p>A separate $1,000 refundable security deposit is collected by Interac e-Transfer after the host approves the stay.</p>
+          </section>
+          <section className="booking-contact-inline" id="contact" aria-labelledby="contact-title">
+            <div>
+              <span>Questions before you book?</span>
+              <h3 id="contact-title">Talk with the host.</h3>
+              <p>Ask about the cottage, accessibility or your dates. You will usually hear back within one business day.</p>
+            </div>
+            <a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20inquiry">
+              <small>Booking &amp; guest support</small>
+              <strong>lakefrontserenitysupport@gmail.com</strong>
+            </a>
+          </section>
         </div>
         <BookingPanel variant="footer" pricing={bookingPricing} blockedDates={airbnbAvailability.blockedDates} availabilityStatus={airbnbAvailability.status} />
         <p className="booking-disclosure"><strong className="licence-badge">Kawartha Lakes Short-Term Rental Licence STR2026-163</strong>Availability is refreshed automatically. Select your dates, then email the host to request your stay. The exact arrival address and access instructions are sent privately in the confirmation email after the host accepts the reservation.</p>
-      </section>
-
-      <section className="contact-section section reveal" id="contact">
-        <div className="contact-copy">
-          <p className="eyebrow">Questions before you book?</p>
-          <h2>Talk with the host.</h2>
-          <p>Email the host for stay questions, accessibility details or help planning your lake days. The host will confirm availability, pricing and next steps. The exact arrival address and access instructions are shared privately after a reservation is accepted.</p>
-        </div>
-        <div className="contact-card">
-          <span className="contact-card-label">Booking &amp; guest support</span>
-          <a href="mailto:lakefrontserenitysupport@gmail.com?subject=Lakefront%20Serenity%20inquiry">lakefrontserenitysupport@gmail.com</a>
-          <small>We usually respond within one business day.</small>
-        </div>
       </section>
 
       <footer>

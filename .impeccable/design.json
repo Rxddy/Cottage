@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-30T12:00:00-04:00",
+  "title": "Design System: Lakefront Serenity",
+  "extensions": {
+    "colorMeta": {
+      "deep-water": { "role": "primary", "displayName": "Deep Water", "canonical": "#0c2a23" },
+      "forest": { "role": "primary", "displayName": "Cottage Forest", "canonical": "#173b31" },
+      "reed": { "role": "secondary", "displayName": "Dry Reed", "canonical": "#57633e" },
+      "cottage-cream": { "role": "neutral", "displayName": "Cottage Cream", "canonical": "#f3f0e7" },
+      "warm-paper": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#fbfaf6" },
+      "sunlight": { "role": "accent", "displayName": "Sunlight", "canonical": "#e4b321" }
+    },
+    "motion": [
+      { "name": "reveal", "value": "780ms ease-out", "purpose": "Section and grouped-content reveals." },
+      { "name": "photo-change", "value": "900ms ease-out", "purpose": "Property photo and gallery category changes." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "820px" },
+      { "name": "mobile", "value": "540px" }
+    ]
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "The Kept Cottage",
+    "overview": "A practical, image-led booking site that feels cared for rather than staged.",
+    "keyCharacteristics": ["Actual property photography", "Visible rates and availability", "Calm lake-green palette", "Restrained motion"],
+    "rules": [
+      { "name": "Real House First", "body": "Use actual property imagery before descriptive claims.", "section": "components" },
+      { "name": "Practical Details Stay Close", "body": "Keep prices and contact information beside the booking flow.", "section": "components" }
+    ],
+    "dos": ["Keep the booking action visible.", "Respect reduced motion.", "Use grouped information where it improves scanning."],
+    "donts": ["Do not use generic AI landing-page copy.", "Do not hide pricing.", "Do not use elastic or novelty motion."]
+  }
+}

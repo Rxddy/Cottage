@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type AnimeApi = {
   animate: (targets: string | Element | NodeListOf<Element>, options: Record<string, unknown>) => unknown;
@@ -55,25 +55,68 @@ const reviewThemes = [
   { title: "Responsive hosting", text: "Quick communication and attentive hospitality are recurring themes in the listing’s public feedback." },
 ];
 
-const photos = [
-  ["/cottage/lake-chairs.jpg", "The lake beyond the lawn and red chairs", "Waterfront"],
-  ["/cottage/waterfront-kayaks.webp", "Three kayaks ready beside the dock", "Kayaks"],
-  ["/cottage/backyard-cedars.webp", "Backyard deck and waterfront lawn", "Backyard deck"],
-  ["/cottage/front-of-house.jpg", "Front exterior of Lakefront Serenity", "Front of the house"],
-  ["/cottage/living-room-2.jpg", "Main living room inside Lakefront Serenity", "Living room"],
-  ["/cottage/living-room-tv.webp", "Living room seating area with the television", "Living room"],
-  ["/cottage/kitchen.jpg", "Full kitchen inside Lakefront Serenity", "Kitchen"],
-  ["/cottage/kitchen-wide.webp", "Wide view of the fully equipped wood kitchen", "Kitchen"],
-  ["/cottage/kitchen-dishware.webp", "Plates, bowls and glassware stored in the kitchen", "Dishware"],
-  ["/cottage/kitchen-coffee-station.webp", "Coffee maker, kettle and toaster in the kitchen", "Coffee station"],
-  ["/cottage/living-room-2.jpg", "Bright living room for relaxing together", "Play"],
-  ["/cottage/patio.jpg", "Outdoor dining patio", "Patio"],
-  ["/cottage/dining.jpg", "Dining area inside Lakefront Serenity", "Dining"],
-  ["/cottage/bedroom-1-bathroom.jpg", "Bathroom attached to Bedroom 1", "Bedroom 1 bathroom"],
-  ["/cottage/bedroom-2-3-bathroom.jpg", "Hallway bathroom shared by Bedrooms 2 and 3", "Hallway bathroom"],
-  ["/cottage/bedroom-5-bathroom.jpg", "Bathroom attached to Bedroom 5", "Bedroom 5 bathroom"],
-  ["/cottage/additional-washroom.jpg", "Additional washroom", "Additional bathroom"],
+type GalleryPhoto = { src: string; alt: string; label: string };
+type GalleryGroup = { id: string; label: string; description: string; photos: GalleryPhoto[] };
+
+const galleryGroups: GalleryGroup[] = [
+  {
+    id: "outside",
+    label: "Outside",
+    description: "The waterfront lawn, dock, patios and both sides of the house.",
+    photos: [
+      { src: "/cottage/lake-chairs.jpg", alt: "The lake beyond the lawn and red chairs", label: "Waterfront" },
+      { src: "/cottage/front-of-house.jpg", alt: "Front exterior of Lakefront Serenity", label: "Front of the house" },
+      { src: "/cottage/exterior.webp", alt: "Back exterior and lawn at Lakefront Serenity", label: "Back of the house" },
+      { src: "/cottage/backyard-cedars.webp", alt: "Backyard deck and waterfront lawn", label: "Backyard deck" },
+      { src: "/cottage/waterfront-kayaks.webp", alt: "Three kayaks ready beside the dock", label: "Kayaks" },
+    ],
+  },
+  {
+    id: "living",
+    label: "Living room",
+    description: "The main gathering room, pool table and television area.",
+    photos: [
+      { src: "/cottage/living-room-2.jpg", alt: "Main living room and pool table inside Lakefront Serenity", label: "Living room" },
+      { src: "/cottage/living-room-tv.webp", alt: "Living room seating area with the television", label: "TV area" },
+    ],
+  },
+  {
+    id: "kitchen",
+    label: "Kitchen & dining",
+    description: "The full kitchen, dining table and everyday cooking setup.",
+    photos: [
+      { src: "/cottage/kitchen.jpg", alt: "Full kitchen inside Lakefront Serenity", label: "Kitchen" },
+      { src: "/cottage/dining.jpg", alt: "Dining area inside Lakefront Serenity", label: "Dining room" },
+      { src: "/cottage/kitchen-wide.webp", alt: "Wide view of the fully equipped wood kitchen", label: "Kitchen storage" },
+      { src: "/cottage/kitchen-coffee-station.webp", alt: "Coffee maker, kettle and toaster in the kitchen", label: "Coffee station" },
+    ],
+  },
+  {
+    id: "bathrooms",
+    label: "Bathrooms",
+    description: "The attached and shared bathrooms shown with their current fixtures.",
+    photos: [
+      { src: "/cottage/bedroom-1-bathroom.jpg", alt: "Bathroom attached to Bedroom 1", label: "Bedroom 1 bathroom" },
+      { src: "/cottage/bedroom-2-3-bathroom.jpg", alt: "Hallway bathroom shared by Bedrooms 2 and 3", label: "Hallway bathroom" },
+      { src: "/cottage/bedroom-4-bathroom.jpg", alt: "Bathroom attached to Bedroom 4", label: "Bedroom 4 bathroom" },
+      { src: "/cottage/bedroom-5-bathroom.jpg", alt: "Bathroom attached to Bedroom 5", label: "Bedroom 5 bathroom" },
+    ],
+  },
+  {
+    id: "bedrooms",
+    label: "Bedrooms",
+    description: "Five private bedrooms, each furnished with a queen bed.",
+    photos: [
+      { src: "/cottage/bedroom-1.jpg", alt: "Bedroom 1 with a queen bed", label: "Bedroom 1" },
+      { src: "/cottage/bedroom-2.jpg", alt: "Bedroom 2 with a queen bed", label: "Bedroom 2" },
+      { src: "/cottage/bedroom-3.jpg", alt: "Bedroom 3 with a queen bed", label: "Bedroom 3" },
+      { src: "/cottage/bedroom-4.jpg", alt: "Bedroom 4 with a queen bed", label: "Bedroom 4" },
+      { src: "/cottage/bedroom-5.jpg", alt: "Bedroom 5 with a queen bed", label: "Bedroom 5" },
+    ],
+  },
 ];
+
+const photos = galleryGroups.flatMap((group) => group.photos);
 
 type Bedroom = {
   src: string;
@@ -108,6 +151,48 @@ type Experience = {
   label: string;
   text: string;
 };
+
+const cottageViews = [
+  { src: "/cottage/front-of-house.jpg", alt: "Front exterior of Lakefront Serenity", label: "Front of the house" },
+  { src: "/cottage/exterior.webp", alt: "Back exterior and waterfront lawn at Lakefront Serenity", label: "Back of the house" },
+];
+
+export function CottagePeek() {
+  const [active, setActive] = useState(0);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setActive((current) => (current + 1) % cottageViews.length), 5200);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!imageRef.current || !window.anime || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    window.anime.animate(imageRef.current, {
+      opacity: { from: 0.12 },
+      scale: { from: 1.035 },
+      duration: 900,
+      ease: "out(4)",
+    });
+  }, [active]);
+
+  const view = cottageViews[active];
+  return (
+    <figure className="property-peek">
+      <img ref={imageRef} key={view.src} className="property-peek-image" src={view.src} alt={view.alt} />
+      <div className="property-peek-controls" aria-label="Choose an exterior view">
+        {cottageViews.map((item, index) => (
+          <button key={item.src} type="button" className={index === active ? "active" : ""} onClick={() => setActive(index)} aria-label={`Show ${item.label}`} aria-pressed={index === active} />
+        ))}
+      </div>
+      <figcaption>
+        <span>Lakefront Serenity</span>
+        <strong>{view.label}</strong>
+      </figcaption>
+    </figure>
+  );
+}
 
 export function ExperienceCards({ items }: { items: Experience[] }) {
   const [selected, setSelected] = useState<number | null>(null);
@@ -186,6 +271,20 @@ export function ScrollAnimations() {
       (entries) => entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
+          if (!prefersReducedMotion && window.anime) {
+            const motionItems = entry.target.querySelectorAll(
+              ".section-heading > *, .activity-highlights > *, .key-amenities > *, .amenity-groups > *, .gallery-tabs > *, .gallery-grid > *, .bedroom-grid > *, .nearby-card, .reviews-grid > *, .booking-benefits > *",
+            );
+            if (motionItems.length) {
+              window.anime.animate(motionItems, {
+                opacity: { from: 0 },
+                y: { from: 16 },
+                delay: window.anime.stagger(45),
+                duration: 620,
+                ease: "out(3)",
+              });
+            }
+          }
           observer.unobserve(entry.target);
         }
       }),
@@ -205,7 +304,7 @@ export function Amenities() {
   return (
     <section className="amenities-section section reveal" id="amenities">
       <div className="section-heading amenities-heading">
-        <div><p className="eyebrow">What is included</p><h2>Made for lake days and easy nights.</h2></div>
+        <div><p className="eyebrow">What is included</p><h2>What is here when you arrive.</h2></div>
         <p>These features are provided at the cottage. Seasonal lake conditions and amenity availability can vary.</p>
       </div>
       <div className="activity-highlights" aria-label="Activities and features at the house">
@@ -220,13 +319,13 @@ export function Amenities() {
       </div>
       <div className="amenity-drawer">
         <div>
-          <p className="eyebrow">What this place offers</p>
-          <h3>Browse the complete amenity inventory.</h3>
-          <p>All current listed features and activities are organized here, including the complete exterior-camera disclosure.</p>
+          <p className="eyebrow">Full amenity list</p>
+          <h3>Check what is here before you pack.</h3>
+          <p>Open any category for the complete list. Safety details and the exterior-camera disclosure also appear in the guest guide below.</p>
         </div>
         <div className="amenity-groups">
           {amenityGroups.map((group) => (
-            <details key={group.title} open={group.title === "Scenic view" || group.title === "Waterfront"}>
+            <details key={group.title} open={group.title === "Scenic view" || group.title === "Outdoor"}>
               <summary><span>{group.title}</span><b>{group.items.length}</b></summary>
               <ul>{group.items.map((item) => <li key={item}>{item}</li>)}</ul>
             </details>
@@ -238,7 +337,20 @@ export function Amenities() {
 }
 
 export function Gallery() {
+  const [activeGroup, setActiveGroup] = useState(galleryGroups[0].id);
   const [selected, setSelected] = useState<number | null>(null);
+  const currentGroup = galleryGroups.find((group) => group.id === activeGroup) ?? galleryGroups[0];
+
+  useEffect(() => {
+    if (!window.anime || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    window.anime.animate(".gallery-grid .gallery-photo", {
+      opacity: { from: 0 },
+      y: { from: 18 },
+      delay: window.anime.stagger(55),
+      duration: 640,
+      ease: "out(3)",
+    });
+  }, [activeGroup]);
 
   useEffect(() => {
     if (selected === null) return;
@@ -254,24 +366,62 @@ export function Gallery() {
   return (
     <section className="gallery-section reveal" id="gallery">
       <div className="section-heading gallery-heading">
-        <div><p className="eyebrow light">Gallery</p><h2>See the real Lakefront Serenity.</h2></div>
-        <p>Every photograph shown here comes from the property listing. Choose a photo for a closer look.</p>
+        <div><p className="eyebrow light">Room by room</p><h2>Walk through the cottage.</h2></div>
+        <p>Choose an area to keep the tour short, then open any photograph for a closer look.</p>
       </div>
-      <div className="gallery-grid">
-        {photos.map(([src, alt, label], index) => (
-          <button className={`gallery-photo photo-${index + 1}`} type="button" key={src} onClick={() => setSelected(index)} aria-label={`Open photo: ${alt}`}>
-            <img src={src} alt={alt} />
-            <span>{label}</span>
+      <div className="gallery-tabs" role="tablist" aria-label="Cottage photo categories">
+        {galleryGroups.map((group) => (
+          <button
+            key={group.id}
+            type="button"
+            role="tab"
+            aria-selected={group.id === activeGroup}
+            className={group.id === activeGroup ? "active" : ""}
+            onClick={() => setActiveGroup(group.id)}
+          >
+            <span>{group.label}</span>
+            <small>{group.photos.length}</small>
           </button>
         ))}
+      </div>
+      <div className="gallery-group-heading">
+        <h3>{currentGroup.label}</h3>
+        <p>{currentGroup.description}</p>
+      </div>
+      <div className="gallery-grid" data-count={currentGroup.photos.length}>
+        {currentGroup.photos.map((photo, index) => (
+          <button className={`gallery-photo photo-${index + 1}`} type="button" key={photo.src} onClick={() => setSelected(photos.indexOf(photo))} aria-label={`Open photo: ${photo.alt}`}>
+            <img src={photo.src} alt={photo.alt} />
+            <span>{photo.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="home-layout">
+        <div className="home-layout-copy">
+          <p className="eyebrow light">House layout preview</p>
+          <h3>A room-by-room guide.</h3>
+          <p>This shows the spaces included in the cottage, not exact dimensions. A measured floor plan can replace it after the house is surveyed.</p>
+        </div>
+        <div className="home-layout-plan" aria-label="Illustrative room guide, not to scale">
+          <span className="layout-entry">Entrance</span>
+          <span className="layout-living">Living room<br /><small>Pool table</small></span>
+          <span className="layout-kitchen">Kitchen &amp; dining</span>
+          <span className="layout-bed1">Bedroom 1</span>
+          <span className="layout-bed2">Bedroom 2</span>
+          <span className="layout-bed3">Bedroom 3</span>
+          <span className="layout-bath">Bathrooms</span>
+          <span className="layout-bed4">Bedroom 4</span>
+          <span className="layout-bed5">Bedroom 5</span>
+          <span className="layout-water">Waterfront lawn &amp; dock</span>
+        </div>
       </div>
       {selected !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Property photo viewer" onClick={() => setSelected(null)}>
           <button className="lightbox-close" type="button" onClick={() => setSelected(null)} aria-label="Close photo viewer">×</button>
           <button type="button" onClick={(event) => { event.stopPropagation(); setSelected((selected - 1 + photos.length) % photos.length); }} aria-label="Previous photo">←</button>
-          <img src={photos[selected][0]} alt={photos[selected][1]} onClick={(event) => event.stopPropagation()} />
+          <img src={photos[selected].src} alt={photos[selected].alt} onClick={(event) => event.stopPropagation()} />
           <button type="button" onClick={(event) => { event.stopPropagation(); setSelected((selected + 1) % photos.length); }} aria-label="Next photo">→</button>
-          <p>{selected + 1} / {photos.length}</p>
+          <p>{photos[selected].label} · {selected + 1} / {photos.length}</p>
         </div>
       )}
     </section>
@@ -295,7 +445,7 @@ export function Bedrooms() {
   return (
     <section className="bedrooms-section section reveal" id="bedrooms" aria-labelledby="bedrooms-title">
       <div className="section-heading bedrooms-heading">
-        <div><p className="eyebrow">Five bedrooms</p><h2 id="bedrooms-title">Space to settle in.</h2></div>
+        <div><p className="eyebrow">Five bedrooms</p><h2 id="bedrooms-title">Where everyone sleeps.</h2></div>
         <p>View every bedroom in the cottage, including the attached bathroom for Bedroom 1, the shared hallway bathroom for Bedrooms 2 and 3, and attached bathrooms for Bedrooms 4 and 5.</p>
       </div>
       <div className="bedroom-grid">
@@ -383,7 +533,7 @@ export function Reviews() {
   return (
     <section className="reviews-section section reveal" id="reviews" aria-labelledby="reviews-title">
       <div className="section-heading reviews-heading">
-        <div><p className="eyebrow">Guest feedback</p><h2 id="reviews-title">What guests remember.</h2></div>
+        <div><p className="eyebrow">Guest feedback</p><h2 id="reviews-title">What Airbnb guests mention.</h2></div>
         <a href="https://www.airbnb.ca/rooms/940636318506657847" target="_blank" rel="noreferrer">Read all reviews on Airbnb ↗</a>
       </div>
       <div className="reviews-grid">

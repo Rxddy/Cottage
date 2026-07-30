@@ -10,9 +10,9 @@ export function BookingPriceReceipt({ breakdown, compact = false }: { breakdown:
       <section className="price-receipt price-receipt-compact price-receipt-empty-state" aria-labelledby="price-details-title">
         <div>
           <h3 id="price-details-title">Estimate</h3>
-          <p>Pick a check-in and check-out date to see the rental total.</p>
+          <p>Pick a check-in and check-out date to see the nightly rates, cleaning fee and rental total.</p>
         </div>
-        <strong>Rate to be confirmed</strong>
+        <strong>Select dates</strong>
       </section>
     );
   }
